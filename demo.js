@@ -184,11 +184,12 @@
   var RATE = Math.round((PRESENT / EXPECTED) * 100);
 
   /* ---------------- holat ---------------- */
-  var S = { screen: 'home', filter: 'all', repType: 0, repPreset: 1, atWork: true };
+  var S = { screen: 'home', filter: 'all', repType: 0, repPreset: 1, atWork: true, dir: 'push' };
 
   var body = document.getElementById('demoBody');
   var tabsEl = document.getElementById('demoTabs');
   var toastEl;
+  var lastScreen = null;
 
   function toast(msg) {
     if (!toastEl) return;
@@ -198,7 +199,15 @@
     toast._t = setTimeout(function () { toastEl.classList.remove('on'); }, 3200);
   }
 
-  function go(screen) { S.screen = screen; render(); body.scrollTop = 0; }
+  // Chuqurlik: bosh sahifa 0, qolgani 1. Ichkariga kirish — o'ngdan surilish,
+  // qaytish — chapdan. iOS navigatsiyasi shunday ishlaydi.
+  function depth(sc) { return sc === 'home' ? 0 : 1; }
+  function go(screen) {
+    S.dir = depth(screen) < depth(S.screen) ? 'pop' : 'push';
+    S.screen = screen;
+    render();
+    body.scrollTop = 0;
+  }
 
   /* ---------------- ikonkalar ---------------- */
   var I = {
@@ -314,11 +323,12 @@
       total += net;
       return { e: e, days: WD - miss, net: net };
     });
+    // Telefon eniga uch ustun sig'adi — "model" ism ostiga tushadi
     var h = head(t('m.pay'), t('pay.sub')) + '<table class="dm-tbl"><thead><tr>' +
-      '<th>' + t('pay.emp') + '</th><th>' + t('pay.model') + '</th><th class="num">' + t('pay.days') + '</th><th class="num">' + t('pay.net') + '</th>' +
+      '<th>' + t('pay.emp') + '</th><th class="num">' + t('pay.days') + '</th><th class="num">' + t('pay.net') + '</th>' +
       '</tr></thead><tbody>';
     rows.slice(0, 8).forEach(function (r) {
-      h += '<tr><td>' + esc(r.e.name) + '</td><td style="color:var(--muted)">' + t('md.month') + '</td>' +
+      h += '<tr><td>' + esc(r.e.name) + '<br><span style="font-size:10.5px;color:var(--muted)">' + t('md.month') + '</span></td>' +
         '<td class="num">' + r.days + '</td><td class="num">' + money(r.net) + '</td></tr>';
     });
     h += '</tbody></table><div class="dm-empty" style="padding:12px">' + t('pay.more') + '</div>';
@@ -447,19 +457,35 @@
     return h;
   };
 
-  /* ---------------- chizish ---------------- */
-  var TABS = [['home', 'tab.home'], ['attendance', 'tab.att'], ['employees', 'tab.emp'], ['payroll', 'tab.pay']];
+  /* ---------------- chizish ----------------
+     Pastki tab qatori — haqiqiy Mini App'dagidek. Bosh sahifadan tashqari
+     ekranlar (ta'til, filial, hisobot...) modul gridi orqali ochiladi va
+     "Bosh sahifa" tabi yoniq qoladi: mehmon qayerdan kelganini yo'qotmasin. */
+  var TABS = [
+    ['home', 'tab.home', '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5"/><path d="M9.5 21v-6h5v6"/>'],
+    ['attendance', 'tab.att', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/>'],
+    ['employees', 'tab.emp', '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'],
+    ['payroll', 'tab.pay', '<rect x="2.5" y="6" width="19" height="13" rx="3"/><path d="M2.5 10.5h19"/><circle cx="17.3" cy="15" r="1.3"/>']
+  ];
+  // Modul gridi orqali ochiladigan ekranlar bosh sahifaga tegishli
+  var UNDER_HOME = { leaves: 1, branches: 1, reports: 1, productivity: 1, me: 1, settings: 1, subscription: 1, schedules: 1 };
 
   function render() {
     tabsEl.innerHTML = TABS.map(function (p) {
-      return '<button data-go="' + p[0] + '"' + (S.screen === p[0] ? ' class="on"' : '') + '>' + t(p[1]) + '</button>';
+      var on = S.screen === p[0] || (p[0] === 'home' && UNDER_HOME[S.screen]);
+      return '<button data-go="' + p[0] + '"' + (on ? ' class="on"' : '') + '>' +
+        '<svg viewBox="0 0 24 24">' + p[2] + '</svg>' + t(p[1]) + '</button>';
     }).join('');
     var fn = SCREENS[S.screen] || SCREENS.home;
-    body.innerHTML = '<div class="dm-in">' + fn() + '</div>';
+    body.innerHTML = '<div class="dm-in' + (S.dir === 'pop' ? ' pop' : '') + '">' + fn() + '</div>';
+    // Ekran almashganda tepaga qaytamiz; o'sha ekran ichida (filtr, tasdiqlash)
+    // surilish joyida qoladi, aks holda mehmon bosgan joyidan ayrilib qolardi.
+    if (lastScreen !== S.screen) { body.scrollTop = 0; lastScreen = S.screen; }
     if (!toastEl) {
       toastEl = document.createElement('div');
       toastEl.className = 'dm-toast';
-      document.getElementById('demo').appendChild(toastEl);
+      // Ekran ICHIGA qo'yiladi — telefon bilan birga masshtablanadi
+      (document.querySelector('.phone-screen') || document.getElementById('demo')).appendChild(toastEl);
     }
   }
 
@@ -497,6 +523,25 @@
       }, 0);
     });
   });
+
+  /* ---------------- haqiqiy telefon sezgisi ---------------- */
+  // Surilganda yuqori panel ostida ingichka chiziq paydo bo'ladi
+  var top = document.getElementById('phTop');
+  if (top) {
+    body.addEventListener('scroll', function () {
+      top.classList.toggle('scrolled', body.scrollTop > 4);
+    }, { passive: true });
+  }
+
+  // Status qatoridagi soat haqiqiy — namuna "muzlab qolgan" ko'rinmasin
+  var clock = document.getElementById('phTime');
+  function tick() {
+    if (!clock) return;
+    var d = new Date();
+    clock.textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+  tick();
+  setInterval(tick, 20000);
 
   render();
 })();
