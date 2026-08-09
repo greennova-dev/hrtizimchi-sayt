@@ -197,21 +197,21 @@ section{padding:88px 0}
    butun ramka esa scale bilan kichraytiriladi. Shunda ilova xuddi haqiqiy
    telefondagidek chiqadi — shrift, bo'shliq, tugma o'lchami hammasi rost. */
 .demo-wrap{position:relative; width:fit-content; margin:0 auto; max-width:100%}
-.demo-phone{--pw:393px; --ph:852px; --pad:12px; --scale:.9;
+.demo-phone{--pw:360px; --ph:700px; --pad:12px; --scale:.92;
   position:relative;
   width:calc((var(--pw) + var(--pad)*2) * var(--scale));
   height:calc((var(--ph) + var(--pad)*2) * var(--scale))}
 .phone-frame{position:absolute; top:0; left:0; transform-origin:top left;
   transform:scale(var(--scale));
   width:calc(var(--pw) + var(--pad)*2); height:calc(var(--ph) + var(--pad)*2);
-  padding:var(--pad); border-radius:66px;
+  padding:var(--pad); border-radius:58px;
   background:linear-gradient(155deg,#454c60 0%,#171b24 38%,#12151c 62%,#3a4054 100%);
   box-shadow:0 2px 5px rgba(9,16,32,.45), 0 40px 80px -26px rgba(9,16,32,.6),
              inset 0 0 0 2px rgba(255,255,255,.14)}
-.phone-screen{position:relative; width:100%; height:100%; border-radius:54px; overflow:hidden;
+.phone-screen{position:relative; width:100%; height:100%; border-radius:46px; overflow:hidden;
   background:var(--bg-a); isolation:isolate}
-.ph-island{position:absolute; top:24px; left:50%; transform:translateX(-50%); z-index:6;
-  width:118px; height:34px; border-radius:999px; background:#080a0f}
+.ph-island{position:absolute; top:22px; left:50%; transform:translateX(-50%); z-index:6;
+  width:106px; height:31px; border-radius:999px; background:#080a0f}
 .ph-btn{position:absolute; width:3.5px; border-radius:2px;
   background:linear-gradient(180deg,#4b5266,#272c38)}
 .ph-vol-up{left:-3px; top:19%; height:5.2%}
@@ -219,16 +219,16 @@ section{padding:88px 0}
 .ph-pow{right:-3px; top:23%; height:8%}
 
 /* Yuqori va pastki panellar — iOS dagidek shishasimon, mazmun ular ostidan suriladi */
-.ph-top{position:absolute; top:0; left:0; right:0; z-index:4; height:96px;
+.ph-top{position:absolute; top:0; left:0; right:0; z-index:4; height:90px;
   background:var(--glass); backdrop-filter:blur(20px) saturate(1.7);
   -webkit-backdrop-filter:blur(20px) saturate(1.7);
   border-bottom:1px solid transparent; transition:border-color .2s}
 .ph-top.scrolled{border-bottom-color:var(--glass-line)}
 .ph-status{display:flex; align-items:center; justify-content:space-between;
-  padding:15px 30px 0; font-size:15px; font-weight:640; color:var(--ink); letter-spacing:-.01em}
+  padding:14px 26px 0; font-size:14.5px; font-weight:640; color:var(--ink); letter-spacing:-.01em}
 .ph-sig{display:inline-flex; align-items:center; gap:6px; color:var(--ink)}
 .ph-sig svg{height:12px; width:auto; fill:currentColor}
-.ph-head{display:flex; align-items:center; gap:9px; padding:12px 18px 0}
+.ph-head{display:flex; align-items:center; gap:9px; padding:11px 16px 0}
 .ph-brand{display:inline-flex; align-items:center; gap:8px; font-size:16px; font-weight:660;
   letter-spacing:-.02em; white-space:nowrap}
 .ph-mark{width:27px;height:27px;border-radius:8px;display:grid;place-items:center;flex:none;
@@ -236,7 +236,7 @@ section{padding:88px 0}
 .ph-mark svg{width:16px;height:16px}
 
 .ph-tabs{position:absolute; left:0; right:0; bottom:0; z-index:4;
-  display:grid; grid-template-columns:repeat(4,1fr); gap:2px; padding:9px 8px 26px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:2px; padding:8px 7px 20px;
   background:var(--glass); backdrop-filter:blur(20px) saturate(1.7);
   -webkit-backdrop-filter:blur(20px) saturate(1.7); border-top:1px solid var(--glass-line)}
 .ph-tabs button{border:0; background:transparent; font:inherit; cursor:pointer; display:grid;
@@ -246,8 +246,8 @@ section{padding:88px 0}
   stroke-linecap:round;stroke-linejoin:round}
 .ph-tabs button.on{color:var(--brand-ink)}
 .ph-tabs button:active{transform:scale(.92)}
-.ph-home{position:absolute; left:50%; bottom:9px; transform:translateX(-50%); z-index:5;
-  width:138px; height:5px; border-radius:3px; background:var(--ink); opacity:.3}
+.ph-home{position:absolute; left:50%; bottom:7px; transform:translateX(-50%); z-index:5;
+  width:124px; height:5px; border-radius:3px; background:var(--ink); opacity:.3}
 
 .tile{background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:16px}
 .tile-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
@@ -293,7 +293,7 @@ section{padding:88px 0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .demo-body{position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch; scrollbar-width:none;
-  padding:104px 16px 108px}
+  padding:98px 15px 98px}
 .demo-body::-webkit-scrollbar{display:none}
 .demo-hint{display:flex; align-items:center; justify-content:center; gap:7px; margin:14px auto 0;
   font-size:11.5px; color:var(--muted); text-align:center; max-width:300px}
@@ -583,7 +583,7 @@ footer{padding:44px 0 56px; border-top:1px solid var(--line-2); margin-top:20px}
 /* ---------- responsive ---------- */
 @media (max-width:1080px){
   .hero-in{grid-template-columns:1fr; gap:44px}
-  .demo-phone{--scale:.88}
+  .demo-phone{--scale:.90}
   .prob-grid,.steps,.price-grid{grid-template-columns:repeat(2,1fr)}
   .fgrid{grid-template-columns:repeat(2,1fr)}
   .facts-in{grid-template-columns:repeat(2,1fr)}
@@ -605,8 +605,6 @@ footer{padding:44px 0 56px; border-top:1px solid var(--line-2); margin-top:20px}
   .diff-vis{width:86px}
   .nav-right .btn{display:none}
   .picker .opts button{flex:1 1 44%}
-
-  .kpis{grid-template-columns:repeat(2,1fr)}
 }
 
 /* ═══════════════ Animatsiya va o'zaro ta'sir ═══════════════ */
@@ -683,14 +681,14 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 
 /* Harakatga sezgir foydalanuvchi — hech qanday siljish va yorug'lik yo'q */
 /* Telefon o'lchami: ichki metrika o'zgarmaydi, faqat masshtab */
-@media (max-height:880px){ .demo-phone{--scale:.82} }
-@media (max-height:720px){ .demo-phone{--scale:.76} }
-@media (max-width:1080px) and (min-height:881px){ .demo-phone{--scale:.88} }
+@media (max-height:880px){ .demo-phone{--scale:.86} }
+@media (max-height:720px){ .demo-phone{--scale:.80} }
+@media (max-width:1080px) and (min-height:881px){ .demo-phone{--scale:.90} }
 /* Mobil: .wrap chetlari 18px, ya'ni ish kengligi = vw - 36 */
-@media (max-width:480px){ .demo-phone{--scale:.80} }
-@media (max-width:400px){ .demo-phone{--scale:.76} }
-@media (max-width:370px){ .demo-phone{--scale:.70} }
-@media (max-width:340px){ .demo-phone{--scale:.62} }
+@media (max-width:480px){ .demo-phone{--scale:.88} }
+@media (max-width:400px){ .demo-phone{--scale:.84} }
+@media (max-width:370px){ .demo-phone{--scale:.78} }
+@media (max-width:340px){ .demo-phone{--scale:.70} }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important; scroll-behavior:auto; animation:none!important}
   .rv{opacity:1; transform:none}
