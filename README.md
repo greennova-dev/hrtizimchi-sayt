@@ -12,7 +12,12 @@ ishlaydi, JavaScript o'chirilgan brauzerda ham o'zbekcha matn to'liq o'qiladi.
 
 ```
 hrtizimchi-sayt/
-├── index.html      butun sayt: HTML + CSS + i18n lug'ati
+├── index.html            butun sayt: HTML + CSS + i18n lug'ati
+├── og.jpg                Telegram/ijtimoiy tarmoq oldindan ko'rish rasmi
+├── og-source.svg         o'sha rasmning vektor manbasi
+├── apple-touch-icon.png  iPhone "bosh ekranga qo'shish" ikonkasi
+├── icon-512.png          zaxira ikonka (512×512)
+├── robots.txt · sitemap.xml
 └── .github/workflows/deploy.yml   main'ga push → serverda git pull
 ```
 
@@ -52,6 +57,33 @@ qo'lda yangilash kerak.
 
 Joriy holat (2026-08-09): Kichik 199 000 · O'rta 299 000 · Katta 499 000 ·
 Cheksiz 999 000 so'm/oy; yillik narxlar −17% dan −33% gacha chegirma bilan.
+
+## Oldindan ko'rish rasmi (og.jpg)
+
+Havola Telegramga tashlanganda chiqadigan rasm. Manba — `og-source.svg`
+(vektor, 1200×630). Matn o'zgarsa shu faylni tahrirlab, rasmni qayta yasang:
+
+```bash
+# QuickLook SVG ni kvadratga sig'diradi, shuning uchun avval o'raymiz, keyin kesamiz
+python3 - <<'PY'
+import pathlib
+s = pathlib.Path('og-source.svg').read_text()
+inner = s.replace('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"',
+                  '<svg x="0" y="285" width="1200" height="630"', 1)
+pathlib.Path('/tmp/og-wrap.svg').write_text(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">'
+  '<rect width="1200" height="1200" fill="#eef3fb"/>' + inner + '</svg>')
+PY
+rm -rf /tmp/ogout && mkdir /tmp/ogout
+qlmanage -t -s 1200 -o /tmp/ogout /tmp/og-wrap.svg >/dev/null 2>&1
+sips --cropToHeightWidth 630 1200 /tmp/ogout/og-wrap.svg.png --out /tmp/og.png >/dev/null
+sips -s format jpeg -s formatOptions 88 /tmp/og.png --out og.jpg >/dev/null
+sips -g pixelWidth -g pixelHeight og.jpg   # 1200 × 630 bo'lishi kerak
+```
+
+`og:image` **mutlaq manzil** bo'lishi shart, shuning uchun `index.html` da
+`https://hrtizimchi.uz/og.jpg` yozilgan — domen ishga tushmaguncha Telegram
+rasmni topa olmaydi.
 
 ## Lokal ko'rish
 
