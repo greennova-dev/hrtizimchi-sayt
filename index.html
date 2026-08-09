@@ -124,7 +124,7 @@ ul{margin:0; padding:0; list-style:none}
 .nav-links{display:flex; gap:4px; margin-left:12px; padding:5px; border-radius:999px;
   background:var(--surface); border:1px solid var(--line); box-shadow:var(--sh-1)}
 .nav-links a{padding:8px 15px; border-radius:999px; font-size:14.5px; color:var(--ink-2); font-weight:500;
-  transition:background .15s,color .15s}
+  white-space:nowrap; transition:background .15s,color .15s}
 .nav-links a:hover{background:var(--surface-3); color:var(--ink)}
 .nav-right{margin-left:auto; display:flex; align-items:center; gap:10px}
 .lang{display:flex; padding:4px; gap:2px; border-radius:999px; background:var(--surface);
@@ -222,10 +222,57 @@ section{padding:88px 0}
 /* ---------- facts ---------- */
 .facts{padding:0 0 20px}
 .facts-in{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+/* Bosiladigan: har bir raqam tegishli bo'limga olib boradi */
 .fact{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:20px 22px;
-  box-shadow:var(--sh-1)}
-.fact b{display:block; font-size:32px; font-weight:660; letter-spacing:-.04em; line-height:1}
+  box-shadow:var(--sh-1); display:block; position:relative; overflow:hidden}
+.fact b{display:block; font-size:32px; font-weight:660; letter-spacing:-.04em; line-height:1;
+  font-variant-numeric:tabular-nums}
 .fact span{display:block; margin-top:6px; color:var(--muted); font-size:14px}
+.fact .go-l{display:block; margin-top:12px; font-size:12.5px; font-weight:650; color:var(--brand-ink);
+  opacity:.75; transition:opacity .2s var(--ease), transform .2s var(--ease)}
+a.fact:hover{transform:translateY(-3px); box-shadow:var(--sh-2); border-color:var(--line-hi)}
+a.fact:hover .go-l{opacity:1; transform:translateX(3px)}
+/* Yuqori qirrada brend chizig'i — sichqoncha kelganda chapdan o'ngga chiziladi */
+a.fact::before{content:""; position:absolute; left:0; top:0; height:2px; width:100%;
+  background:linear-gradient(90deg,var(--brand),transparent);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s var(--ease)}
+a.fact:hover::before{transform:scaleX(1)}
+
+/* ---------- tarif tanlagichi ---------- */
+.picker{max-width:760px; margin:0 auto 40px; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-lg); box-shadow:var(--sh-2); padding:26px 28px}
+.picker h3{font-size:18px; text-align:center}
+.picker .q{margin-top:20px}
+.picker .q-t{font-size:13.5px; font-weight:600; color:var(--ink-2); margin-bottom:10px; text-align:center}
+.picker .opts{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
+.picker .opts button{font:inherit; font-size:14px; font-weight:600; color:var(--ink-2); cursor:pointer;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:10px 18px;
+  transition:transform .18s var(--ease), background .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease)}
+.picker .opts button:hover{transform:scale(1.05); border-color:var(--line-hi)}
+.picker .opts button[aria-pressed="true"]{background:var(--navy); color:#fff; border-color:transparent}
+.picker .res{margin-top:22px; padding-top:20px; border-top:1px solid var(--line); text-align:center;
+  opacity:0; max-height:0; overflow:hidden; transition:opacity .45s var(--ease), max-height .45s var(--ease)}
+.picker .res.on{opacity:1; max-height:260px}
+.picker .res .name{font-size:24px; font-weight:660; letter-spacing:-.03em}
+.picker .res .why{color:var(--ink-2); font-size:14.5px; margin-top:8px}
+.picker .res .btn{margin-top:16px}
+
+/* ---------- footer muallifi ---------- */
+.foot-by{display:inline-block; margin-top:6px; font-size:13px; color:var(--muted)}
+.foot-by a{color:var(--ink-2); font-weight:600; border-bottom:1px solid var(--line-2);
+  transition:color .18s var(--ease), border-color .18s var(--ease)}
+.foot-by a:hover{color:var(--brand-ink); border-color:var(--brand)}
+
+/* Maslahat tugmasi navni siqmasligi uchun faqat keng ekranda */
+.nav-consult{display:none}
+@media (min-width:1240px){ .nav-consult{display:inline-flex} }
+/* Tavsiya qilingan tarif kartasi ajralib turadi */
+.plan.suggested{outline:2px solid var(--brand); outline-offset:3px}
+
+@media (max-width:900px){
+  .picker{padding:22px 18px}
+  .fact .go-l{margin-top:9px}
+}
 
 /* ---------- problem ---------- */
 .prob-grid{grid-template-columns:repeat(4,1fr)}
@@ -388,6 +435,7 @@ footer{padding:44px 0 56px; border-top:1px solid var(--line-2); margin-top:20px}
   .diff{grid-template-columns:1fr; padding:24px}
   .diff-vis{width:86px}
   .nav-right .btn{display:none}
+  .picker .opts button{flex:1 1 44%}
   .mock{padding:13px; border-radius:24px}
   .kpis{grid-template-columns:repeat(2,1fr)}
 }
@@ -511,6 +559,7 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
       </button>
+      <a class="btn btn-s btn-sm nav-consult" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Maslahat olish</a>
       <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Bepul boshlash</a>
     </div>
   </div>
@@ -631,10 +680,10 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 <!-- ================= FACTS ================= -->
 <section class="facts">
   <div class="wrap facts-in">
-    <div class="fact"><b>4</b><span data-i18n="f.1">ish haqi modeli — oylik, kunlik, soatlik, aralash</span></div>
-    <div class="fact"><b>6</b><span data-i18n="f.2">hisobot turi, XLSX va PDF ko'rinishida</span></div>
-    <div class="fact"><b>14</b><span data-i18n="f.3">modul: davomatdan ish haqigacha bir joyda</span></div>
-    <div class="fact"><b>2</b><span data-i18n="f.4">til — o'zbekcha va ruscha, xodim o'zi tanlaydi</span></div>
+    <a class="fact" href="#imkoniyatlar"><b data-count="4">4</b><span data-i18n="f.1">ish haqi modeli — oylik, kunlik, soatlik, aralash</span><span class="go-l" data-i18n="f.g1">imkoniyatlarni ko'rish →</span></a>
+    <a class="fact" href="#imkoniyatlar"><b data-count="6">6</b><span data-i18n="f.2">hisobot turi, XLSX va PDF ko'rinishida</span><span class="go-l" data-i18n="f.g2">hisobotlarni ko'rish →</span></a>
+    <a class="fact" href="#qanday"><b data-count="14">14</b><span data-i18n="f.3">modul: davomatdan ish haqigacha bir joyda</span><span class="go-l" data-i18n="f.g3">qanday ishlaydi →</span></a>
+    <a class="fact" href="#nega"><b data-count="2">2</b><span data-i18n="f.4">til — o'zbekcha va ruscha, xodim o'zi tanlaydi</span><span class="go-l" data-i18n="f.g4">nega biz →</span></a>
   </div>
 </section>
 
@@ -893,6 +942,36 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
       </div>
     </div>
 
+    <div class="picker" id="picker">
+      <h3 data-i18n="pk.t">Bilmadingizmi? 2 savolda aniqlaymiz</h3>
+
+      <div class="q">
+        <div class="q-t" data-i18n="pk.q1">Nechta xodimingiz bor?</div>
+        <div class="opts" data-q="emp">
+          <button type="button" data-v="25" aria-pressed="false">1–25</button>
+          <button type="button" data-v="50" aria-pressed="false">26–50</button>
+          <button type="button" data-v="100" aria-pressed="false">51–100</button>
+          <button type="button" data-v="999" aria-pressed="false" data-i18n="pk.e4">100 dan ko'p</button>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-t" data-i18n="pk.q2">Nechta filial?</div>
+        <div class="opts" data-q="br">
+          <button type="button" data-v="2" aria-pressed="false">1–2</button>
+          <button type="button" data-v="3" aria-pressed="false">3</button>
+          <button type="button" data-v="5" aria-pressed="false">4–5</button>
+          <button type="button" data-v="999" aria-pressed="false" data-i18n="pk.b4">5 dan ko'p</button>
+        </div>
+      </div>
+
+      <div class="res" id="picker-res" aria-live="polite">
+        <div class="name" id="picker-name"></div>
+        <p class="why" id="picker-why"></p>
+        <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="pk.cta">Shu tarifni 7 kun bepul sinash</a>
+      </div>
+    </div>
+
     <div class="grid price-grid">
       <div class="plan">
         <h3 data-i18n="pr.1n">Kichik</h3>
@@ -1017,7 +1096,8 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 
 <footer>
   <div class="wrap foot">
-    <p>© <span id="yr">2026</span> Tizimchi HR · <span data-i18n="fo.by">GreenNova mahsuloti</span></p>
+    <p>© <span id="yr">2026</span> Tizimchi HR · <span data-i18n="fo.by">GreenNova mahsuloti</span><br>
+      <span class="foot-by">created by <a href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener">Allayorov Azizbek</a></span></p>
     <nav>
       <a href="#imkoniyatlar" data-i18n="nav.f">Imkoniyatlar</a>
       <a href="#tariflar" data-i18n="nav.p">Tariflar</a>
@@ -1031,7 +1111,15 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 /* ---------- til almashtirish: HTML da o'zbekcha, bu yerda faqat ruscha ---------- */
 var RU = {
   'nav.f':'Возможности','nav.h':'Как работает','nav.w':'Почему мы','nav.p':'Тарифы','nav.q':'Вопросы',
-  'nav.cta':'Начать бесплатно',
+  'nav.cta':'Начать бесплатно','nav.help':'Консультация',
+
+  'f.g1':'смотреть возможности →','f.g2':'смотреть отчёты →',
+  'f.g3':'как это работает →','f.g4':'почему мы →',
+
+  'pk.t':'Не знаете какой? Определим за 2 вопроса',
+  'pk.q1':'Сколько у вас сотрудников?','pk.q2':'Сколько филиалов?',
+  'pk.e4':'больше 100','pk.b4':'больше 5',
+  'pk.cta':'Попробовать этот тариф 7 дней бесплатно',
 
   'h.chip':'Telegram Mini App · GPS-учёт',
   'h.t1':'Контролируйте рабочее время','h.t2':'прямо в Telegram','h.t3':'',
@@ -1246,6 +1334,90 @@ var RU = {
     }, {passive:true});
     document.addEventListener('mouseleave', function(){ glow.classList.remove('on'); });
   }
+
+  /* ---------- raqamlar sanab chiqishi ----------
+     Ko'rinishga kirganda 0 dan haqiqiy songacha sanaladi. `data-count`
+     asl qiymatni saqlaydi — til almashganda ham raqam buzilmaydi. */
+  if (!calm && 'IntersectionObserver' in window) {
+    var nums = document.querySelectorAll('[data-count]');
+    var numObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        numObs.unobserve(el);
+        var target = parseInt(el.dataset.count, 10);
+        if (!(target > 0)) return;
+        var dur = 900, t0 = performance.now();
+        (function tick(now){
+          var k = Math.min(1, (now - t0) / dur);
+          /* oxiriga borib sekinlashadi — mexanik sanashdan ko'ra tabiiyroq */
+          var eased = 1 - Math.pow(1 - k, 3);
+          el.textContent = String(Math.round(target * eased));
+          if (k < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, {threshold:0.6});
+    nums.forEach(function(el){ el.textContent = '0'; numObs.observe(el); });
+  }
+
+  /* ---------- tarif tanlagichi ----------
+     Ikki savol → tarif. Tanlov mantiqi shu yerda bir joyda turadi:
+     xodim va filial soni bo'yicha eng past mos tarif tanlanadi (ikkisidan
+     qaysi biri qattiqroq talab qilsa, o'sha ustun). */
+  (function(){
+    var picker = document.getElementById('picker');
+    if (!picker) return;
+
+    /* Tariflar seed bilan bir xil tartibda — o'zgarsa shu yer yangilanadi */
+    var PLANS = [
+      {key:'small',    emp:25,   br:2,   name:"Kichik",  m:'199 000',  y:'1 990 000'},
+      {key:'standard', emp:50,   br:3,   name:"O'rta",   m:'299 000',  y:'2 690 000'},
+      {key:'medium',   emp:100,  br:5,   name:'Katta',   m:'499 000',  y:'4 190 000'},
+      {key:'large',    emp:1e9,  br:1e9, name:'Cheksiz', m:'999 000',  y:'7 990 000'}
+    ];
+    var ans = {};
+
+    function choose(){
+      if (ans.emp === undefined || ans.br === undefined) return;
+      var p = PLANS.find(function(x){ return x.emp >= ans.emp && x.br >= ans.br; }) || PLANS[PLANS.length-1];
+
+      var ru = document.documentElement.lang === 'ru';
+      document.getElementById('picker-name').textContent =
+        p.name + ' — ' + (document.body.dataset.cycle === 'year' ? p.y : p.m) + (ru ? ' сум' : " so'm");
+
+      var empTxt = ans.emp >= 1e3 ? (ru ? 'более 100' : "100 dan ko'p") : ('≤ ' + ans.emp);
+      var brTxt  = ans.br  >= 1e3 ? (ru ? 'более 5'   : "5 dan ko'p")   : ('≤ ' + ans.br);
+      document.getElementById('picker-why').textContent = ru
+        ? 'Сотрудников: ' + empTxt + ' · филиалов: ' + brTxt + '. В этом тарифе открыты все модули.'
+        : 'Xodim: ' + empTxt + ' · filial: ' + brTxt + '. Bu tarifda barcha modullar ochiq.';
+
+      document.getElementById('picker-res').classList.add('on');
+
+      /* Tavsiya qilingan kartani ajratamiz — mijoz ro'yxatdan uni tez topadi */
+      var cards = document.querySelectorAll('.price-grid .plan');
+      cards.forEach(function(c, i){ c.classList.toggle('suggested', i === PLANS.indexOf(p)); });
+    }
+
+    picker.querySelectorAll('.opts').forEach(function(group){
+      group.addEventListener('click', function(e){
+        var b = e.target.closest('button');
+        if (!b) return;
+        ans[group.dataset.q] = Number(b.dataset.v);
+        group.querySelectorAll('button').forEach(function(x){
+          x.setAttribute('aria-pressed', String(x === b));
+        });
+        choose();
+      });
+    });
+
+    /* Oylik ⇄ yillik almashsa tavsiya narxi ham yangilanadi */
+    document.querySelectorAll('.cycle button').forEach(function(b){
+      b.addEventListener('click', function(){ setTimeout(choose, 0); });
+    });
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.addEventListener('click', function(){ setTimeout(choose, 0); });
+    });
+  })();
 
   /* ---------- aylanib borganda ochilish ----------
      `.rv` sinfini JS qo'yadi: JS ishlamasa bloklar yashirin qolmaydi. */
