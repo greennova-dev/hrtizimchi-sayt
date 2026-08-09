@@ -45,6 +45,10 @@
   --off:#a7b4c9; --tick-off:#eef1f6;
   /* "tanish holat" kartalari — qorong'ida oq parda va so'nik qizil ishlamaydi */
   --prob-bg:rgba(255,255,255,.62); --danger-soft:rgba(224,36,36,.09);
+  /* Ajratilgan tarif kartasi va maketning ichki halqasi — ikkalasi ham
+     qattiq oq edi va qorong'ida ko'zni qamashtirardi */
+  --plan-hot:linear-gradient(180deg,#ffffff,#f7faff);
+  --rim-top:#ffffff; --rim:rgba(255,255,255,.6);
 
   /* sichqoncha ortidagi yorug'lik */
   --cursor-glow:rgba(26,109,255,.16);
@@ -74,6 +78,8 @@
     --ok-ink:#4bd6a5; --warn-ink:#f0b45c; --bad-ink:#ff8b8b;
     --off:#5d6d8c; --tick-off:#1b2740;
     --prob-bg:rgba(21,32,57,.55); --danger-soft:rgba(255,139,139,.14);
+    --plan-hot:linear-gradient(180deg,#17243f,#111a2f);
+    --rim-top:rgba(255,255,255,.10); --rim:rgba(255,255,255,.05);
     --cursor-glow:rgba(77,139,255,.20);
   }
 }
@@ -93,6 +99,8 @@
   --ok-ink:#4bd6a5; --warn-ink:#f0b45c; --bad-ink:#ff8b8b;
   --off:#5d6d8c; --tick-off:#1b2740;
   --prob-bg:rgba(21,32,57,.55); --danger-soft:rgba(255,139,139,.14);
+  --plan-hot:linear-gradient(180deg,#17243f,#111a2f);
+  --rim-top:rgba(255,255,255,.10); --rim:rgba(255,255,255,.05);
   --cursor-glow:rgba(77,139,255,.20);
 }
 *{box-sizing:border-box}
@@ -152,6 +160,8 @@ section{padding:88px 0}
   letter-spacing:.09em; text-transform:uppercase; color:var(--brand-ink);
   background:rgba(26,109,255,.09); border:1px solid rgba(26,109,255,.18);
   padding:7px 14px; border-radius:999px}
+.eyebrow .eb-i{width:15px;height:15px;stroke:currentColor;stroke-width:1.8;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;flex:none;margin-right:-2px}
 .h2{font-size:clamp(28px,3.6vw,42px)}
 .lede{color:var(--ink-2); font-size:17.5px; max-width:62ch; margin-top:14px}
 .sec-head{margin-bottom:44px}
@@ -179,7 +189,7 @@ section{padding:88px 0}
 .mock{background:linear-gradient(170deg,var(--mock-a), var(--mock-b)); border:1px solid var(--mock-border); border-radius:30px;
   box-shadow:var(--sh-3); padding:18px; position:relative}
 .mock::after{content:""; position:absolute; inset:0; border-radius:30px; pointer-events:none;
-  box-shadow:inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.6)}
+  box-shadow:inset 0 1px 0 var(--rim-top), inset 0 0 0 1px var(--rim)}
 .mock-bar{display:flex; align-items:center; gap:10px; margin-bottom:16px}
 .mock-brand{font-size:12.5px; font-weight:650; padding:7px 12px; border-radius:999px; background:var(--surface-hi);
   border:1px solid var(--line); box-shadow:var(--sh-1); white-space:nowrap; flex:none}
@@ -328,6 +338,12 @@ section{padding:88px 0}
   box-shadow:var(--sh-1); display:block; position:relative; overflow:hidden}
 .fact b{display:block; font-size:32px; font-weight:660; letter-spacing:-.04em; line-height:1;
   font-variant-numeric:tabular-nums}
+/* Ikonka o'ng yuqorida — raqam bosh qahramon bo'lib qolishi uchun so'ngan */
+.fact .fi{position:absolute; top:16px; right:17px; width:26px; height:26px; color:var(--brand-ink);
+  opacity:.42; transition:opacity .2s var(--ease), transform .2s var(--ease)}
+.fact .fi svg{width:100%; height:100%; stroke:currentColor; stroke-width:1.6; fill:none;
+  stroke-linecap:round; stroke-linejoin:round}
+a.fact:hover .fi{opacity:.95; transform:scale(1.07) rotate(-2deg)}
 .fact span{display:block; margin-top:6px; color:var(--muted); font-size:14px}
 .fact .go-l{display:block; margin-top:12px; font-size:12.5px; font-weight:650; color:var(--brand-ink);
   opacity:.75; transition:opacity .2s var(--ease), transform .2s var(--ease)}
@@ -443,7 +459,7 @@ a.fact:hover::before{transform:scaleX(1)}
 .price-grid{grid-template-columns:repeat(4,1fr); align-items:start}
 .plan{padding:28px 24px; border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--line);
   box-shadow:var(--sh-1); position:relative; display:flex; flex-direction:column; height:100%}
-.plan.hot{border-color:rgba(26,109,255,.45); box-shadow:var(--sh-3); background:linear-gradient(180deg,#fff,#f7faff)}
+.plan.hot{border-color:rgba(26,109,255,.45); box-shadow:var(--sh-3); background:var(--plan-hot)}
 .plan-badge{position:absolute; top:-12px; left:24px; font-size:11.5px; font-weight:650; letter-spacing:.05em;
   text-transform:uppercase; color:#fff; background:linear-gradient(160deg,#2b7bff,#0f57e0);
   padding:5px 12px; border-radius:999px; box-shadow:0 8px 18px -8px rgba(15,87,224,.9)}
@@ -674,7 +690,10 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 <section class="hero">
   <div class="wrap hero-in">
     <div>
-      <span class="eyebrow" data-i18n="h.chip">Telegram Mini App · GPS davomat</span>
+      <span class="eyebrow">
+        <svg class="eb-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span data-i18n="h.chip">Telegram Mini App · GPS davomat</span>
+      </span>
       <h1><span data-i18n="h.t1">Xodimlar ish vaqtini</span> <em data-i18n="h.t2">Telegram ichida</em> <span data-i18n="h.t3">nazorat qiling</span></h1>
       <p class="lede" data-i18n="h.sub">Alohida ilova o'rnatilmaydi. Xodim «Keldim» tugmasini bosadi — tizim uning filial hududida ekanini GPS orqali tekshiradi, ishlangan soatni o'zi hisoblaydi, ish haqi esa shu davomatdan chiqadi.</p>
       <div class="hero-cta">
@@ -710,10 +729,10 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 <!-- ================= FACTS ================= -->
 <section class="facts">
   <div class="wrap facts-in">
-    <a class="fact" href="#imkoniyatlar"><b data-count="4">4</b><span data-i18n="f.1">ish haqi modeli — oylik, kunlik, soatlik, aralash</span><span class="go-l" data-i18n="f.g1">imkoniyatlarni ko'rish →</span></a>
-    <a class="fact" href="#imkoniyatlar"><b data-count="6">6</b><span data-i18n="f.2">hisobot turi, XLSX va PDF ko'rinishida</span><span class="go-l" data-i18n="f.g2">hisobotlarni ko'rish →</span></a>
-    <a class="fact" href="#qanday"><b data-count="14">14</b><span data-i18n="f.3">modul: davomatdan ish haqigacha bir joyda</span><span class="go-l" data-i18n="f.g3">qanday ishlaydi →</span></a>
-    <a class="fact" href="#nega"><b data-count="2">2</b><span data-i18n="f.4">til — o'zbekcha va ruscha, xodim o'zi tanlaydi</span><span class="go-l" data-i18n="f.g4">nega biz →</span></a>
+    <a class="fact" href="#imkoniyatlar"><span class="fi" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="3"/><path d="M2.5 10.5h19"/><circle cx="17.3" cy="15" r="1.35"/></svg></span><b data-count="4">4</b><span data-i18n="f.1">ish haqi modeli — oylik, kunlik, soatlik, aralash</span><span class="go-l" data-i18n="f.g1">imkoniyatlarni ko'rish →</span></a>
+    <a class="fact" href="#imkoniyatlar"><span class="fi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M19 8v10a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3h6z"/><path d="M9 17.5v-3M12 17.5v-5.5M15 17.5v-2"/></svg></span><b data-count="6">6</b><span data-i18n="f.2">hisobot turi, XLSX va PDF ko'rinishida</span><span class="go-l" data-i18n="f.g2">hisobotlarni ko'rish →</span></a>
+    <a class="fact" href="#qanday"><span class="fi" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7.6" height="7.6" rx="2.2"/><rect x="13.4" y="3" width="7.6" height="7.6" rx="2.2"/><rect x="3" y="13.4" width="7.6" height="7.6" rx="2.2"/><rect x="13.4" y="13.4" width="7.6" height="7.6" rx="2.2"/></svg></span><b data-count="14">14</b><span data-i18n="f.3">modul: davomatdan ish haqigacha bir joyda</span><span class="go-l" data-i18n="f.g3">qanday ishlaydi →</span></a>
+    <a class="fact" href="#nega"><span class="fi" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></span><b data-count="2">2</b><span data-i18n="f.4">til — o'zbekcha va ruscha, xodim o'zi tanlaydi</span><span class="go-l" data-i18n="f.g4">nega biz →</span></a>
   </div>
 </section>
 
