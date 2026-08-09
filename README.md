@@ -6,13 +6,14 @@ mahsulotning o'zi alohida (private) repoda.
 
 ## Nima bu
 
-Bitta statik sahifa: `index.html`. Boshqa hech narsa yo'q — build qadami,
-paket menejeri, framework, tashqi CDN ishlatilmaydi. Sahifa ochilishi bilan
+Statik sahifa: `index.html` + `demo.js`. Build qadami, paket menejeri,
+framework va tashqi CDN ishlatilmaydi. Sahifa ochilishi bilan
 ishlaydi, JavaScript o'chirilgan brauzerda ham o'zbekcha matn to'liq o'qiladi.
 
 ```
 hrtizimchi-sayt/
-├── index.html            butun sayt: HTML + CSS + i18n lug'ati
+├── index.html            sayt: HTML + CSS + i18n lug'ati
+├── demo.js               hero'dagi jonli demo (Mini App nusxasi)
 ├── og.jpg                Telegram/ijtimoiy tarmoq oldindan ko'rish rasmi
 ├── og-source.svg         o'sha rasmning vektor manbasi
 ├── apple-touch-icon.png  iPhone "bosh ekranga qo'shish" ikonkasi

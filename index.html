@@ -43,6 +43,8 @@
   --mock-a:#ffffff; --mock-b:#f2f6fd; --mock-border:#ffffff;
   --ok-ink:#0a7d57; --warn-ink:#a4590a; --bad-ink:#b81c1c;
   --off:#a7b4c9; --tick-off:#eef1f6;
+  /* "tanish holat" kartalari — qorong'ida oq parda va so'nik qizil ishlamaydi */
+  --prob-bg:rgba(255,255,255,.62); --danger-soft:rgba(224,36,36,.09);
 
   /* sichqoncha ortidagi yorug'lik */
   --cursor-glow:rgba(26,109,255,.16);
@@ -71,6 +73,7 @@
     --mock-a:#141f38; --mock-b:#0f1830; --mock-border:#26355a;
     --ok-ink:#4bd6a5; --warn-ink:#f0b45c; --bad-ink:#ff8b8b;
     --off:#5d6d8c; --tick-off:#1b2740;
+    --prob-bg:rgba(21,32,57,.55); --danger-soft:rgba(255,139,139,.14);
     --cursor-glow:rgba(77,139,255,.20);
   }
 }
@@ -89,6 +92,7 @@
   --mock-a:#141f38; --mock-b:#0f1830; --mock-border:#26355a;
   --ok-ink:#4bd6a5; --warn-ink:#f0b45c; --bad-ink:#ff8b8b;
   --off:#5d6d8c; --tick-off:#1b2740;
+  --prob-bg:rgba(21,32,57,.55); --danger-soft:rgba(255,139,139,.14);
   --cursor-glow:rgba(77,139,255,.20);
 }
 *{box-sizing:border-box}
@@ -177,8 +181,8 @@ section{padding:88px 0}
 .mock::after{content:""; position:absolute; inset:0; border-radius:30px; pointer-events:none;
   box-shadow:inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.6)}
 .mock-bar{display:flex; align-items:center; gap:10px; margin-bottom:16px}
-.mock-brand{font-size:13px; font-weight:650; padding:7px 13px; border-radius:999px; background:var(--surface-hi);
-  border:1px solid var(--line); box-shadow:var(--sh-1)}
+.mock-brand{font-size:12.5px; font-weight:650; padding:7px 12px; border-radius:999px; background:var(--surface-hi);
+  border:1px solid var(--line); box-shadow:var(--sh-1); white-space:nowrap; flex:none}
 .mock-tabs{display:flex; gap:3px; margin-left:4px; overflow:hidden}
 .mock-tabs span{font-size:12px; color:var(--muted); padding:6px 11px; border-radius:999px; white-space:nowrap}
 .mock-tabs span.on{background:var(--navy); color:#fff; font-weight:600}
@@ -218,6 +222,103 @@ section{padding:88px 0}
 .mock-foot small{display:block; font-size:11.5px; color:#a9c0ea}
 .mock-foot .go{margin-left:auto; width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.14);
   display:grid;place-items:center; flex:none}
+
+/* ---------- jonli demo ----------
+   Balandlik QAT'IY: ekran almashganda sahifa sakramasligi kerak, aks holda
+   mehmon bosgan joyidan ayrilib qoladi. Ortiqcha mazmun ichkarida suriladi. */
+.mock-tabs{flex:1; min-width:0}
+.mock-tabs button{font:inherit; font-size:11.5px; color:var(--muted); padding:6px 9px; border-radius:999px;
+  white-space:nowrap; border:0; background:transparent; cursor:pointer; transition:.15s}
+.mock-tabs button:hover{background:var(--surface-3); color:var(--ink)}
+.mock-tabs button.on{background:var(--navy); color:#fff; font-weight:600}
+.demo-live{margin-left:auto; display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600;
+  color:var(--ok-ink); background:rgba(14,159,110,.12); padding:5px 10px; border-radius:999px; white-space:nowrap}
+.demo-live i{width:6px;height:6px;border-radius:50%;background:var(--ok); animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.demo-body{height:452px; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; padding-right:2px}
+.demo-body::-webkit-scrollbar{width:5px}
+.demo-body::-webkit-scrollbar-thumb{background:var(--line-2); border-radius:3px}
+.demo-hint{display:flex; align-items:center; justify-content:center; gap:7px; margin-top:12px;
+  font-size:11.5px; color:var(--muted)}
+.dm-in{animation:dmIn .22s var(--ease)}
+@keyframes dmIn{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+
+.dm-head{display:flex; align-items:center; gap:10px; margin-bottom:12px}
+.dm-back{width:28px;height:28px;border-radius:9px;border:1px solid var(--line);background:var(--surface);
+  display:grid;place-items:center;cursor:pointer;flex:none; color:var(--ink-2)}
+.dm-back:hover{background:var(--surface-3)}
+.dm-title{font-size:18px; font-weight:620; letter-spacing:-.02em}
+.dm-sub{font-size:11.5px; color:var(--muted); margin-top:1px}
+
+.dm-hello{font-size:21px; font-weight:620; letter-spacing:-.03em; margin:0 0 3px}
+.dm-co{display:flex; align-items:center; gap:8px; margin-bottom:13px; flex-wrap:wrap}
+.dm-badge{font-size:10.5px; font-weight:650; padding:3px 9px; border-radius:999px}
+.dm-badge.ok{background:rgba(14,159,110,.13); color:var(--ok-ink)}
+.dm-badge.info{background:rgba(26,109,255,.12); color:var(--brand-ink)}
+
+.dm-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px}
+.dm-mod{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:11px 10px;
+  cursor:pointer; text-align:left; font:inherit; color:inherit; transition:.15s; position:relative}
+.dm-mod:hover{border-color:var(--brand); transform:translateY(-2px); box-shadow:var(--sh-1)}
+.dm-mod svg{width:17px;height:17px;stroke:var(--brand-ink);stroke-width:1.7;fill:none;
+  stroke-linecap:round;stroke-linejoin:round; margin-bottom:7px; display:block}
+.dm-mod b{display:block; font-size:12px; font-weight:600; line-height:1.2}
+.dm-mod span{font-size:11px; color:var(--muted)}
+.dm-sect{font-size:10.5px; font-weight:650; letter-spacing:.09em; text-transform:uppercase; color:var(--muted);
+  margin:14px 0 8px; display:flex; align-items:center; gap:9px}
+.dm-sect::after{content:""; flex:1; height:1px; background:var(--line)}
+
+.dm-chips{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px}
+.dm-chip{font:inherit; font-size:11.5px; font-weight:600; padding:6px 11px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink-2); transition:.15s}
+.dm-chip:hover{border-color:var(--brand)}
+.dm-chip.on{background:var(--navy); color:#fff; border-color:transparent}
+.dm-chip .n{opacity:.65; margin-left:4px}
+
+.dm-branch{font-size:11px; font-weight:650; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+  margin:12px 0 7px}
+.dm-empty{text-align:center; padding:34px 16px; color:var(--muted); font-size:13px}
+
+.dm-tbl{width:100%; border-collapse:collapse; font-size:12px}
+.dm-tbl th{text-align:left; font-size:10px; font-weight:650; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); padding:0 8px 8px; border-bottom:1px solid var(--line)}
+.dm-tbl td{padding:9px 8px; border-bottom:1px solid var(--line)}
+.dm-tbl tr:last-child td{border-bottom:0}
+.dm-tbl .num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+.dm-tot{display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding:13px 14px;
+  background:var(--navy); color:#fff; border-radius:14px}
+.dm-tot b{font-size:17px; font-weight:660; letter-spacing:-.03em}
+.dm-tot span{font-size:12px; color:#c3d6f5}
+
+.dm-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px; margin-bottom:10px}
+.dm-card h4{font-size:13.5px; font-weight:620; margin-bottom:3px}
+.dm-card p{font-size:12px; color:var(--muted)}
+.dm-acts{display:flex; gap:7px; margin-top:11px}
+.dm-btn{font:inherit; font-size:12px; font-weight:600; padding:8px 14px; border-radius:10px; cursor:pointer;
+  border:1px solid transparent; transition:.15s}
+.dm-btn.p{background:var(--brand); color:#fff}
+.dm-btn.p:hover{filter:brightness(1.08)}
+.dm-btn.s{background:var(--surface-2); color:var(--ink-2); border-color:var(--line)}
+.dm-btn.s:hover{background:var(--surface-3)}
+.dm-btn.big{width:100%; padding:14px; font-size:14.5px; border-radius:14px}
+
+.dm-toast{position:absolute; left:50%; bottom:64px; transform:translateX(-50%) translateY(8px); opacity:0;
+  background:var(--navy); color:#fff; font-size:12.5px; font-weight:550; padding:10px 16px; border-radius:999px;
+  box-shadow:var(--sh-2); pointer-events:none; transition:.22s var(--ease); white-space:nowrap; max-width:90%}
+.dm-toast.on{opacity:1; transform:translateX(-50%)}
+
+.dm-bignum{font-size:30px; font-weight:670; letter-spacing:-.04em; line-height:1.05}
+.dm-lbl{font-size:11.5px; color:var(--muted)}
+.dm-two{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.dm-rank{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:12.5px}
+.dm-rank:last-child{border-bottom:0}
+.dm-rank .pos{width:20px;height:20px;border-radius:6px;background:var(--surface-2);display:grid;place-items:center;
+  font-size:10.5px;font-weight:700;color:var(--muted);flex:none}
+.dm-rank .val{margin-left:auto; font-weight:650; font-variant-numeric:tabular-nums}
+.dm-bar{height:7px; border-radius:4px; background:var(--surface-3); overflow:hidden; margin-top:5px}
+.dm-bar i{display:block; height:100%; border-radius:4px; background:linear-gradient(90deg,#4d90ff,#1a6dff)}
+
+@media (max-width:820px){ .demo-body{height:420px} .dm-grid{grid-template-columns:repeat(2,1fr)} }
 
 /* ---------- facts ---------- */
 .facts{padding:0 0 20px}
@@ -276,13 +377,13 @@ a.fact:hover::before{transform:scaleX(1)}
 
 /* ---------- problem ---------- */
 .prob-grid{grid-template-columns:repeat(4,1fr)}
-.prob{padding:24px; border-radius:var(--r-md); background:rgba(255,255,255,.62);
+.prob{padding:24px; border-radius:var(--r-md); background:var(--prob-bg);
   border:1px solid var(--line); backdrop-filter:blur(4px)}
 .prob h3{font-size:16.5px; margin-bottom:8px}
 .prob p{color:var(--ink-2); font-size:14.5px}
-.prob .x{width:34px;height:34px;border-radius:11px;background:rgba(224,36,36,.09);display:grid;place-items:center;
+.prob .x{width:34px;height:34px;border-radius:11px;background:var(--danger-soft);display:grid;place-items:center;
   margin-bottom:14px}
-.prob .x svg{width:17px;height:17px;stroke:#d33;stroke-width:1.9;fill:none;stroke-linecap:round}
+.prob .x svg{width:17px;height:17px;stroke:var(--bad-ink);stroke-width:1.9;fill:none;stroke-linecap:round}
 
 /* ---------- steps ---------- */
 .steps{grid-template-columns:repeat(4,1fr); counter-reset:s}
@@ -590,88 +691,17 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
       </div>
     </div>
 
-    <!-- product mock -->
-    <div class="mock" aria-hidden="true">
+    <!-- jonli demo — butun mazmuni demo.js mantiqi bilan chiziladi -->
+    <div class="mock" id="demo">
       <div class="mock-bar">
         <span class="mock-brand">Tizimchi HR</span>
-        <div class="mock-tabs">
-          <span class="on" data-i18n="m.tab1">Bosh sahifa</span>
-          <span data-i18n="m.tab2">Davomat</span>
-          <span data-i18n="m.tab3">Xodimlar</span>
-          <span data-i18n="m.tab4">Ish haqi</span>
-        </div>
-        <span class="mock-dot"></span>
+        <div class="mock-tabs" id="demoTabs"></div>
+        <span class="demo-live"><i></i><span data-i18n="m.demo">Jonli namuna</span></span>
       </div>
-
-      <div class="mock-hello" data-i18n="m.hello">Xush kelibsiz, Greennova</div>
-
-      <div class="mock-grid">
-        <div class="tile">
-          <div class="tile-h">
-            <span class="tile-t" data-i18n="m.live">Bugun · Jonli</span>
-            <span class="pill-time">14:20</span>
-          </div>
-          <div class="kpis">
-            <div class="kpi k1"><b>24</b><small data-i18n="m.k1">Keldi</small></div>
-            <div class="kpi k2"><b>3</b><small data-i18n="m.k2">Kechikdi</small></div>
-            <div class="kpi k3"><b>2</b><small data-i18n="m.k3">Kelmadi</small></div>
-            <div class="kpi k4"><b>1</b><small data-i18n="m.k4">Ta'tilda</small></div>
-          </div>
-          <div class="rows">
-            <div class="row">
-              <span class="av" style="background:linear-gradient(150deg,#2b7bff,#0f57e0)">AB</span>
-              <span><span class="row-n">Aziz Bekmurodov</span><br><span class="row-r" data-i18n="m.r1">Payvand ustasi · 08:52</span></span>
-              <span class="chip ok" data-i18n="m.k1b">Keldi</span>
-            </div>
-            <div class="row">
-              <span class="av" style="background:linear-gradient(150deg,#f0a13c,#d97706)">MT</span>
-              <span><span class="row-n">Malika To'rayeva</span><br><span class="row-r" data-i18n="m.r2">Sotuv menejeri · 09:24</span></span>
-              <span class="chip late" data-i18n="m.k2b">Kechikdi</span>
-            </div>
-            <div class="row">
-              <span class="av" style="background:linear-gradient(150deg,#93a2b8,#64768f)">SK</span>
-              <span><span class="row-n">Sardor Karimov</span><br><span class="row-r" data-i18n="m.r3">Omborchi · belgilanmadi</span></span>
-              <span class="chip abs" data-i18n="m.k3b">Kelmadi</span>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:grid; gap:12px; align-content:start">
-          <div class="tile">
-            <div class="tile-h"><span class="tile-t" data-i18n="m.rate">Davomat darajasi</span></div>
-            <div class="ring-wrap">
-              <svg width="82" height="82" viewBox="0 0 82 82" style="flex:none">
-                <circle cx="41" cy="41" r="34" fill="none" stroke="#e7eefb" stroke-width="10"/>
-                <circle cx="41" cy="41" r="34" fill="none" stroke="#1a6dff" stroke-width="10" stroke-linecap="round"
-                        stroke-dasharray="213.6" stroke-dashoffset="38.4" transform="rotate(-90 41 41)"/>
-                <text x="41" y="46" text-anchor="middle" font-size="19" font-weight="650" fill="currentColor" letter-spacing="-1">82%</text>
-              </svg>
-              <div>
-                <div style="font-size:13px;color:var(--ink-2)" data-i18n="m.rate1">30 xodimdan 24 tasi ishda</div>
-                <div style="font-size:12px;color:var(--muted);margin-top:4px" data-i18n="m.rate2">O'tgan haftaga nisbatan +6%</div>
-              </div>
-            </div>
-          </div>
-          <div class="tile">
-            <div class="tile-h"><span class="tile-t" data-i18n="m.week">Ishlangan soat</span><span class="pill-time" data-i18n="m.week2">Bu hafta</span></div>
-            <div class="bars">
-              <i style="height:58%"></i><i style="height:74%"></i><i style="height:66%"></i>
-              <i style="height:88%"></i><i style="height:79%"></i><i class="dim" style="height:26%"></i>
-            </div>
-            <div class="bar-x">
-              <span data-i18n="m.d1">Du</span><span data-i18n="m.d2">Se</span><span data-i18n="m.d3">Ch</span>
-              <span data-i18n="m.d4">Pa</span><span data-i18n="m.d5">Ju</span><span data-i18n="m.d6">Sh</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mock-foot">
-        <span style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex:none">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
-        </span>
-        <span><b data-i18n="m.geo">Sadaf filiali · 100 m geofence</b><small data-i18n="m.geo2">Hudud tashqarisidagi urinish qabul qilinmaydi</small></span>
-        <span class="go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span>
+      <div class="demo-body" id="demoBody"></div>
+      <div class="demo-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 1 1 4 0v5"/><path d="M13 11V4a2 2 0 1 1 4 0v7"/><path d="M17 11V7a2 2 0 1 1 4 0v9a5 5 0 0 1-5 5h-3a6 6 0 0 1-6-6v-4a2 2 0 1 1 4 0"/></svg>
+        <span data-i18n="m.hint">Haqiqiy ilovaning nusxasi — istalgan bo'limni bosib ko'ring</span>
       </div>
     </div>
   </div>
@@ -1110,6 +1140,7 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 <script>
 /* ---------- til almashtirish: HTML da o'zbekcha, bu yerda faqat ruscha ---------- */
 var RU = {
+  'm.demo':'Живое демо','m.hint':'Копия настоящего приложения — нажмите любой раздел',
   'nav.f':'Возможности','nav.h':'Как работает','nav.w':'Почему мы','nav.p':'Тарифы','nav.q':'Вопросы',
   'nav.cta':'Начать бесплатно','nav.help':'Консультация',
 
@@ -1126,16 +1157,6 @@ var RU = {
   'h.sub':'Отдельное приложение устанавливать не нужно. Сотрудник нажимает «Пришёл» — система по GPS проверяет, что он на территории филиала, сама считает отработанные часы, а зарплата рассчитывается по этим же данным.',
   'h.cta1':'7 дней бесплатно','h.cta2':'Как это работает',
   'h.tr1':'Карта не нужна','h.tr2':'Без установки приложений','h.tr3':'На узбекском и русском',
-
-  'm.tab1':'Главная','m.tab2':'Учёт','m.tab3':'Сотрудники','m.tab4':'Зарплата',
-  'm.hello':'Добро пожаловать, Greennova','m.live':'Сегодня · Онлайн',
-  'm.k1':'Пришли','m.k2':'Опоздали','m.k3':'Отсутствуют','m.k4':'В отпуске',
-  'm.k1b':'Пришёл','m.k2b':'Опоздал','m.k3b':'Отсутствует',
-  'm.r1':'Сварщик · 08:52','m.r2':'Менеджер по продажам · 09:24','m.r3':'Кладовщик · не отмечен',
-  'm.rate':'Уровень посещаемости','m.rate1':'24 из 30 сотрудников на работе','m.rate2':'На 6% больше, чем неделю назад',
-  'm.week':'Отработано часов','m.week2':'Эта неделя',
-  'm.d1':'Пн','m.d2':'Вт','m.d3':'Ср','m.d4':'Чт','m.d5':'Пт','m.d6':'Сб',
-  'm.geo':'Филиал «Садаф» · геозона 100 м','m.geo2':'Попытка вне зоны не принимается',
 
   'f.1':'модели зарплаты — оклад, дневная, почасовая, смешанная',
   'f.2':'типа отчётов в форматах XLSX и PDF',
@@ -1443,5 +1464,8 @@ var RU = {
   }
 })();
 </script>
+<!-- Jonli demo — hero'dagi maketni ishlaydigan ilovaga aylantiradi.
+     Alohida fayl: index.html allaqachon katta, demo esa mustaqil mantiq. -->
+<script src="/demo.js" defer></script>
 </body>
 </html>
