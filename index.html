@@ -35,14 +35,69 @@
   --sh-2:0 2px 6px rgba(16,38,76,.06), 0 14px 34px -14px rgba(16,38,76,.22);
   --sh-3:0 4px 10px rgba(16,38,76,.07), 0 30px 60px -22px rgba(16,38,76,.32);
   --maxw:1180px;
+
+  /* yorug' rejimda qattiq yozilgan ranglar o'rniga — qorong'ida qayta ta'riflanadi */
+  --glow-1:#ffffff; --glow-2:#dfe9fb;
+  --nav-bg:rgba(238,243,251,.78); --nav-bg-stuck:rgba(238,243,251,.92);
+  --surface-hi:#ffffff; --line-hi:#bfd0ea;
+  --mock-a:#ffffff; --mock-b:#f2f6fd; --mock-border:#ffffff;
+  --ok-ink:#0a7d57; --warn-ink:#a4590a; --bad-ink:#b81c1c;
+  --off:#a7b4c9; --tick-off:#eef1f6;
+
+  /* sichqoncha ortidagi yorug'lik */
+  --cursor-glow:rgba(26,109,255,.16);
+  /* animatsiya egri chizig'i — bir joydan boshqariladi */
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+/* ---------- qorong'i rejim ----------
+   Uch holat: aniq tanlov (data-theme), tizim sozlamasi (media), standart yorug'.
+   Media blok `:not([data-theme="light"])` bilan qo'riqlanadi — aks holda
+   tizimi qorong'i foydalanuvchi "Yorug'" ni tanlay olmasdi. */
+:root[data-theme="dark"], :root:not([data-theme="light"]) {}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg-a:#0a1121; --bg-b:#070c18;
+    --surface:#111a2f; --surface-2:#152039; --surface-3:#1c2947;
+    --ink:#e9eefb; --ink-2:#aabcda; --muted:#7788a9;
+    --brand:#4d8bff; --brand-ink:#93b8ff; --navy:#2b64c8; --navy-2:#3a76d8;
+    --line:#22304f; --line-2:#2c3d63;
+    --sh-1:0 1px 2px rgba(0,0,0,.4);
+    --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 34px -14px rgba(0,0,0,.7);
+    --sh-3:0 4px 10px rgba(0,0,0,.4), 0 30px 60px -22px rgba(0,0,0,.8);
+    --glow-1:rgba(60,110,210,.20); --glow-2:#0e1b35;
+    --nav-bg:rgba(10,17,33,.78); --nav-bg-stuck:rgba(10,17,33,.94);
+    --surface-hi:#1a2540; --line-hi:#35486f;
+    --mock-a:#141f38; --mock-b:#0f1830; --mock-border:#26355a;
+    --ok-ink:#4bd6a5; --warn-ink:#f0b45c; --bad-ink:#ff8b8b;
+    --off:#5d6d8c; --tick-off:#1b2740;
+    --cursor-glow:rgba(77,139,255,.20);
+  }
+}
+:root[data-theme="dark"]{
+  --bg-a:#0a1121; --bg-b:#070c18;
+  --surface:#111a2f; --surface-2:#152039; --surface-3:#1c2947;
+  --ink:#e9eefb; --ink-2:#aabcda; --muted:#7788a9;
+  --brand:#4d8bff; --brand-ink:#93b8ff; --navy:#2b64c8; --navy-2:#3a76d8;
+  --line:#22304f; --line-2:#2c3d63;
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 34px -14px rgba(0,0,0,.7);
+  --sh-3:0 4px 10px rgba(0,0,0,.4), 0 30px 60px -22px rgba(0,0,0,.8);
+  --glow-1:rgba(60,110,210,.20); --glow-2:#0e1b35;
+  --nav-bg:rgba(10,17,33,.78); --nav-bg-stuck:rgba(10,17,33,.94);
+  --surface-hi:#1a2540; --line-hi:#35486f;
+  --mock-a:#141f38; --mock-b:#0f1830; --mock-border:#26355a;
+  --ok-ink:#4bd6a5; --warn-ink:#f0b45c; --bad-ink:#ff8b8b;
+  --off:#5d6d8c; --tick-off:#1b2740;
+  --cursor-glow:rgba(77,139,255,.20);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
 body{
   margin:0; color:var(--ink); background:var(--bg-a);
   background-image:
-    radial-gradient(1200px 620px at 78% -12%, #ffffff 0%, rgba(255,255,255,0) 62%),
-    radial-gradient(900px 520px at 6% 4%, #dfe9fb 0%, rgba(223,233,251,0) 60%),
+    radial-gradient(1200px 620px at 78% -12%, var(--glow-1) 0%, transparent 62%),
+    radial-gradient(900px 520px at 6% 4%, var(--glow-2) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg-a) 0%, var(--bg-b) 100%);
   background-attachment:fixed;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
@@ -59,9 +114,9 @@ ul{margin:0; padding:0; list-style:none}
 
 /* ---------- nav ---------- */
 .nav{position:sticky; top:0; z-index:60; padding:14px 0;
-  background:rgba(238,243,251,.78); backdrop-filter:saturate(150%) blur(14px);
+  background:var(--nav-bg); backdrop-filter:saturate(150%) blur(14px);
   border-bottom:1px solid transparent; transition:border-color .2s, background .2s}
-.nav.stuck{border-bottom-color:var(--line); background:rgba(238,243,251,.92)}
+.nav.stuck{border-bottom-color:var(--line); background:var(--nav-bg-stuck)}
 .nav-in{display:flex; align-items:center; gap:18px}
 .logo{display:flex; align-items:center; gap:10px; font-weight:650; font-size:17px; letter-spacing:-.02em}
 .logo-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(150deg,var(--brand),#0b48b8);
@@ -82,7 +137,7 @@ ul{margin:0; padding:0; list-style:none}
 .btn-p{background:linear-gradient(160deg,#2b7bff,#0f57e0); color:#fff; box-shadow:0 10px 24px -10px rgba(15,87,224,.8)}
 .btn-p:hover{transform:translateY(-1px); box-shadow:0 16px 30px -12px rgba(15,87,224,.85)}
 .btn-s{background:var(--surface); color:var(--ink); border-color:var(--line-2); box-shadow:var(--sh-1)}
-.btn-s:hover{background:#fff; border-color:#bfd0ea}
+.btn-s:hover{background:var(--surface-hi); border-color:var(--line-hi)}
 .btn-sm{padding:10px 18px; font-size:14.5px}
 .nav-burger{display:none; width:42px;height:42px; border-radius:12px; border:1px solid var(--line);
   background:var(--surface); cursor:pointer; align-items:center; justify-content:center}
@@ -117,20 +172,20 @@ section{padding:88px 0}
 .tick svg{width:10px;height:10px;stroke:var(--ok);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- mock app ---------- */
-.mock{background:linear-gradient(170deg,#ffffff, #f2f6fd); border:1px solid #fff; border-radius:30px;
+.mock{background:linear-gradient(170deg,var(--mock-a), var(--mock-b)); border:1px solid var(--mock-border); border-radius:30px;
   box-shadow:var(--sh-3); padding:18px; position:relative}
 .mock::after{content:""; position:absolute; inset:0; border-radius:30px; pointer-events:none;
   box-shadow:inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.6)}
 .mock-bar{display:flex; align-items:center; gap:10px; margin-bottom:16px}
-.mock-brand{font-size:13px; font-weight:650; padding:7px 13px; border-radius:999px; background:#fff;
+.mock-brand{font-size:13px; font-weight:650; padding:7px 13px; border-radius:999px; background:var(--surface-hi);
   border:1px solid var(--line); box-shadow:var(--sh-1)}
 .mock-tabs{display:flex; gap:3px; margin-left:4px; overflow:hidden}
 .mock-tabs span{font-size:12px; color:var(--muted); padding:6px 11px; border-radius:999px; white-space:nowrap}
 .mock-tabs span.on{background:var(--navy); color:#fff; font-weight:600}
-.mock-dot{margin-left:auto; width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--line);flex:none}
+.mock-dot{margin-left:auto; width:26px;height:26px;border-radius:50%;background:var(--surface);border:1px solid var(--line);flex:none}
 .mock-hello{font-size:23px; font-weight:600; letter-spacing:-.03em; margin:2px 0 14px}
 .mock-grid{display:grid; grid-template-columns:1.25fr 1fr; gap:12px}
-.tile{background:#fff; border:1px solid var(--line); border-radius:var(--r-md); padding:14px}
+.tile{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:14px}
 .tile-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
 .tile-t{font-size:12.5px; font-weight:600; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
 .pill-time{font-size:11.5px; color:var(--muted); background:var(--surface-2); border:1px solid var(--line);
@@ -147,16 +202,16 @@ section{padding:88px 0}
 .bar-x{display:flex; gap:9px; margin-top:7px}
 .bar-x span{flex:1; text-align:center; font-size:10.5px; color:var(--muted)}
 .rows{margin-top:12px; display:grid; gap:7px}
-.row{display:flex; align-items:center; gap:11px; padding:9px 11px; background:#fff; border:1px solid var(--line);
+.row{display:flex; align-items:center; gap:11px; padding:9px 11px; background:var(--surface); border:1px solid var(--line);
   border-radius:14px}
 .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:650;
   color:#fff; flex:none; letter-spacing:.02em}
 .row-n{font-size:13.5px; font-weight:550; line-height:1.25}
 .row-r{font-size:11.5px; color:var(--muted)}
 .chip{margin-left:auto; font-size:11px; font-weight:650; padding:4px 10px; border-radius:999px; white-space:nowrap}
-.chip.ok{background:rgba(14,159,110,.12); color:#0a7d57}
-.chip.late{background:rgba(217,119,6,.13); color:#a4590a}
-.chip.abs{background:rgba(224,36,36,.11); color:#b81c1c}
+.chip.ok{background:rgba(14,159,110,.12); color:var(--ok-ink)}
+.chip.late{background:rgba(217,119,6,.13); color:var(--warn-ink)}
+.chip.abs{background:rgba(224,36,36,.11); color:var(--bad-ink)}
 .mock-foot{margin-top:12px; background:var(--navy); border-radius:var(--r-md); padding:13px 15px;
   display:flex; align-items:center; gap:12px; color:#fff}
 .mock-foot b{font-size:14px; font-weight:600}
@@ -252,9 +307,9 @@ section{padding:88px 0}
   padding:9px 20px; border-radius:999px; cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:8px}
 .cycle button[aria-pressed="true"]{background:var(--navy); color:#fff}
 .cycle .save{font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px;
-  background:rgba(14,159,110,.15); color:#0a7d57}
+  background:rgba(14,159,110,.15); color:var(--ok-ink)}
 .cycle button[aria-pressed="true"] .save{background:rgba(143,227,194,.22); color:#8fe3c2}
-.plan .save-tag{display:none; margin-top:9px; font-size:12.5px; font-weight:650; color:#0a7d57;
+.plan .save-tag{display:none; margin-top:9px; font-size:12.5px; font-weight:650; color:var(--ok-ink);
   background:rgba(14,159,110,.1); border-radius:999px; padding:4px 11px; width:fit-content}
 .plan .cy-y{display:none}
 body[data-cycle="year"] .plan .save-tag{display:block}
@@ -270,8 +325,8 @@ body[data-cycle="year"] .plan .amt{font-size:27px}
 .plan .lim span{font-size:10.5px; color:var(--muted); letter-spacing:.03em; text-transform:uppercase}
 .plan ul{display:grid; gap:9px; font-size:14px; color:var(--ink-2); margin-bottom:22px}
 .plan li{display:flex; gap:9px; align-items:flex-start}
-.plan li.off{color:#a7b4c9}
-.plan li.off .tick{background:#eef1f6}
+.plan li.off{color:var(--off)}
+.plan li.off .tick{background:var(--tick-off)}
 .plan li.off .tick svg{stroke:#a7b4c9}
 .plan .btn{width:100%; margin-top:auto}
 .price-note{margin-top:26px; text-align:center; color:var(--muted); font-size:14.5px}
@@ -296,7 +351,9 @@ body[data-cycle="year"] .plan .amt{font-size:27px}
 .cta-band > *{position:relative}
 .cta-band h2{font-size:clamp(27px,3.4vw,40px); color:#fff}
 .cta-band p{margin-top:14px; color:#d5e3ff; font-size:17px}
-.cta-band .btn{margin-top:28px; background:#fff; color:var(--brand-ink)}
+/* CTA lentasi HAR DOIM ko'k — shuning uchun tugma rangi mavzuga ergashmaydi.
+   `--brand-ink` qorong'ida yorug'lashadi va oq tugmada o'qilmay qolardi. */
+.cta-band .btn{margin-top:28px; background:#fff; color:#0b48b8}
 .cta-band .btn:hover{background:#f2f6ff}
 .cta-sub{margin-top:16px; font-size:13.5px; color:#bdd2ff}
 
@@ -334,8 +391,98 @@ footer{padding:44px 0 56px; border-top:1px solid var(--line-2); margin-top:20px}
   .mock{padding:13px; border-radius:24px}
   .kpis{grid-template-columns:repeat(2,1fr)}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important; scroll-behavior:auto}}
+
+/* ═══════════════ Animatsiya va o'zaro ta'sir ═══════════════ */
+
+/* Rang o'tishi: mavzu almashganda butun sahifa birdan sakramaydi.
+   `background-image` ataylab yo'q — u har freymda qayta chizilib, sekinlashtiradi. */
+body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
+  transition:background-color .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease);
+}
+
+/* ---------- sichqoncha ortidagi yorug'lik ----------
+   Faqat haqiqiy kursorli qurilmada (sensorli ekranda ma'nosiz) va
+   harakat kamaytirilmagan bo'lsa yoqiladi. `pointer-events:none` —
+   yorug'lik hech qachon bosishni to'smaydi. */
+.cursor-glow{
+  position:fixed; left:0; top:0; width:520px; height:520px; margin:-260px 0 0 -260px;
+  border-radius:50%; pointer-events:none; z-index:0; opacity:0;
+  background:radial-gradient(circle, var(--cursor-glow) 0%, transparent 65%);
+  transition:opacity .5s var(--ease);
+  will-change:transform;
+}
+.cursor-glow.on{opacity:1}
+/* Kontent yorug'lik ustida qoladi */
+.nav, main, footer{position:relative; z-index:1}
+
+/* ---------- tugmalar: sichqoncha kelganda kattaradi ---------- */
+.btn{transition:transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease), border-color .22s var(--ease)}
+.btn:hover{transform:translateY(-2px) scale(1.035)}
+.btn:active{transform:translateY(0) scale(.985); transition-duration:.08s}
+.btn-p:hover{box-shadow:0 18px 34px -12px rgba(15,87,224,.9)}
+
+/* Birlamchi tugma ustida yorug'lik yugurib o'tadi */
+.btn-p{position:relative; overflow:hidden}
+.btn-p::after{
+  content:""; position:absolute; inset:0; transform:translateX(-120%);
+  background:linear-gradient(105deg, transparent 30%, rgba(255,255,255,.38) 50%, transparent 70%);
+}
+.btn-p:hover::after{transform:translateX(120%); transition:transform .75s var(--ease)}
+
+/* ---------- kartalar ---------- */
+.feat, .plan, .diff, .step{transition:transform .28s var(--ease), box-shadow .28s var(--ease), border-color .28s var(--ease)}
+.feat:hover{transform:translateY(-4px) scale(1.012); box-shadow:var(--sh-2)}
+.plan:hover, .diff:hover, .step:hover{transform:translateY(-3px); box-shadow:var(--sh-2)}
+
+.nav-links a{transition:background .18s var(--ease), color .18s var(--ease), transform .18s var(--ease)}
+.nav-links a:hover{transform:translateY(-1px)}
+.lang button, .cycle button, .theme-btn{transition:background .18s var(--ease), color .18s var(--ease), transform .18s var(--ease)}
+.lang button:hover, .cycle button:hover, .theme-btn:hover{transform:scale(1.06)}
+
+/* ---------- mavzu tugmasi ---------- */
+.theme-btn{
+  width:40px; height:40px; flex:none; display:grid; place-items:center;
+  border-radius:999px; border:1px solid var(--line); background:var(--surface);
+  box-shadow:var(--sh-1); cursor:pointer; color:var(--ink-2);
+}
+.theme-btn:hover{color:var(--ink); border-color:var(--line-hi)}
+.theme-btn svg{width:19px; height:19px; stroke:currentColor; stroke-width:1.7; fill:none;
+  stroke-linecap:round; stroke-linejoin:round; transition:transform .4s var(--ease)}
+.theme-btn:hover svg{transform:rotate(18deg)}
+/* Quyosh yorug'da, oy qorong'ida — ikkalasi bitta tugmada */
+.theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:block}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-btn .sun{display:none}
+  :root:not([data-theme="light"]) .theme-btn .moon{display:block}
+}
+
+/* ---------- aylanib borganda ochilish ----------
+   JS `.in` qo'shadi. JS ishlamasa `.rv` hech qachon qo'shilmaydi
+   (uni ham JS qo'yadi), ya'ni kontent har doim ko'rinadi. */
+.rv{opacity:0; transform:translateY(22px)}
+.rv.in{opacity:1; transform:none; transition:opacity .6s var(--ease), transform .6s var(--ease)}
+
+/* Harakatga sezgir foydalanuvchi — hech qanday siljish va yorug'lik yo'q */
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important; scroll-behavior:auto; animation:none!important}
+  .rv{opacity:1; transform:none}
+  .cursor-glow{display:none}
+  .btn:hover, .feat:hover, .plan:hover, .diff:hover, .step:hover{transform:none}
+}
 </style>
+<script>
+/* Mavzuni CSS chizilishidan OLDIN qo'yamiz — aks holda tungi rejimda
+   sahifa bir lahza oq bo'lib "chaqnaydi". Shu sababli bu skript
+   ataylab sinxron va <head> ichida. */
+(function(){
+  try {
+    var t = localStorage.getItem('tizimchi-theme');
+    if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+  } catch(e){}
+})();
+</script>
 </head>
 <body>
 
@@ -360,10 +507,16 @@ footer{padding:44px 0 56px; border-top:1px solid var(--line-2); margin-top:20px}
         <button type="button" data-lang="uz" aria-pressed="true">UZ</button>
         <button type="button" data-lang="ru" aria-pressed="false">RU</button>
       </div>
+      <button type="button" class="theme-btn" id="theme" aria-label="Kunduzgi / tungi rejim" title="Kunduzgi / tungi rejim">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
+      </button>
       <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Bepul boshlash</a>
     </div>
   </div>
 </header>
+
+<div class="cursor-glow" id="glow" aria-hidden="true"></div>
 
 <main id="top">
 
@@ -442,7 +595,7 @@ footer{padding:44px 0 56px; border-top:1px solid var(--line-2); margin-top:20px}
                 <circle cx="41" cy="41" r="34" fill="none" stroke="#e7eefb" stroke-width="10"/>
                 <circle cx="41" cy="41" r="34" fill="none" stroke="#1a6dff" stroke-width="10" stroke-linecap="round"
                         stroke-dasharray="213.6" stroke-dashoffset="38.4" transform="rotate(-90 41 41)"/>
-                <text x="41" y="46" text-anchor="middle" font-size="19" font-weight="650" fill="#0d1f3c" letter-spacing="-1">82%</text>
+                <text x="41" y="46" text-anchor="middle" font-size="19" font-weight="650" fill="currentColor" letter-spacing="-1">82%</text>
               </svg>
               <div>
                 <div style="font-size:13px;color:var(--ink-2)" data-i18n="m.rate1">30 xodimdan 24 tasi ishda</div>
@@ -1043,6 +1196,79 @@ var RU = {
   window.addEventListener('scroll', onScroll, {passive:true});
 
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ---------- kunduzgi / tungi rejim ----------
+     Uch holat: 'light', 'dark' va tanlanmagan (tizim sozlamasi).
+     Tugma joriy KO'RINISHNI teskarisiga o'giradi — ya'ni tizimi qorong'i
+     bo'lgan foydalanuvchi birinchi bosishda yorug'ga o'tadi, "hech nima
+     bo'lmadi" degan holat yuzaga kelmaydi. */
+  var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  var themeBtn = document.getElementById('theme');
+
+  function currentlyDark(){
+    var t = document.documentElement.dataset.theme;
+    return t ? t === 'dark' : darkQuery.matches;
+  }
+  themeBtn.addEventListener('click', function(){
+    var next = currentlyDark() ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('tizimchi-theme', next); } catch(e){}
+  });
+  /* Foydalanuvchi tanlov qilmagan bo'lsa, tizim sozlamasi o'zgarganda ergashadi */
+  darkQuery.addEventListener('change', function(){
+    var saved;
+    try { saved = localStorage.getItem('tizimchi-theme'); } catch(e){}
+    if (!saved) delete document.documentElement.dataset.theme;
+  });
+
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- sichqoncha ortidagi yorug'lik ----------
+     Har `mousemove` da emas, rAF da chiziladi va nishonga yumshoq
+     yaqinlashadi (lerp) — shuning uchun yorug'lik kursordan biroz
+     "kechikib" ergashadi va sakramaydi. */
+  if (!calm && window.matchMedia('(pointer: fine)').matches) {
+    var glow = document.getElementById('glow');
+    var tx = innerWidth / 2, ty = innerHeight / 2, gx = tx, gy = ty, running = false;
+
+    function frame(){
+      gx += (tx - gx) * 0.14;
+      gy += (ty - gy) * 0.14;
+      glow.style.transform = 'translate3d(' + gx.toFixed(1) + 'px,' + gy.toFixed(1) + 'px,0)';
+      /* Nishonga yetgach to'xtaymiz — bo'sh sahifada rAF aylanmasin */
+      if (Math.abs(tx - gx) < 0.5 && Math.abs(ty - gy) < 0.5) { running = false; return; }
+      requestAnimationFrame(frame);
+    }
+    window.addEventListener('mousemove', function(e){
+      tx = e.clientX; ty = e.clientY;
+      glow.classList.add('on');
+      if (!running) { running = true; requestAnimationFrame(frame); }
+    }, {passive:true});
+    document.addEventListener('mouseleave', function(){ glow.classList.remove('on'); });
+  }
+
+  /* ---------- aylanib borganda ochilish ----------
+     `.rv` sinfini JS qo'yadi: JS ishlamasa bloklar yashirin qolmaydi. */
+  if (!calm && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.sec-head, .feat, .plan, .diff, .step, .prob, .emp, .cta-band, .faq .qa');
+    targets.forEach(function(el){ el.classList.add('rv'); });
+
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        /* Qatordagi elementlar navbat bilan chiqadi — bir vaqtda
+           "otilib" chiqsa arzon ko'rinadi. Kechikish 240ms bilan
+           cheklangan, aks holda uzun ro'yxat oxiri kech qoladi. */
+        var sibs = en.target.parentElement ? [].slice.call(en.target.parentElement.children) : [];
+        var i = sibs.indexOf(en.target);
+        en.target.style.transitionDelay = Math.min(i < 0 ? 0 : i * 60, 240) + 'ms';
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+
+    targets.forEach(function(el){ io.observe(el); });
+  }
 })();
 </script>
 </body>
