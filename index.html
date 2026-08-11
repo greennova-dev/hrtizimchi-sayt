@@ -495,6 +495,10 @@ a.fact:hover::before{transform:scaleX(1)}
 /* Maslahat tugmasi navni siqmasligi uchun faqat keng ekranda */
 .nav-consult{display:none}
 @media (min-width:1240px){ .nav-consult{display:inline-flex} }
+/* «Kirish» maslahatdan ertaroq chiqadi: mavjud mijoz uni planshetda
+   ham qidiradi, «Maslahat olish» esa faqat keng ekranda kerak. */
+.nav-login{display:none}
+@media (min-width:880px){ .nav-login{display:inline-flex} }
 /* Tavsiya qilingan tarif kartasi ajralib turadi */
 .plan.suggested{outline:2px solid var(--brand); outline-offset:3px}
 
@@ -853,6 +857,10 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
       </button>
       <a class="btn btn-s btn-sm nav-consult" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Maslahat olish</a>
+      <!-- Mavjud mijoz uchun. Ataylab «Bepul boshlash» dan oldin va
+           ko'rinishi bo'yicha soddaroq: yangi mijoz uchun asosiy amal
+           baribir ro'yxatdan o'tish. -->
+      <a class="btn btn-s btn-sm nav-login" href="/panel/kirish" data-i18n="nav.login">Kirish</a>
       <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Bepul boshlash</a>
     </div>
   </div>
@@ -1362,6 +1370,9 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
       <a href="#imkoniyatlar" data-i18n="nav.f">Imkoniyatlar</a>
       <a href="#tariflar" data-i18n="nav.p">Tariflar</a>
       <a href="#savollar" data-i18n="nav.q">Savollar</a>
+      <!-- Telefonda yuqoridagi «Kirish» yashiringan — mavjud mijoz uni
+           shu yerdan topadi -->
+      <a href="/panel/kirish" data-i18n="nav.login">Kirish</a>
       <a href="https://t.me/tizimchi_hr_bot">Telegram</a>
     </nav>
   </div>
@@ -1372,7 +1383,7 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 var RU = {
   'm.demo':'Живое демо','m.hint':'Копия настоящего приложения — нажмите любой раздел',
   'nav.f':'Возможности','nav.h':'Как работает','nav.w':'Почему мы','nav.p':'Тарифы','nav.q':'Вопросы',
-  'nav.cta':'Начать бесплатно','nav.help':'Консультация',
+  'nav.cta':'Начать бесплатно','nav.help':'Консультация','nav.login':'Вход',
 
   'f.g1':'смотреть возможности →','f.g2':'смотреть отчёты →',
   'f.g3':'как это работает →','f.g4':'почему мы →',
