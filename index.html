@@ -492,13 +492,22 @@ a.fact:hover::before{transform:scaleX(1)}
   transition:color .18s var(--ease), border-color .18s var(--ease)}
 .foot-by a:hover{color:var(--brand-ink); border-color:var(--brand)}
 
-/* Maslahat tugmasi navni siqmasligi uchun faqat keng ekranda */
+/* Nav qatoriga sig'ish hisobi (eng tor holat — 1200px, ruscha matn
+   o'zbekchadan uzunroq): logo 142 + menyu 574 + o'ng tomon 360 = 1112,
+   ichki en esa 1152. Ya'ni zaxira ~40px. Shuning uchun ixtiyoriy
+   elementlar tugma emas, matn ko'rinishida va faqat joy bo'lganda. */
+
+/* Maslahat — eng past ustuvorlik, faqat juda keng ekranda */
 .nav-consult{display:none}
-@media (min-width:1240px){ .nav-consult{display:inline-flex} }
-/* «Kirish» maslahatdan ertaroq chiqadi: mavjud mijoz uni planshetda
-   ham qidiradi, «Maslahat olish» esa faqat keng ekranda kerak. */
-.nav-login{display:none}
-@media (min-width:880px){ .nav-login{display:inline-flex} }
+@media (min-width:1400px){ .nav-consult{display:inline-flex} }
+
+/* «Kirish» — ikkilamchi amal, shuning uchun matnli havola.
+   Tugma qilinsa ~80px egallardi va «Bepul boshlash» qatordan chiqib
+   ketardi; matn ko'rinishida ~50px va ierarxiya ham to'g'ri bo'ladi. */
+.nav-login{display:none; padding:8px 6px; font-size:14.5px; font-weight:600;
+  color:var(--ink-2); white-space:nowrap; transition:color .15s var(--ease)}
+.nav-login:hover{color:var(--brand-ink)}
+@media (min-width:900px){ .nav-login{display:inline-flex} }
 /* Tavsiya qilingan tarif kartasi ajralib turadi */
 .plan.suggested{outline:2px solid var(--brand); outline-offset:3px}
 
@@ -860,7 +869,7 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
       <!-- Mavjud mijoz uchun. Ataylab «Bepul boshlash» dan oldin va
            ko'rinishi bo'yicha soddaroq: yangi mijoz uchun asosiy amal
            baribir ro'yxatdan o'tish. -->
-      <a class="btn btn-s btn-sm nav-login" href="/panel/kirish" data-i18n="nav.login">Kirish</a>
+      <a class="nav-login" href="/panel/kirish" data-i18n="nav.login">Kirish</a>
       <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Bepul boshlash</a>
     </div>
   </div>
