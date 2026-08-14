@@ -782,8 +782,14 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
   will-change:transform;
 }
 .cursor-glow.on{opacity:1}
-/* Kontent yorug'lik ustida qoladi */
-.nav, main, footer{position:relative; z-index:1}
+/* Kontent yorug'lik ustida qoladi.
+   ⚠️ `.nav` bu ro'yxatda BO'LMASLIGI kerak: u yuqorida `position:sticky`
+   e'lon qiladi, bu qoida esa keyinroq turgani uchun uni `relative` ga
+   almashtirib, panelni yopishmaydigan qilib qo'yardi (`.stuck` sinfi
+   va uning soyasi ham shu sababli hech qachon ko'rinmagan).
+   Sticky element o'zi ham stacking kontekst yaratadi va uning
+   `z-index:60` i allaqachon yorug'likdan yuqori. */
+main, footer{position:relative; z-index:1}
 
 /* ---------- tugmalar: sichqoncha kelganda kattaradi ---------- */
 .btn{transition:transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease), border-color .22s var(--ease)}
@@ -934,6 +940,51 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 @keyframes phoneExit{
   from{transform:none;                    opacity:1}
   to  {transform:translateY(-34px) scale(.95); opacity:.45}
+}
+
+/* ---------- ekran almashuvi (View Transitions) ----------
+   Til va mavzu almashganda brauzer eski/yangi holatning suratini olib,
+   oralig'ini o'zi chizadi. Sahifalar orasida ham xuddi shunday
+   (`navigation: auto`) — oferta sahifasi ham shu qoidani e'lon qiladi,
+   ikkala tomon rozi bo'lmasa o'tish umuman boshlanmaydi. */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(root), ::view-transition-new(root){animation-duration:.4s}
+  /* Mavzu almashuvida standart erish O'CHIRILADI: yangi holat tugmadan
+     doira bo'lib ochiladi (doirani JS chizadi, chunki markaz tugmaning
+     joriy o'rniga bog'liq), eskisi esa ostida qimirlamay turadi. */
+  html.vt-theme::view-transition-old(root){animation:none; z-index:0}
+  html.vt-theme::view-transition-new(root){animation:none; z-index:1; mix-blend-mode:normal}
+}
+
+/* ---------- navigatsiyada joriy bo'lim ----------
+   Yugurib yuruvchi kapsula. Elementni JS yaratadi va o'lchamni ham u
+   yozadi (`--px/--pw`) — matn kengligi tilga qarab o'zgaradi, shuning
+   uchun qattiq qiymat yozib bo'lmaydi. */
+.nav-links{position:relative}
+.nav-pill{position:absolute; top:5px; bottom:5px; left:0; width:var(--pw,0px);
+  border-radius:999px; background:var(--surface-3); pointer-events:none;
+  opacity:0; transform:translateX(var(--px,0px));
+  transition:transform .5s var(--ease), width .5s var(--ease), opacity .35s var(--ease)}
+.nav-links.on .nav-pill{opacity:1}
+/* Havola matni kapsula USTIDA qolishi kerak */
+.nav-links a{position:relative}
+.nav-links a.on{color:var(--ink)}
+
+/* ---------- tugma bosilganda to'lqin ----------
+   `::before` bo'sh edi (`.btn-p::after` da yorug'lik yugurib o'tadi).
+   Rang `currentColor` dan olinadi: ko'k tugmada oq, oq tugmada to'q —
+   har bir tugma turiga alohida qoida yozish shart emas. */
+.btn{position:relative; overflow:hidden}
+@media (prefers-reduced-motion:no-preference){
+  .btn::before{content:''; position:absolute; left:var(--rx,50%); top:var(--ry,50%);
+    width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%;
+    background:currentColor; opacity:0; transform:scale(0); pointer-events:none}
+  .btn.rippling::before{animation:btnRipple .65s var(--ease)}
+}
+@keyframes btnRipple{
+  from{opacity:.26; transform:scale(0)}
+  to  {opacity:0;   transform:scale(16)}
 }
 
 /* ---------- shimoliy shafaq (sahifa foni) ----------
@@ -1854,10 +1905,33 @@ var RU = {
       b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
     });
     try { localStorage.setItem('tizimchi-lang', lang); } catch(e){}
+    /* Demo telefonlar ham shu zahoti qayta chizilsin. Hodisa ATAYLAB
+       shu yerda — tugma bosilishida emas: shunda butun sahifa BITTA
+       qadamda o'zgaradi va ekran almashuvi uni yaxlit suratga oladi. */
+    document.dispatchEvent(new CustomEvent('tizimchi-lang', {detail: lang}));
+  }
+
+  /* ---------- ekran almashuvi (View Transitions) ----------
+     Brauzer o'zgarishdan oldingi va keyingi holatning suratini olib,
+     oralig'ini o'zi chizadi. Qo'llab-quvvatlamaydigan brauzerda
+     funksiya shunchaki to'g'ridan-to'g'ri chaqiriladi — natija bir xil,
+     faqat keskin. `calm` bu yerda hali o'zlashtirilmagan bo'lishi
+     mumkin, lekin funksiya har doim keyinroq — bosilganda ishlaydi. */
+  function morph(fn, cls){
+    if (calm || !document.startViewTransition) { fn(); return null; }
+    var root = document.documentElement;
+    if (cls) root.classList.add(cls);
+    var t = document.startViewTransition(fn);
+    if (cls) t.finished.then(function(){ root.classList.remove(cls); },
+                             function(){ root.classList.remove(cls); });
+    return t;
   }
 
   document.querySelectorAll('.lang button').forEach(function(b){
-    b.addEventListener('click', function(){ apply(b.dataset.lang); });
+    b.addEventListener('click', function(){
+      if (document.documentElement.lang === b.dataset.lang) return;
+      morph(function(){ apply(b.dataset.lang); });
+    });
   });
 
   var saved;
@@ -1909,8 +1983,35 @@ var RU = {
   }
   themeBtn.addEventListener('click', function(){
     var next = currentlyDark() ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('tizimchi-theme', next); } catch(e){}
+    var swap = function(){
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('tizimchi-theme', next); } catch(e){}
+    };
+
+    var t = morph(swap, 'vt-theme');
+    if (!t) return;
+
+    /* Yangi mavzu TUGMANING o'zidan doira bo'lib tarqaladi.
+       Nega CSS animatsiyasi emas: markaz tugmaning joriy o'rniga
+       bog'liq, u esa oyna kengligiga qarab suriladi.
+       Nega piksel emas, FOIZ: `::view-transition-new(root)` ning
+       koordinata tizimi qurilma piksellari zichligiga bog'liq bo'lib
+       chiqdi (Retina ekranda doira ekranning chap yarmiga sirg'alib
+       ketardi). Foiz esa o'lchov birligiga bog'liq emas.
+       Radius 150% — `circle()` da foiz diagonalning yarmiga nisbatan
+       hisoblanadi, ya'ni 141% istalgan nuqtadan eng uzoq burchakni ham
+       qoplaydi; usiz chetda ochilmagan burchak qolib ketardi. */
+    var r = themeBtn.getBoundingClientRect();
+    var cx = ((r.left + r.width / 2) / innerWidth * 100).toFixed(2) + '%';
+    var cy = ((r.top + r.height / 2) / innerHeight * 100).toFixed(2) + '%';
+    t.ready.then(function(){
+      document.documentElement.animate(
+        { clipPath: ['circle(0% at ' + cx + ' ' + cy + ')',
+                     'circle(150% at ' + cx + ' ' + cy + ')'] },
+        { duration: 620, easing: 'cubic-bezier(.22,1,.36,1)',
+          pseudoElement: '::view-transition-new(root)' }
+      );
+    }, function(){});
   });
   /* Foydalanuvchi tanlov qilmagan bo'lsa, tizim sozlamasi o'zgarganda ergashadi */
   darkQuery.addEventListener('change', function(){
@@ -1943,6 +2044,84 @@ var RU = {
       if (!running) { running = true; requestAnimationFrame(frame); }
     }, {passive:true});
     document.addEventListener('mouseleave', function(){ glow.classList.remove('on'); });
+  }
+
+  /* ---------- navigatsiyada joriy bo'lim ----------
+     Qaysi bo'lim ekranning yuqori uchdan birida bo'lsa, o'sha havola
+     ostiga kapsula suriladi. Bir vaqtda bir nechta bo'lim yo'lakda
+     bo'lsa ENG YUQORIDAGISI tanlanadi — o'qiyotgan odam odatda shunga
+     qaraydi. Hech biri yo'lakda bo'lmasa (hero, yakuniy chaqiriq)
+     kapsula umuman ko'rinmaydi: noto'g'ri bo'limni yoritgandan ko'ra
+     hech nimani yoritmagan yaxshi. */
+  (function(){
+    var links = document.querySelector('.nav-links');
+    if (!links || !('IntersectionObserver' in window)) return;
+
+    var items = [].slice.call(links.querySelectorAll('a[href^="#"]'));
+    var secs = items.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    if (secs.some(function(s){ return !s; })) return;
+
+    var pill = document.createElement('i');
+    pill.className = 'nav-pill';
+    pill.setAttribute('aria-hidden', 'true');
+    links.insertBefore(pill, links.firstChild);
+
+    var current = null;
+    function place(){
+      /* Tor ekranda `.nav-links` yashiringan — o'lchash ma'nosiz */
+      if (!current || !links.offsetWidth) { links.classList.remove('on'); return; }
+      var lr = current.getBoundingClientRect(), nr = links.getBoundingClientRect();
+      links.style.setProperty('--px', Math.round(lr.left - nr.left - links.clientLeft) + 'px');
+      links.style.setProperty('--pw', Math.round(lr.width) + 'px');
+      links.classList.add('on');
+    }
+    function activate(el){
+      if (el !== current) {
+        current = el;
+        items.forEach(function(a){ a.classList.toggle('on', a === el); });
+      }
+      place();
+    }
+
+    var vis = [];
+    var io = new IntersectionObserver(function(ents){
+      ents.forEach(function(en){
+        var i = secs.indexOf(en.target);
+        if (i < 0) return;
+        var at = vis.indexOf(i);
+        if (en.isIntersecting && at < 0) vis.push(i);
+        else if (!en.isIntersecting && at >= 0) vis.splice(at, 1);
+      });
+      if (!vis.length) {
+        current = null;
+        items.forEach(function(a){ a.classList.remove('on'); });
+        links.classList.remove('on');
+        return;
+      }
+      activate(items[Math.min.apply(null, vis)]);
+    }, {rootMargin:'-14% 0px -76% 0px', threshold:0});
+    secs.forEach(function(s){ io.observe(s); });
+
+    /* Til almashsa havola matni, oyna kengaysa esa joylashuvi o'zgaradi */
+    document.addEventListener('tizimchi-lang', place);
+    window.addEventListener('resize', place, {passive:true});
+  })();
+
+  /* ---------- tugma bosilganda to'lqin ----------
+     Bitta tinglovchi hujjatga. Sinf avval olib tashlanadi va oraliqda
+     `offsetWidth` o'qiladi — busiz ketma-ket bosishda animatsiya qayta
+     boshlanmasdi. */
+  if (!calm) {
+    document.addEventListener('pointerdown', function(e){
+      var b = e.target.closest ? e.target.closest('.btn') : null;
+      if (!b) return;
+      var r = b.getBoundingClientRect();
+      b.style.setProperty('--rx', Math.round(e.clientX - r.left) + 'px');
+      b.style.setProperty('--ry', Math.round(e.clientY - r.top) + 'px');
+      b.classList.remove('rippling');
+      void b.offsetWidth;
+      b.classList.add('rippling');
+    }, {passive:true});
   }
 
   /* ---------- kartada kursor ortidan yuruvchi yorug'lik ----------

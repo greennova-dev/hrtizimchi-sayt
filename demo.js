@@ -517,20 +517,16 @@
     }
   });
 
-  // Til almashsa — qayta chizamiz. Asosiy skript `documentElement.lang` ni yozadi,
-  // shuning uchun uni o'zgargandan keyin o'qiymiz.
-  document.querySelectorAll('.lang button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      setTimeout(function () {
-        lang = (document.documentElement.lang === 'ru') ? 'ru' : 'uz';
-        render();
-        /* "Qanday ishlaydi" bo'limidagi telefon ham qayta chizilishi kerak.
-           U o'z navbatida `setTimeout` bilan kutolmaydi — navbat tartibi
-           skriptlar yuklanish tartibiga bog'liq bo'lib qolardi va ekran
-           eski tilda chizilib qolardi. Shuning uchun hodisa yuboriladi. */
-        document.dispatchEvent(new CustomEvent('tizimchi-demo-lang'));
-      }, 0);
-    });
+  // Til almashsa — qayta chizamiz. Tugma bosilishini EMAS, asosiy skript
+  // tarjimani qo'llab bo'lgach yuboradigan hodisani tinglaymiz: shunda
+  // hamma o'zgarish bitta qadamda sodir bo'ladi va sahifa almashuvi
+  // (View Transition) uni yaxlit suratga oladi. Ilgari bu yerda
+  // `setTimeout(0)` turardi va navbat tartibiga umid qilinardi.
+  document.addEventListener('tizimchi-lang', function (ev) {
+    lang = (ev.detail === 'ru') ? 'ru' : 'uz';
+    render();
+    /* "Qanday ishlaydi" bo'limidagi telefonni index.html chizadi */
+    document.dispatchEvent(new CustomEvent('tizimchi-demo-lang'));
   });
 
   /* ---------------- haqiqiy telefon sezgisi ---------------- */
