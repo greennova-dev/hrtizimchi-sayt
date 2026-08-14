@@ -6,20 +6,25 @@ mahsulotning o'zi alohida (private) repoda.
 
 ## Nima bu
 
-Statik sahifa: `index.html` + `demo.js`. Build qadami, paket menejeri,
-framework va tashqi CDN ishlatilmaydi. Sahifa ochilishi bilan
-ishlaydi, JavaScript o'chirilgan brauzerda ham o'zbekcha matn to'liq o'qiladi.
+Statik sahifa: `index.html` + `demo.js`. Paket menejeri, framework va
+tashqi CDN ishlatilmaydi; yagona yasash qadami — bitta Node skripti
+(`build.mjs`), u ham chiqishda oddiy statik HTML qoldiradi. Sahifa
+ochilishi bilan ishlaydi, JavaScript o'chirilgan brauzerda ham matn
+to'liq o'qiladi.
 
 ```
 hrtizimchi-sayt/
-├── index.html            sayt: HTML + CSS + i18n lug'ati
+├── index.html            sayt: HTML + CSS + ruscha lug'at (MANBA)
+├── ru/index.html         ruscha sahifa — YASALADI, qo'lda tegilmaydi
+├── build.mjs             /ru/, sitemap va JSON-LD ni yasaydi (0 paket)
 ├── demo.js               jonli demo (Mini App nusxasi) + `window.TizimchiDemo`
 ├── og.jpg                Telegram/ijtimoiy tarmoq oldindan ko'rish rasmi
 ├── og-source.svg         o'sha rasmning vektor manbasi
 ├── apple-touch-icon.png  iPhone "bosh ekranga qo'shish" ikonkasi
-├── icon-512.png          zaxira ikonka (512×512)
 ├── robots.txt · sitemap.xml
-└── .github/workflows/deploy.yml   main'ga push → serverda git pull
+└── .github/workflows/
+    ├── deploy.yml     main'ga push → serverda git pull
+    └── check.yml      yasalgan fayllar yangimi + tarjima to'liqmi
 ```
 
 ## Animatsiyalar
@@ -80,32 +85,57 @@ Yetti qatlam, hammasi `prefers-reduced-motion: reduce` da butunlay o'chadi:
    `.rv.in{transform:none}` dan ustun turishi kerak — aks holda karta
    ochilgandan keyin qiyshayish umuman ishlamaydi.
 
+## Yasash
+
+```bash
+node build.mjs      # ru/index.html + sitemap.xml + JSON-LD
+```
+
+Paket ham, framework ham yo'q — bitta Node skripti. U uch ish qiladi:
+`index.html` dan **ruscha sahifani** yasaydi (matnni `OTHER` lug'atidan
+oladi, `<head>` ni ruschaga o'giradi, `BASE_LANG` ni almashtiradi),
+`sitemap.xml` ni yangilaydi va ikkala sahifaga **JSON-LD sxemasini**
+yozadi (savol-javoblar sahifaning o'zidan olinadi, shuning uchun sxema
+ko'rinadigan matndan ajralib ketmaydi).
+
+⚠️ `index.html` ni tahrirlagach `node build.mjs` ni ishga tushiring.
+Unutilsa CI ushlaydi (`.github/workflows/check.yml`) — u yasalgan
+fayllarni qayta yasab, farq bor-yo'qligini tekshiradi.
+
 ## Ikki til
 
 O'zbekcha matn **HTML ning o'zida** turadi, ruschasi esa sahifa oxiridagi
-`RU` lug'atida. Sabab: qidiruv tizimi va JavaScriptsiz brauzer asosiy tilni
-baribir ko'radi, rus tili esa tugma bosilganda almashadi.
+`OTHER` lug'atida. Har til **o'z manzilida**: `/` va `/ru/` — ilgari
+ruscha matn faqat tugma bosilganda paydo bo'lardi va qidiruv tizimi uni
+umuman ko'rmasdi. Sahifada `hreflang` juftligi bor, tugma esa matnni
+joyida almashtiradi va `history.replaceState` bilan manzilni ham
+to'g'rilaydi.
+
+**Manzil saqlangan tanlovdan ustun:** `/ru/` ni ochgan odam tilni aniq
+aytdi, shuning uchun u yerda `localStorage` dagi eski tanlov qo'llanmaydi.
 
 Har bir tarjima qilinadigan element `data-i18n="kalit"` oladi. Sahifa
-yuklanganda o'zbekcha matn `UZ` obyektiga yig'iladi, shuning uchun o'zbekcha
-lug'atni qo'lda yozish shart emas — HTML ning o'zi manba.
+yuklanganda uning O'Z matni `SELF` obyektiga yig'iladi, ya'ni sahifaning
+o'z tilidagi lug'atni qo'lda yozish shart emas — HTML ning o'zi manba.
+`OTHER` esa ikkinchi til; `/ru/` sahifasida u o'zbekchaga aylanadi
+(buni `build.mjs` qiladi).
 
-**Matn qo'shganda:** elementga `data-i18n` bering va `RU` lug'atiga o'sha
-kalitni qo'shing. Tekshirish:
+**Matn qo'shganda:** elementga `data-i18n` bering, `OTHER` lug'atiga o'sha
+kalitni qo'shing va `node build.mjs` ni ishga tushiring. Tekshirish:
 
 ```bash
 node -e "
 const h=require('fs').readFileSync('index.html','utf8');
 const k=[...new Set([...h.matchAll(/data-i18n=\"([^\"]+)\"/g)].map(m=>m[1]))];
-const d=h.slice(h.indexOf('var RU = {'),h.indexOf('};',h.indexOf('var RU = {')));
+const d=h.slice(h.indexOf('var OTHER = {'),h.indexOf('};',h.indexOf('var OTHER = {')));
 const s=new Set([...d.matchAll(/'([a-z0-9.]+)'\s*:/g)].map(m=>m[1]));
 const miss=k.filter(x=>!s.has(x));
 console.log(miss.length?'RU da yetishmaydi: '+miss.join(', '):'✓ '+k.length+' kalit to\'liq');
 "
 ```
 
-Til tanlovi `localStorage` da saqlanadi. Birinchi tashrifda brauzer tili rus
-bo'lsa ruscha ochiladi, aks holda o'zbekcha.
+Til tanlovi `localStorage` da saqlanadi va **faqat bosh manzilda** (`/`)
+qo'llanadi. Birinchi tashrifda brauzer tili rus bo'lsa ruscha ochiladi.
 
 ## Narxlar
 

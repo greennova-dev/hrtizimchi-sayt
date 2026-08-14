@@ -1,0 +1,42 @@
+name: Tekshiruv
+
+# Har push va PR da: yasalgan fayllar manbaga mos keladimi va har bir
+# matnning tarjimasi bormi. Sabab: `ru/index.html` git'da yotadi, ya'ni
+# `index.html` ni tahrirlab `node build.mjs` ni unutish oson — va o'shanda
+# ruscha sahifa jimgina eskirib qoladi.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Yasalgan fayllar yangimi
+        run: |
+          node build.mjs
+          if ! git diff --quiet; then
+            echo "::error::Yasalgan fayllar eskirgan. Lokalda `node build.mjs` ni ishga tushiring va natijani commit qiling."
+            git diff --stat
+            exit 1
+          fi
+
+      - name: Tarjima kalitlari to'liqmi
+        run: |
+          node -e "
+          const h=require('fs').readFileSync('index.html','utf8');
+          const k=[...new Set([...h.matchAll(/data-i18n=\"([^\"]+)\"/g)].map(m=>m[1]))];
+          const d=h.slice(h.indexOf('var OTHER = {'),h.indexOf('};',h.indexOf('var OTHER = {')));
+          const s=new Set([...d.matchAll(/'([a-z0-9.]+)'\s*:/g)].map(m=>m[1]));
+          const miss=k.filter(x=>!s.has(x));
+          if(miss.length){console.error('Tarjimasi yo\'q: '+miss.join(', '));process.exit(1);}
+          console.log('OK — '+k.length+' kalit');
+          "
