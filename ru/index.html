@@ -28,6 +28,13 @@
 <link rel="alternate" hreflang="ru" href="https://hrtizimchi.uz/ru/">
 <link rel="alternate" hreflang="x-default" href="https://hrtizimchi.uz/">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Tashrif hisoblagichi — O'Z serverimizda (Umami). Cookie ishlatmaydi va
+     ma'lumot uchinchi tomonga chiqmaydi, shuning uchun ogohlantirish
+     banneri ham kerak emas. `data-domains` — lokal sinov va oldindan
+     ko'rish manzillari statistikani ifloslantirmasin. -->
+<script defer src="https://stat.greennova.uz/script.js"
+        data-website-id="f9f63292-e049-454f-b423-c97339bde083"
+        data-domains="hrtizimchi.uz,www.hrtizimchi.uz"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a6dff'/%3E%3Cpath d='M10 9v14M22 9v14M10 16h12' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
 
 <style>
@@ -1336,12 +1343,12 @@ main, footer{position:relative; z-index:1}
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
       </button>
-      <a class="btn btn-s btn-sm nav-consult" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Консультация</a>
+      <a data-umami-event="maslahat-nav" class="btn btn-s btn-sm nav-consult" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Консультация</a>
       <!-- Mavjud mijoz uchun. Ataylab «Bepul boshlash» dan oldin va
            ko'rinishi bo'yicha soddaroq: yangi mijoz uchun asosiy amal
            baribir ro'yxatdan o'tish. -->
-      <a class="nav-login" href="/panel/kirish" data-i18n="nav.login">Вход</a>
-      <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Начать бесплатно</a>
+      <a data-umami-event="kirish-nav" class="nav-login" href="/panel/kirish" data-i18n="nav.login">Вход</a>
+      <a data-umami-event="bot-nav" class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Начать бесплатно</a>
     </div>
   </div>
 </header>
@@ -1365,7 +1372,7 @@ main, footer{position:relative; z-index:1}
       <h1><span data-i18n="h.t1">Хватит платить за</span> <em data-i18n="h.t2">неотработанные часы</em><span data-i18n="h.t3">!</span></h1>
       <p class="lede" data-i18n="h.sub">Откройте бота и поставьте точку в спорах «я приходил вовремя». Отдельное приложение устанавливать не нужно — сотрудник нажимает «Пришёл», система по GPS проверяет, что он на территории филиала, сама считает отработанные часы, а зарплата рассчитывается по этим же данным.</p>
       <div class="hero-cta">
-        <a class="btn btn-p" href="https://t.me/tizimchi_hr_bot">
+        <a data-umami-event="bot-hero" class="btn btn-p" href="https://t.me/tizimchi_hr_bot">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13.1 1.5 11.6c-1-.3-1-1 .2-1.5L20.6 2.8c.9-.3 1.6.2 1.3 1.5z"/></svg>
           <span data-i18n="h.cta1">7 дней бесплатно</span>
         </a>
@@ -1763,7 +1770,7 @@ main, footer{position:relative; z-index:1}
       <div class="res" id="picker-res" aria-live="polite">
         <div class="name" id="picker-name"></div>
         <p class="why" id="picker-why"></p>
-        <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="pk.cta">Попробовать этот тариф 7 дней бесплатно</a>
+        <a data-umami-event="bot-tanlagich" class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="pk.cta">Попробовать этот тариф 7 дней бесплатно</a>
       </div>
     </div>
 
@@ -1783,7 +1790,7 @@ main, footer{position:relative; z-index:1}
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f2">Отчёты, табель, уведомления</span></li>
           <li class="off"><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f3">Зарплата и продуктивность</span></li>
         </ul>
-        <a class="btn btn-s" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
+        <a data-umami-event="bot-tarif-kichik" class="btn btn-s" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
       </div>
 
       <div class="plan hot">
@@ -1802,7 +1809,7 @@ main, footer{position:relative; z-index:1}
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f5">Зарплата: 4 модели, аванс, блокировка периода</span></li>
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f6">Продуктивность и рейтинги</span></li>
         </ul>
-        <a class="btn btn-p" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
+        <a data-umami-event="bot-tarif-orta" class="btn btn-p" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
       </div>
 
       <div class="plan">
@@ -1820,7 +1827,7 @@ main, footer{position:relative; z-index:1}
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f8">Разрезы для организаций с несколькими филиалами</span></li>
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f9">Расширенные права администраторов</span></li>
         </ul>
-        <a class="btn btn-s" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
+        <a data-umami-event="bot-tarif-katta" class="btn btn-s" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
       </div>
 
       <div class="plan">
@@ -1838,7 +1845,7 @@ main, footer{position:relative; z-index:1}
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f11">White-label: ваш цвет и логотип</span></li>
           <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="pr.f12">Приоритетная поддержка</span></li>
         </ul>
-        <a class="btn btn-s" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
+        <a data-umami-event="bot-tarif-cheksiz" class="btn btn-s" href="https://t.me/tizimchi_hr_bot" data-i18n="pr.cta">Попробовать бесплатно</a>
       </div>
     </div>
 
@@ -1878,7 +1885,7 @@ main, footer{position:relative; z-index:1}
     <div class="cta-band">
       <h2 data-i18n="c.title">Пусть завтра утром придёт первое «Пришёл»</h2>
       <p data-i18n="c.sub">Откройте бота, введите название компании — 7-дневный демо-период начнётся сразу. Ни карты, ни договора.</p>
-      <a class="btn btn-p" href="https://t.me/tizimchi_hr_bot">
+      <a data-umami-event="bot-yakun" class="btn btn-p" href="https://t.me/tizimchi_hr_bot">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13.1 1.5 11.6c-1-.3-1-1 .2-1.5L20.6 2.8c.9-.3 1.6.2 1.3 1.5z"/></svg>
         <span data-i18n="c.btn">Открыть @tizimchi_hr_bot</span>
       </a>
@@ -1895,8 +1902,8 @@ main, footer{position:relative; z-index:1}
      ko'ringanda esa yashiriladi — ikkita bir xil tugma yonma-yon
      turmasin. Sinfni JS qo'yadi. -->
 <div class="mcta" id="mcta">
-  <a class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Начать бесплатно</a>
-  <a class="btn btn-s btn-sm" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Консультация</a>
+  <a data-umami-event="bot-mobil" class="btn btn-p btn-sm" href="https://t.me/tizimchi_hr_bot" data-i18n="nav.cta">Начать бесплатно</a>
+  <a data-umami-event="maslahat-mobil" class="btn btn-s btn-sm" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Консультация</a>
 </div>
 
 <footer>
@@ -1909,11 +1916,11 @@ main, footer{position:relative; z-index:1}
       <a href="#savollar" data-i18n="nav.q">Вопросы</a>
       <!-- Telefonda yuqoridagi «Kirish» yashiringan — mavjud mijoz uni
            shu yerdan topadi -->
-      <a href="/panel/kirish" data-i18n="nav.login">Вход</a>
+      <a data-umami-event="kirish-futer" href="/panel/kirish" data-i18n="nav.login">Вход</a>
       <!-- To'lov tizimlari (Payme, Click) xizmat shartlari sahifasini
            talab qiladi va uni saytdan topa olishi kerak -->
       <a href="/oferta.html" data-i18n="nav.offer">Оферта</a>
-      <a href="https://t.me/tizimchi_hr_bot">Telegram</a>
+      <a data-umami-event="bot-futer" href="https://t.me/tizimchi_hr_bot">Telegram</a>
     </nav>
   </div>
 </footer>
