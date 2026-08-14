@@ -1057,6 +1057,136 @@ main, footer{position:relative; z-index:1}
   body{padding-bottom:76px}
 }
 
+/* ---------- AI yordamchi ----------
+   Sayt mehmoni uchun mini chat. Javobni o'z serverimizdagi endpoint
+   beradi (`/panel/api/sayt-yordamchi`) — tashqi vidjet, tashqi skript
+   va cookie YO'Q. Butun vidjet ~6 KB, saytning nol-bog'liqlik qoidasi
+   buzilmaydi.
+
+   ⚠️ Telefonda pastda `.mcta` paneli turadi (76 px). Tugma undan
+   YUQORIDA joylashadi, aks holda ikkalasi ustma-ust tushadi. */
+.aiw{position:fixed; right:20px; bottom:20px; z-index:70;
+  display:flex; flex-direction:column; align-items:flex-end; gap:12px}
+
+/* ---- chaqiruv tugmasi ---- */
+.aibtn{width:60px; height:60px; border-radius:50%; border:0; cursor:pointer; padding:0;
+  background:linear-gradient(160deg,#2f7dff,#0b48b8);
+  box-shadow:0 6px 16px rgba(11,72,184,.34), 0 18px 40px -18px rgba(11,72,184,.6);
+  display:grid; place-items:center; position:relative;
+  transition:transform .32s var(--ease), box-shadow .32s var(--ease)}
+.aibtn:hover{transform:translateY(-3px) scale(1.04);
+  box-shadow:0 10px 22px rgba(11,72,184,.4), 0 24px 50px -18px rgba(11,72,184,.7)}
+.aibtn:active{transform:translateY(-1px) scale(.98)}
+.aibtn:focus-visible{outline:3px solid var(--brand); outline-offset:3px}
+.aibtn svg{width:40px; height:40px; display:block}
+
+/* Yopish belgisi — panel ochilganda robot o'rniga chiqadi */
+.aibtn-x{position:absolute; inset:0; display:grid; place-items:center;
+  color:#fff; font-size:26px; line-height:1; opacity:0; transform:rotate(-90deg) scale(.6);
+  transition:opacity .26s var(--ease), transform .26s var(--ease)}
+.aiw.on .aibtn-x{opacity:1; transform:none}
+.aiw.on .aibtn .rb-wrap{opacity:0; transform:scale(.6) rotate(90deg)}
+.aibtn .rb-wrap{transition:opacity .26s var(--ease), transform .26s var(--ease)}
+
+/* ---- robot ---- */
+.rb-tilt{transform-origin:24px 26px; transition:transform .4s var(--ease)}
+.aibtn:hover .rb-tilt{transform:rotate(-6deg)}
+
+/* ---- panel ---- */
+/* ⚠️ `padding:0` SHART: sahifada global `section{padding:88px 0}` qoidasi
+   bor va panel ham `<section>`. Busiz panel ichida 88 piksellik bo'sh
+   joy paydo bo'lib, xabarlar maydoni siqilib qolardi. */
+.aip{padding:0; width:min(360px, calc(100vw - 32px)); max-height:min(560px, calc(100dvh - 140px));
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
+  box-shadow:var(--sh-3); display:flex; flex-direction:column; overflow:hidden;
+  transform-origin:bottom right}
+.aip[hidden]{display:none}
+
+.aip-h{display:flex; align-items:center; gap:10px; padding:14px 14px 12px;
+  border-bottom:1px solid var(--line); background:var(--surface-2)}
+.aip-h strong{display:block; font-size:15px; letter-spacing:-.01em}
+.aip-h small{display:block; font-size:12.5px; color:var(--muted); margin-top:1px}
+.aip-h > div{flex:1; min-width:0}
+.aip-live{width:9px; height:9px; border-radius:50%; background:var(--ok); flex:0 0 auto;
+  box-shadow:0 0 0 3px rgba(14,159,110,.18)}
+.aip-x{border:0; background:transparent; cursor:pointer; color:var(--muted);
+  font-size:22px; line-height:1; padding:2px 6px; border-radius:8px}
+.aip-x:hover{background:var(--surface-3); color:var(--ink)}
+
+.aip-b{flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px;
+  overscroll-behavior:contain}
+
+.ai-m{max-width:88%; padding:10px 13px; border-radius:14px; font-size:14.5px; line-height:1.55;
+  white-space:pre-wrap; word-wrap:break-word}
+.ai-bot{align-self:flex-start; background:var(--surface-3); color:var(--ink);
+  border-bottom-left-radius:5px}
+.ai-me{align-self:flex-end; background:linear-gradient(160deg,#2f7dff,#0b48b8); color:#fff;
+  border-bottom-right-radius:5px}
+.ai-m a{color:inherit; text-decoration:underline; text-underline-offset:2px}
+.ai-bot a{color:var(--brand-ink)}
+
+/* Taklif qilingan savollar — bosilgach yo'qoladi */
+.ai-chips{display:flex; flex-wrap:wrap; gap:7px}
+.ai-chips button{border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2);
+  border-radius:999px; padding:7px 12px; font-size:13px; cursor:pointer; font-family:inherit;
+  transition:border-color .2s, color .2s, background .2s}
+.ai-chips button:hover{border-color:var(--brand); color:var(--brand-ink); background:var(--surface-2)}
+
+/* "yozmoqda" — uchta sakrovchi nuqta */
+.ai-dots{display:inline-flex; gap:4px; align-items:center; padding:3px 0}
+.ai-dots i{width:6px; height:6px; border-radius:50%; background:var(--muted); display:block}
+
+.aip-f{display:flex; gap:8px; padding:12px 12px 8px; border-top:1px solid var(--line)}
+.aip-f input{flex:1; min-width:0; border:1px solid var(--line-2); background:var(--surface-2);
+  color:var(--ink); border-radius:12px; padding:10px 13px; font-size:14.5px; font-family:inherit;
+  outline:none; transition:border-color .2s, background .2s}
+.aip-f input:focus{border-color:var(--brand); background:var(--surface)}
+.aip-f button{border:0; cursor:pointer; width:42px; flex:0 0 42px; border-radius:12px;
+  background:linear-gradient(160deg,#2f7dff,#0b48b8); color:#fff; display:grid; place-items:center;
+  transition:opacity .2s, transform .2s}
+.aip-f button:hover{transform:translateY(-1px)}
+.aip-f button:disabled{opacity:.45; cursor:default; transform:none}
+.aip-f button svg{width:19px; height:19px}
+
+.aip-n{padding:0 14px 12px; font-size:11.5px; color:var(--muted); line-height:1.45}
+
+/* Faqat ekran o'quvchi uchun — matn manbasi bir joyda tursin (pastdagi
+   izohga qarang) */
+.ai-s{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
+  white-space:nowrap}
+
+@media (max-width:600px){
+  /* `.mcta` paneli 76 px joy egallaydi — tugma undan yuqorida turadi */
+  .aiw{right:14px; bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
+  .aibtn{width:54px; height:54px}
+  .aibtn svg{width:36px; height:36px}
+  .aip{width:calc(100vw - 28px); max-height:calc(100dvh - 190px)}
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .rb-all{animation:rbFloat 4.6s ease-in-out infinite}
+  .rb-tip{animation:rbPulse 2.4s ease-in-out infinite}
+  /* Ko'z pirpirashi: uzoq pauza + qisqa yumilish. Transform SVG ichida
+     ishlashi uchun `transform-box:fill-box` shart — busiz o'q nuqtasi
+     butun tuvalning burchagi bo'lib qoladi va ko'z uchib ketadi. */
+  .rb-eye{transform-box:fill-box; transform-origin:center; animation:rbBlink 5.2s infinite}
+  .rb-eye:nth-of-type(2){animation-delay:.06s}
+  .aip:not([hidden]){animation:aiIn .34s var(--ease)}
+  .ai-m{animation:aiIn .26s var(--ease)}
+  .ai-dots i{animation:aiDot 1.1s ease-in-out infinite}
+  .ai-dots i:nth-child(2){animation-delay:.14s}
+  .ai-dots i:nth-child(3){animation-delay:.28s}
+  /* Javob kutilayotganda ko'zlar tez pirpiraydi — "o'ylayapti" belgisi */
+  .aiw.busy .rb-eye{animation:rbBlink 1.1s infinite}
+  .aiw.busy .rb-tip{animation:rbPulse .9s ease-in-out infinite}
+}
+
+@keyframes rbFloat{0%,100%{transform:translateY(0)} 50%{transform:translateY(-1.6px)}}
+@keyframes rbPulse{0%,100%{opacity:.85; transform:scale(1)} 50%{opacity:1; transform:scale(1.14)}}
+@keyframes rbBlink{0%,92%,100%{transform:scaleY(1)} 95%,97%{transform:scaleY(.12)}}
+@keyframes aiIn{from{opacity:0; transform:translateY(8px) scale(.985)} to{opacity:1; transform:none}}
+@keyframes aiDot{0%,100%{transform:translateY(0); opacity:.45} 50%{transform:translateY(-4px); opacity:1}}
+
 /* ---------- ekran almashuvi (View Transitions) ----------
    Til va mavzu almashganda brauzer eski/yangi holatning suratini olib,
    oralig'ini o'zi chizadi. Sahifalar orasida ham xuddi shunday
@@ -2122,6 +2252,88 @@ main, footer{position:relative; z-index:1}
   <a data-umami-event="maslahat-mobil" class="btn btn-s btn-sm" href="https://t.me/azizbekallayorov?text=Men%20sizga%20hr-bot%20bo%27yicha%20yozyapman" target="_blank" rel="noopener" data-i18n="nav.help">Консультация</a>
 </div>
 
+<!-- ═══════════ AI yordamchi ═══════════
+     Mehmon savolini o'z serverimizdagi endpoint'ga yuboradi va javobni
+     shu yerda ko'rsatadi. Tashqi vidjet ishlatilmadi (auditdagi taqiq):
+     bu o'zimizniki, ~6 KB, cookie qo'ymaydi va sahifani sekinlashtirmaydi.
+
+     JS o'chirilgan brauzerda butun blok YASHIRIN qoladi (`hidden` ni JS
+     oladi) — ishlamaydigan tugma ko'rsatishdan ko'ra ko'rsatmagan afzal. -->
+<div class="aiw" id="aiw" hidden>
+  <!-- Matn manbasi BITTA joyda: bu yashirin qatorlar ham `data-i18n` bilan
+       belgilangani uchun ular ham `OTHER` lug'atidan tarjima oladi va CI
+       tekshiruvidan o'tadi. JS ularni o'qib ishlatadi — shunda skript
+       ichida ikkinchi lug'at paydo bo'lmaydi. -->
+  <span class="ai-s" id="ai-s-ph" data-i18n="ai.ph">Напишите вопрос…</span>
+  <span class="ai-s" id="ai-s-err" data-i18n="ai.err">Связь прервалась. Попробуйте позже или напишите нам: t.me/azizbekallayorov</span>
+  <span class="ai-s" id="ai-s-close" data-i18n="ai.close">Закрыть</span>
+  <span class="ai-s" id="ai-s-send" data-i18n="ai.send">Отправить</span>
+
+  <section class="aip" id="aipanel" hidden aria-label="AI yordamchi">
+    <header class="aip-h">
+      <span class="aip-live" aria-hidden="true"></span>
+      <div>
+        <strong data-i18n="ai.title">AI-помощник</strong>
+        <small data-i18n="ai.sub">Спросите о Tizimchi HR</small>
+      </div>
+      <button class="aip-x" id="aiclose" type="button">&times;</button>
+    </header>
+
+    <div class="aip-b" id="aibody" role="log" aria-live="polite">
+      <div class="ai-m ai-bot" data-i18n="ai.hello">Здравствуйте! Я помощник Tizimchi HR. Спросите о ценах, возможностях или о том, как начать.</div>
+      <div class="ai-chips" id="aichips">
+        <button type="button" data-i18n="ai.q1">Сколько стоит?</button>
+        <button type="button" data-i18n="ai.q2">Можно отметиться из дома?</button>
+        <button type="button" data-i18n="ai.q3">Как начать?</button>
+      </div>
+    </div>
+
+    <form class="aip-f" id="aiform" autocomplete="off">
+      <input id="aiin" type="text" maxlength="500" placeholder="Savolingizni yozing…">
+      <button type="submit" id="aisend">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+    <p class="aip-n" data-i18n="ai.note">Отвечает AI — возможны ошибки. Важный вопрос задайте человеку.</p>
+  </section>
+
+  <button class="aibtn" id="aibtn" type="button" aria-expanded="false" aria-controls="aipanel" data-umami-event="ai-ochish">
+    <span class="rb-wrap">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <defs>
+          <linearGradient id="rbHead" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c6dcfa"/>
+          </linearGradient>
+          <linearGradient id="rbVisor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0d2350"/><stop offset="1" stop-color="#17346e"/>
+          </linearGradient>
+        </defs>
+        <g class="rb-tilt"><g class="rb-all">
+          <!-- antenna -->
+          <path d="M24 11V7.6" stroke="#e8f1ff" stroke-width="2.1" stroke-linecap="round"/>
+          <circle class="rb-tip" cx="24" cy="5.4" r="2.7" fill="#7ef0c4"/>
+          <!-- yon panellar -->
+          <rect x="3.6" y="22" width="4.6" height="9.5" rx="2.3" fill="#9dc2f2"/>
+          <rect x="39.8" y="22" width="4.6" height="9.5" rx="2.3" fill="#9dc2f2"/>
+          <!-- bosh -->
+          <rect x="7.5" y="11" width="33" height="28.5" rx="10.5" fill="url(#rbHead)"/>
+          <!-- ekran -->
+          <rect x="12.2" y="16.2" width="23.6" height="15.4" rx="7.7" fill="url(#rbVisor)"/>
+          <!-- ko'zlar -->
+          <rect class="rb-eye" x="17" y="21.2" width="4.1" height="5.4" rx="2.05" fill="#8ff3d0"/>
+          <rect class="rb-eye" x="26.9" y="21.2" width="4.1" height="5.4" rx="2.05" fill="#8ff3d0"/>
+          <!-- og'iz -->
+          <path d="M20.6 35.2h6.8" stroke="#7ba3d8" stroke-width="2.1" stroke-linecap="round" opacity=".9"/>
+          <!-- yorug'lik -->
+          <path d="M12.6 16.4c1.9-2.6 4.8-4.3 8.1-4.7" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".38" fill="none"/>
+        </g></g>
+      </svg>
+    </span>
+    <span class="aibtn-x" aria-hidden="true">&times;</span>
+    <span class="ai-s" data-i18n="ai.open">Чат с AI-помощником</span>
+  </button>
+</div>
+
 <footer>
   <div class="wrap foot">
     <p>© <span id="yr">2026</span> Tizimchi HR · <span data-i18n="fo.by">продукт GreenNova</span><br>
@@ -2366,6 +2578,18 @@ var OTHER = {
  "c.sub": "Botni oching, kompaniya nomini yozing — 7 kunlik demo shu zahoti ochiladi. Karta so'ralmaydi, shartnoma kutilmaydi.",
  "c.btn": "@tizimchi_hr_bot ni ochish",
  "c.note": "Savolingiz bormi? Shu botning o'zidan yozing — javob beramiz.",
+ "ai.ph": "Savolingizni yozing…",
+ "ai.err": "Aloqa uzildi. Birozdan keyin urinib ko'ring yoki bizga yozing: t.me/azizbekallayorov",
+ "ai.close": "Yopish",
+ "ai.send": "Yuborish",
+ "ai.title": "AI yordamchi",
+ "ai.sub": "Tizimchi HR haqida so'rang",
+ "ai.hello": "Salom! Men Tizimchi HR yordamchisiman. Narxlar, imkoniyatlar yoki qanday boshlash haqida so'rang.",
+ "ai.q1": "Narxlari qanday?",
+ "ai.q2": "Xodim uydan bosa oladimi?",
+ "ai.q3": "Qanday boshlayman?",
+ "ai.note": "AI javob beradi — xato bo'lishi mumkin. Muhim savolni odamdan so'rang.",
+ "ai.open": "AI yordamchi bilan suhbat",
  "fo.by": "GreenNova mahsuloti",
  "nav.offer": "Oferta",
  "nav.priv": "Maxfiylik",
@@ -3021,6 +3245,162 @@ var OTHER = {
          yashirin qolib ketmasligi uchun darhol ochiladi. */
       if (el.getBoundingClientRect().bottom < 0) { el.classList.add('in'); return; }
       io.observe(el);
+    });
+  }
+})();
+
+/* ---------- AI yordamchi ----------
+   Savol o'z serverimizdagi endpoint'ga ketadi: `/panel/api/sayt-yordamchi`.
+   U ayni shu domenda (nginx `/panel` ni Next.js ilovasiga uzatadi),
+   shuning uchun CORS ham, uchinchi tomon skripti ham kerak emas.
+
+   Suhbat tarixi FAQAT shu sahifada, xotirada yashaydi: sahifa yopilsa
+   yo'qoladi. Ataylab — mehmonning savoli hech qayerda saqlanmasin. */
+(function(){
+  var wrap = document.getElementById('aiw');
+  if (!wrap) return;
+  var panel = document.getElementById('aipanel'),
+      btn   = document.getElementById('aibtn'),
+      body  = document.getElementById('aibody'),
+      chips = document.getElementById('aichips'),
+      form  = document.getElementById('aiform'),
+      input = document.getElementById('aiin'),
+      send  = document.getElementById('aisend');
+
+  /* JS ishlayapti — endi tugmani ko'rsatsa bo'ladi */
+  wrap.hidden = false;
+
+  /* Matnni yashirin qatorlardan olamiz: lug'at bitta joyda qoladi va
+     til almashganda bu qiymatlar ham o'z-o'zidan yangilanadi */
+  function s(id){ var el = document.getElementById(id); return el ? el.textContent.trim() : ''; }
+
+  function syncText(){
+    input.placeholder = s('ai-s-ph');
+    document.getElementById('aiclose').setAttribute('aria-label', s('ai-s-close'));
+    send.setAttribute('aria-label', s('ai-s-send'));
+  }
+  syncText();
+  document.addEventListener('tizimchi-lang', syncText);
+
+  var tarix = [];   /* [{rol, matn}] — serverga qaytariladi */
+  var busy = false;
+  var opened = false;
+
+  function open(){
+    if (opened) return;
+    opened = true;
+    panel.hidden = false;
+    wrap.classList.add('on');
+    btn.setAttribute('aria-expanded', 'true');
+    /* Telefonda klaviatura darhol chiqib panelni bosib qo'ymasin —
+       fokus faqat kengroq ekranda beriladi */
+    if (window.matchMedia('(min-width:601px)').matches) setTimeout(function(){ input.focus(); }, 260);
+  }
+  function close(){
+    opened = false;
+    panel.hidden = true;
+    wrap.classList.remove('on');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function(){ opened ? close() : open(); });
+  document.getElementById('aiclose').addEventListener('click', close);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && opened) { close(); btn.focus(); }
+  });
+
+  function bubble(cls, text){
+    var d = document.createElement('div');
+    d.className = 'ai-m ' + cls;
+    d.textContent = text;
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+    return d;
+  }
+
+  /* Javobdagi havolalarni bosiladigan qilamiz. `textContent` bilan
+     qo'yilgani uchun matn allaqachon xavfsiz — bu yerda faqat topilgan
+     manzil <a> ga o'raladi, boshqa HTML kiritilmaydi. */
+  function linkify(el){
+    var parts = el.textContent.split(/(\bhttps?:\/\/[^\s,;)]+|\bt\.me\/[A-Za-z0-9_]+)/g);
+    if (parts.length < 2) return;
+    el.textContent = '';
+    parts.forEach(function(p, i){
+      if (i % 2 === 1) {
+        var a = document.createElement('a');
+        a.href = p.indexOf('http') === 0 ? p : 'https://' + p;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = p;
+        el.appendChild(a);
+      } else if (p) {
+        el.appendChild(document.createTextNode(p));
+      }
+    });
+  }
+
+  function thinking(){
+    var d = document.createElement('div');
+    d.className = 'ai-m ai-bot';
+    d.innerHTML = '<span class="ai-dots"><i></i><i></i><i></i></span>';
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+    return d;
+  }
+
+  function ask(savol){
+    if (busy || !savol) return;
+    busy = true;
+    wrap.classList.add('busy');
+    send.disabled = true;
+    if (chips) chips.remove(), chips = null;
+
+    bubble('ai-me', savol);
+    input.value = '';
+    var wait = thinking();
+
+    /* Umami bor bo'lsa hodisa yoziladi; yo'q bo'lsa jim o'tadi */
+    try { if (window.umami) window.umami.track('ai-savol'); } catch(e){}
+
+    fetch('/panel/api/sayt-yordamchi', {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({
+        savol: savol,
+        til: document.documentElement.lang === 'ru' ? 'ru' : 'uz',
+        tarix: tarix.slice(-6)
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      wait.remove();
+      var javob = (j && j.data && j.data.javob) || s('ai-s-err');
+      var el = bubble('ai-bot', javob);
+      linkify(el);
+      tarix.push({rol:'user', matn:savol});
+      tarix.push({rol:'bot', matn:javob});
+    })
+    .catch(function(){
+      wait.remove();
+      linkify(bubble('ai-bot', s('ai-s-err')));
+    })
+    .then(function(){
+      busy = false;
+      wrap.classList.remove('busy');
+      send.disabled = false;
+      input.focus();
+    });
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    ask(input.value.trim());
+  });
+
+  if (chips) {
+    chips.addEventListener('click', function(e){
+      var b = e.target.closest('button');
+      if (b) ask(b.textContent.trim());
     });
   }
 })();
