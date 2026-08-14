@@ -24,7 +24,7 @@ hrtizimchi-sayt/
 
 ## Animatsiyalar
 
-To'rt qatlam, hammasi `prefers-reduced-motion: reduce` da butunlay o'chadi:
+Yetti qatlam, hammasi `prefers-reduced-motion: reduce` da butunlay o'chadi:
 
 1. **Ochilish xoreografiyasi** — hero bo'laklari yuklanishda navbat bilan
    ko'tariladi (`heroIn`), qolgan bloklar esa ko'rinishga kirganda
@@ -51,6 +51,28 @@ To'rt qatlam, hammasi `prefers-reduced-motion: reduce` da butunlay o'chadi:
    bo'limidagi SVG rasmlarning jonlanishi (`.diff.in .dv-*`). Sahifa
    ortida esa juda sekin suzuvchi shimoliy shafaq (`.aurora`) — telefonda
    harakati o'chirilgan, faqat statik dog'lar qoladi.
+
+5. **Ekran almashuvi (View Transitions)** — til va mavzu almashganda
+   brauzer eski/yangi holatning suratini olib, oralig'ini o'zi chizadi.
+   Mavzu tugmadan doira bo'lib tarqaladi (doirani JS chizadi, chunki
+   markaz tugmaning joriy o'rniga bog'liq; **foizda**, chunki
+   `::view-transition-new(root)` ning koordinatasi qurilma piksellari
+   zichligiga bog'liq bo'lib chiqdi). Oferta sahifasiga o'tish ham
+   silliq — `@view-transition{navigation:auto}` **ikkala** hujjatda ham
+   e'lon qilingan, bir tomon jim tursa o'tish boshlanmaydi.
+
+   Til almashuvi ishlashi uchun `apply()` oxirida `tizimchi-lang`
+   hodisasi yuboriladi va demo telefonlar o'shanga ulanadi: shunda
+   hamma o'zgarish bitta qadamda bo'ladi va surat yaxlit chiqadi.
+
+6. **Navigatsiyada joriy bo'lim** — yugurib yuruvchi kapsula
+   (`.nav-pill`). O'lchamni JS yozadi (`--px/--pw`), chunki havola matni
+   tilga qarab o'zgaradi. Ekranning yuqori uchdan biridagi bo'lim
+   tanlanadi; bir nechtasi bo'lsa eng yuqoridagisi, hech biri bo'lmasa
+   kapsula ko'rinmaydi.
+
+7. **Tugma bosilganda to'lqin** — `.btn::before` (`::after` da
+   allaqachon yorug'lik yugurib o'tadi), rang `currentColor` dan.
 
    **Qoida:** bitta elementda ikkita `transform` e'loni yashay olmaydi.
    Shuning uchun tarif kartasining ko'tarilishi ham, qiyshayishi ham
