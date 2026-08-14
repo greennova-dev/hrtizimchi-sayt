@@ -677,6 +677,85 @@ a.fact:hover::before{transform:scaleX(1)}
   font-weight:650; font-size:15px; text-align:center; box-shadow:0 10px 22px -10px rgba(43,123,255,.9)}
 .phone-note{margin-top:10px; font-size:11.5px; color:#8ba6d8; text-align:center}
 
+/* ---------- yo'qotish kalkulyatori ----------
+   Tarif tanlagichi bilan bir xil tilda: markazdagi karta, ichida
+   savollar, pastda javob. Yangi bezak o'ylab topilmadi — sahifada
+   ikkita o'xshash vosita ikki xil ko'rinsa, u yasama tuyuladi. */
+.calc{max-width:760px; margin:0 auto; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-lg); box-shadow:var(--sh-2); padding:26px 28px}
+.calc-q{display:grid; grid-template-columns:1fr auto; gap:6px 14px; align-items:center;
+  margin-bottom:18px}
+.calc-q label{grid-row:1; grid-column:1; font-size:14px; font-weight:600; color:var(--ink-2)}
+/* Qiymat sarlavha bilan BIR QATORDA. O'rin aniq ko'rsatilmasa u
+   slayderdan keyin joylashib, uchinchi qatorga tushib ketardi. */
+.calc-q output{grid-row:1; grid-column:2;
+  font-size:15px; font-weight:660; letter-spacing:-.02em; font-variant-numeric:tabular-nums;
+  color:var(--brand-ink); text-align:right; white-space:nowrap}
+.calc-q input[type=range]{grid-row:2; grid-column:1 / -1; width:100%; accent-color:var(--brand);
+  height:22px; cursor:pointer}
+.calc-res{margin-top:22px; padding-top:22px; border-top:1px solid var(--line); text-align:center}
+.calc-lbl{font-size:12.5px; font-weight:650; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted)}
+.calc-big{font-size:clamp(30px,5vw,44px); font-weight:680; letter-spacing:-.04em; margin-top:6px;
+  color:var(--bad-ink); font-variant-numeric:tabular-nums}
+.calc-big small{font-size:18px; font-weight:500; color:var(--muted); letter-spacing:0}
+.calc-cmp{margin-top:10px; font-size:15px; color:var(--ink-2)}
+.calc-cmp b{color:var(--ink); font-weight:650}
+.calc-res .btn{margin-top:18px}
+.calc-fine{max-width:760px; margin:16px auto 0; font-size:13px; color:var(--muted); text-align:center;
+  line-height:1.55}
+
+/* ---------- taqqoslash jadvali ----------
+   Tor ekranda jadval siqilmaydi — o'z konteyneri ichida suriladi.
+   Birinchi ustun yopishib turadi, aks holda surilganda qaysi qator
+   ekani bilinmay qoladi. */
+.cmp-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--r-lg);
+  background:var(--surface); box-shadow:var(--sh-2)}
+.cmp{border-collapse:collapse; width:100%; min-width:620px; font-size:14.5px}
+.cmp th, .cmp td{padding:14px 16px; text-align:center; border-top:1px solid var(--line)}
+.cmp thead th{border-top:0; font-size:13.5px; font-weight:650; color:var(--ink-2);
+  background:var(--surface-2)}
+.cmp tbody th{text-align:left; font-weight:550; color:var(--ink); min-width:230px;
+  position:sticky; left:0; background:var(--surface)}
+.cmp thead th:first-child{position:sticky; left:0; background:var(--surface-2)}
+.cmp .yes{color:var(--ok-ink); font-weight:650}
+.cmp .no{color:var(--muted)}
+.cmp .mid{color:var(--warn-ink); font-weight:650}
+/* Bizning ustun ajratiladi, lekin baqirmaydi */
+.cmp .cmp-us{color:var(--brand-ink)}
+.cmp td:last-child, .cmp thead th:last-child{background:rgba(26,109,255,.05)}
+.vh{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%)}
+
+/* ---------- ariza formasi ---------- */
+.lead-card{display:grid; grid-template-columns:1.05fr 1fr; gap:44px; align-items:start;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg);
+  box-shadow:var(--sh-2); padding:40px}
+.lead-left .h2{margin-top:14px}
+.lead-left .lede{margin-top:12px}
+.lead-pts{list-style:none; margin:22px 0 0; padding:0; display:grid; gap:11px}
+.lead-pts li{display:flex; gap:11px; align-items:flex-start; font-size:15px; color:var(--ink-2)}
+.lead-form{display:grid; gap:14px}
+.lead-f{display:grid; gap:6px}
+.lead-f > span{font-size:13.5px; font-weight:600; color:var(--ink-2)}
+.lead-f input, .lead-f textarea{font:inherit; font-size:15.5px; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--line-2); border-radius:var(--r-sm);
+  padding:12px 14px; width:100%; transition:border-color .18s var(--ease), background .18s var(--ease)}
+.lead-f textarea{resize:vertical; min-height:52px}
+.lead-f input:focus, .lead-f textarea:focus{outline:0; border-color:var(--brand);
+  background:var(--surface)}
+.lead-f input:user-invalid{border-color:var(--bad)}
+/* Yashirin maydon: `display:none` QO'YILMAYDI — ba'zi avtomat
+   to'ldiruvchilar ko'rinmaydigan maydonni o'tkazib yuboradi, bizga esa
+   aynan uni to'ldirgani kerak. */
+.lead-hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
+.lead-msg{font-size:14.5px; min-height:20px; margin-top:2px}
+.lead-msg.ok{color:var(--ok-ink)}
+.lead-msg.err{color:var(--bad-ink)}
+.lead-form .btn{width:100%}
+@media (max-width:820px){
+  .lead-card{grid-template-columns:1fr; gap:28px; padding:28px 22px}
+}
+
 /* ---------- pricing ---------- */
 .price-grid{grid-template-columns:repeat(4,1fr); align-items:start}
 .plan{padding:28px 24px; border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--line);
@@ -1478,6 +1557,44 @@ main, footer{position:relative; z-index:1}
   </div>
 </section>
 
+<!-- ================= KALKULYATOR ================= -->
+<section id="hisob">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow" data-i18n="cl.eyebrow">Hisob-kitob</span>
+      <h2 class="h2" data-i18n="cl.title">Kechikish sizga qancha turadi?</h2>
+      <p class="lede" data-i18n="cl.sub">Uchta raqamni surib ko'ring — oyiga qancha pul ishlanmagan soatga ketayotgani chiqadi.</p>
+    </div>
+
+    <div class="calc" id="calc">
+      <div class="calc-q">
+        <label for="c-emp" data-i18n="cl.q1">Xodimlar soni</label>
+        <input type="range" id="c-emp" min="5" max="200" step="5" value="30" aria-describedby="c-emp-v">
+        <output id="c-emp-v" for="c-emp">30</output>
+      </div>
+      <div class="calc-q">
+        <label for="c-late" data-i18n="cl.q2">Kuniga o'rtacha kechikish</label>
+        <input type="range" id="c-late" min="5" max="60" step="5" value="15" aria-describedby="c-late-v">
+        <output id="c-late-v" for="c-late">15 daq</output>
+      </div>
+      <div class="calc-q">
+        <label for="c-pay" data-i18n="cl.q3">O'rtacha oylik</label>
+        <input type="range" id="c-pay" min="2000000" max="20000000" step="500000" value="5000000" aria-describedby="c-pay-v">
+        <output id="c-pay-v" for="c-pay">5 000 000</output>
+      </div>
+
+      <div class="calc-res" aria-live="polite">
+        <span class="calc-lbl" data-i18n="cl.out">Oyiga yo'qotilayotgan pul</span>
+        <div class="calc-big"><span id="c-out">0</span> <small data-i18n="pr.som">so'm</small></div>
+        <p class="calc-cmp" id="c-cmp"></p>
+        <a class="btn btn-p" href="https://t.me/tizimchi_hr_bot" data-umami-event="bot-kalkulyator" data-i18n="cl.cta">Buni to'xtatish — 7 kun bepul</a>
+      </div>
+    </div>
+
+    <p class="calc-fine" data-i18n="cl.fine">Hisob taxminiy: oyda 22 ish kuni, kuniga 8 soat. Faqat kechikish olindi — erta ketish va umuman kelmagan kunlar hisobga qo'shilmadi.</p>
+  </div>
+</section>
+
 <!-- ================= HOW ================= -->
 <section id="qanday">
   <div class="wrap">
@@ -1642,6 +1759,62 @@ main, footer{position:relative; z-index:1}
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ================= TAQQOSLASH ================= -->
+<section id="taqqos">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow" data-i18n="cm.eyebrow">Taqqoslash</span>
+      <h2 class="h2" data-i18n="cm.title">Hozir nima ishlatyapsiz?</h2>
+      <p class="lede" data-i18n="cm.sub">Har usulning o'z kuchi bor. Quyida halol yonma-yon qo'yildi — turniket ishonchliligini ham yashirmadik.</p>
+    </div>
+
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th scope="col"><span class="vh" data-i18n="cm.crit">Mezon</span></th>
+            <th scope="col" data-i18n="cm.c1">Jurnal</th>
+            <th scope="col" data-i18n="cm.c2">Excel</th>
+            <th scope="col" data-i18n="cm.c3">Turniket</th>
+            <th scope="col" class="cmp-us">Tizimchi HR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" data-i18n="cm.r1">Kelish vaqti aniq qayd etiladi</th>
+            <td class="no" title="yo'q">—</td><td class="mid">±</td><td class="yes">✓</td><td class="yes">✓</td>
+          </tr>
+          <tr>
+            <th scope="row" data-i18n="cm.r2">Boshqa joydan belgilab bo'lmaydi</th>
+            <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td>
+          </tr>
+          <tr>
+            <th scope="row" data-i18n="cm.r3">Bir nechta filial bitta ekranda</th>
+            <td class="no">—</td><td class="mid">±</td><td class="mid">±</td><td class="yes">✓</td>
+          </tr>
+          <tr>
+            <th scope="row" data-i18n="cm.r4">Ish haqi davomatdan o'zi chiqadi</th>
+            <td class="no">—</td><td class="mid">±</td><td class="no">—</td><td class="yes">✓</td>
+          </tr>
+          <tr>
+            <th scope="row" data-i18n="cm.r5">Qurilma sotib olish shart emas</th>
+            <td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td>
+          </tr>
+          <tr>
+            <th scope="row" data-i18n="cm.r6">Ishga tushirish vaqti</th>
+            <td data-i18n="cm.v61">darhol</td><td data-i18n="cm.v62">soatlar</td><td data-i18n="cm.v63">kunlar</td><td class="yes" data-i18n="cm.v64">daqiqalar</td>
+          </tr>
+          <tr>
+            <th scope="row" data-i18n="cm.r7">Boshlang'ich xarajat</th>
+            <td data-i18n="cm.v71">yo'q</td><td data-i18n="cm.v72">yo'q</td><td data-i18n="cm.v73">qurilma + o'rnatish</td><td class="yes" data-i18n="cm.v74">yo'q, 7 kun bepul</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="calc-fine" data-i18n="cm.fine">Turniket kelgan-kelmaganini eng ishonchli qayd etadi va biz buni inkor qilmaymiz. Lekin u har eshikka alohida sotib olinadi, ish haqini hisoblamaydi va uydan ishlaydigan yoki obyektga chiqadigan xodimga umuman yaramaydi.</p>
   </div>
 </section>
 
@@ -1880,6 +2053,44 @@ main, footer{position:relative; z-index:1}
   </div>
 </section>
 
+<!-- ================= ARIZA ================= -->
+<section id="aloqa">
+  <div class="wrap">
+    <div class="lead-card">
+      <div class="lead-left">
+        <span class="eyebrow" data-i18n="ld.eyebrow">Aloqa</span>
+        <h2 class="h2" data-i18n="ld.title">Botga kirishga tayyor emasmisiz?</h2>
+        <p class="lede" data-i18n="ld.sub">Ism va raqamingizni qoldiring — ish vaqtida o'zimiz qo'ng'iroq qilamiz, savollaringizga javob beramiz va kerak bo'lsa ekranni birga ko'rib chiqamiz.</p>
+        <ul class="lead-pts">
+          <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="ld.p1">Qo'ng'iroq bepul, majburiyat yo'q</span></li>
+          <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="ld.p2">Ish vaqtida, 1 soat ichida javob beramiz</span></li>
+          <li><i class="tick"><svg viewBox="0 0 12 12"><path d="M2 6.5 4.6 9 10 3.4"/></svg></i><span data-i18n="ld.p3">Raqamingiz faqat shu qo'ng'iroq uchun ishlatiladi</span></li>
+        </ul>
+      </div>
+
+      <form class="lead-form" id="leadForm" novalidate>
+        <label class="lead-f">
+          <span data-i18n="ld.name">Ismingiz</span>
+          <input type="text" name="name" required maxlength="120" autocomplete="name">
+        </label>
+        <label class="lead-f">
+          <span data-i18n="ld.phone">Telefon</span>
+          <input type="tel" name="phone" required maxlength="32" inputmode="tel" autocomplete="tel" placeholder="+998 90 123 45 67">
+        </label>
+        <label class="lead-f">
+          <span data-i18n="ld.note">Izoh (ixtiyoriy)</span>
+          <textarea name="note" maxlength="500" rows="2"></textarea>
+        </label>
+        <!-- Yashirin maydon: haqiqiy odam ko'rmaydi, avtomat to'ldiruvchi
+             to'ldiradi. Server shunda arizani jimgina tashlab yuboradi. -->
+        <input class="lead-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn btn-p" type="submit" data-umami-event="ariza-yuborish" data-i18n="ld.send">Qo'ng'iroq so'rash</button>
+        <p class="lead-msg" id="leadMsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- ================= CTA ================= -->
 <section>
   <div class="wrap">
@@ -2057,6 +2268,37 @@ var OTHER = { /* BUILD:other */
   'c.sub':'Откройте бота, введите название компании — 7-дневный демо-период начнётся сразу. Ни карты, ни договора.',
   'c.btn':'Открыть @tizimchi_hr_bot',
   'c.note':'Остались вопросы? Напишите прямо в бот — ответим.',
+
+  /* --- yo'qotish kalkulyatori --- */
+  'cl.eyebrow':'Расчёт','cl.title':'Во сколько вам обходятся опоздания?',
+  'cl.sub':'Подвиньте три ползунка — увидите, сколько денег в месяц уходит на неотработанные часы.',
+  'cl.q1':'Количество сотрудников','cl.q2':'Среднее опоздание в день','cl.q3':'Средняя зарплата',
+  'cl.out':'Теряется в месяц','cl.cta':'Прекратить это — 7 дней бесплатно',
+  'cl.fine':'Расчёт приблизительный: 22 рабочих дня в месяц, 8 часов в день. Учтены только опоздания — ранние уходы и пропущенные дни в расчёт не вошли.',
+
+  /* --- taqqoslash --- */
+  'cm.eyebrow':'Сравнение','cm.title':'Чем вы пользуетесь сейчас?',
+  'cm.sub':'У каждого способа своя сила. Ниже — честно рядом; надёжность турникета мы тоже не скрывали.',
+  'cm.crit':'Критерий','cm.c1':'Журнал','cm.c2':'Excel','cm.c3':'Турникет',
+  'cm.r1':'Время прихода фиксируется точно',
+  'cm.r2':'Нельзя отметиться из другого места',
+  'cm.r3':'Несколько филиалов на одном экране',
+  'cm.r4':'Зарплата считается из учёта сама',
+  'cm.r5':'Не нужно покупать оборудование',
+  'cm.r6':'Время запуска',
+  'cm.v61':'сразу','cm.v62':'часы','cm.v63':'дни','cm.v64':'минуты',
+  'cm.r7':'Начальные затраты',
+  'cm.v71':'нет','cm.v72':'нет','cm.v73':'оборудование + монтаж','cm.v74':'нет, 7 дней бесплатно',
+  'cm.fine':'Турникет надёжнее всех фиксирует сам факт прихода, и мы этого не отрицаем. Но его покупают на каждую дверь, он не считает зарплату и совсем не подходит сотруднику, который работает из дома или выезжает на объект.',
+
+  /* --- ariza formasi --- */
+  'ld.eyebrow':'Связь','ld.title':'Не готовы заходить в бота?',
+  'ld.sub':'Оставьте имя и номер — перезвоним в рабочее время, ответим на вопросы и при желании вместе пройдёмся по экранам.',
+  'ld.p1':'Звонок бесплатный, ни к чему не обязывает',
+  'ld.p2':'Ответим в течение часа в рабочее время',
+  'ld.p3':'Номер используется только для этого звонка',
+  'ld.name':'Ваше имя','ld.phone':'Телефон','ld.note':'Комментарий (необязательно)',
+  'ld.send':'Заказать звонок',
 
   'fo.by':'продукт GreenNova'
 };
@@ -2242,6 +2484,139 @@ var OTHER = { /* BUILD:other */
     }, {passive:true});
     document.addEventListener('mouseleave', function(){ glow.classList.remove('on'); });
   }
+
+  /* ---------- yo'qotish kalkulyatori ----------
+     Hisob ataylab sodda va ochiq: xodim × kechikish daqiqasi × oylik ÷ 480.
+     480 = 22 ish kuni × 8 soat × 60 daqiqa ÷ 22 — ya'ni bir daqiqa ish
+     vaqtining oylikdagi ulushi. Murakkabroq model aniqroq bo'lardi,
+     lekin tekshirib bo'lmasdi va ishonch yo'qolardi. */
+  (function(){
+    var calc = document.getElementById('calc');
+    if (!calc) return;
+
+    var emp = document.getElementById('c-emp');
+    var late = document.getElementById('c-late');
+    var pay = document.getElementById('c-pay');
+    var out = document.getElementById('c-out');
+    var cmp = document.getElementById('c-cmp');
+
+    /* Tariflar sahifadagi kartalar bilan bir xil bo'lishi kerak */
+    var PLANS = [
+      {emp:25,   price:199000, uz:'Kichik',  ru:'Малый'},
+      {emp:50,   price:299000, uz:"O'rta",   ru:'Средний'},
+      {emp:100,  price:499000, uz:'Katta',   ru:'Большой'},
+      {emp:1e9,  price:999000, uz:'Cheksiz', ru:'Безлимит'}
+    ];
+
+    function money(n){
+      /* Bo'shliq bilan ajratamiz: "4 687 500" — mahalliy yozuv shunday */
+      return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    function draw(){
+      var ru = document.documentElement.lang === 'ru';
+      var e = +emp.value, l = +late.value, p = +pay.value;
+
+      document.getElementById('c-emp-v').textContent = e + (e === 200 ? '+' : '');
+      document.getElementById('c-late-v').textContent = l + (ru ? ' мин' : ' daq');
+      document.getElementById('c-pay-v').textContent = money(p);
+
+      var loss = e * l * p / 480;
+      out.textContent = money(loss);
+
+      var plan = PLANS.find(function(x){ return x.emp >= e; }) || PLANS[PLANS.length-1];
+      var times = loss / plan.price;
+      cmp.innerHTML = ru
+        ? 'Тариф «' + plan.ru + '» стоит <b>' + money(plan.price) + ' сум</b> в месяц — это в <b>'
+          + (times >= 10 ? Math.round(times) : times.toFixed(1)) + ' раз</b> меньше потерь.'
+        : '«' + plan.uz + '» tarifi oyiga <b>' + money(plan.price) + " so'm</b> — ya'ni yo'qotishdan <b>"
+          + (times >= 10 ? Math.round(times) : times.toFixed(1)) + ' barobar</b> kam.';
+    }
+
+    [emp, late, pay].forEach(function(el){
+      el.addEventListener('input', draw);
+      /* Sichqoncha g'ildiragi slayder USTIDAN o'tganda uning qiymatini
+         o'zgartirib yuboradi — mehmon sahifani surmoqchi bo'ladi, hisob
+         esa o'zgarib ketadi. `preventDefault` yaramaydi: u sahifaning
+         surilishini ham to'xtatib qo'yardi. Shuning uchun eski qiymat
+         keyingi kadrda qaytariladi — surilish tabiiy qoladi. */
+      el.addEventListener('wheel', function(){
+        var was = el.value;
+        requestAnimationFrame(function(){
+          if (el.value !== was) { el.value = was; draw(); }
+        });
+      }, {passive:true});
+    });
+    document.addEventListener('tizimchi-lang', draw);
+    draw();
+  })();
+
+  /* ---------- qo'ng'iroq so'rash formasi ----------
+     Ariza mahsulot ilovasining ochiq endpointiga ketadi (bir xil domen,
+     shuning uchun CORS ham, kalit ham kerak emas). Tugma yuborish
+     paytida bloklanadi: ikki marta bosilgan ariza ikkita qo'ng'iroq
+     degani. */
+  (function(){
+    var form = document.getElementById('leadForm');
+    if (!form) return;
+    var msg = document.getElementById('leadMsg');
+    var btn = form.querySelector('button[type=submit]');
+    var busy = false;
+
+    function say(text, cls){ msg.textContent = text; msg.className = 'lead-msg ' + (cls || ''); }
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if (busy) return;
+      var ru = document.documentElement.lang === 'ru';
+
+      var data = {
+        name: form.name.value.trim(),
+        phone: form.phone.value.trim(),
+        note: form.note.value.trim() || undefined,
+        company: form.company.value || undefined,
+        source: 'sayt-forma',
+        locale: ru ? 'ru' : 'uz'
+      };
+
+      if (data.name.length < 2) {
+        say(ru ? 'Имя не заполнено' : 'Ismingizni kiriting', 'err'); form.name.focus(); return;
+      }
+      if (data.phone.replace(/\D/g, '').length < 9) {
+        say(ru ? 'Номер неполный' : "Telefon raqami to'liq emas", 'err'); form.phone.focus(); return;
+      }
+
+      busy = true;
+      btn.disabled = true;
+      say(ru ? 'Юборилмоқда…' : 'Yuborilmoqda…');
+
+      fetch('/panel/api/lead', {
+        method: 'POST',
+        headers: {'content-type': 'application/json'},
+        body: JSON.stringify(data)
+      }).then(function(res){
+        return res.json().catch(function(){ return {ok: res.ok}; });
+      }).then(function(r){
+        if (r && r.ok) {
+          form.reset();
+          say(ru
+            ? 'Заявка принята — перезвоним в рабочее время.'
+            : "Ariza qabul qilindi — ish vaqtida qo'ng'iroq qilamiz.", 'ok');
+          if (window.umami) window.umami.track('ariza-qabul');
+        } else {
+          say((r && r.message) || (ru ? 'Не отправилось' : 'Yuborilmadi'), 'err');
+        }
+      }).catch(function(){
+        /* Tarmoq uzilsa ham mehmon boshsiz qolmasin — ikkinchi yo'l ko'rsatiladi */
+        say(ru
+          ? 'Не отправилось. Напишите нам в Telegram: @azizbekallayorov'
+          : "Yuborilmadi. Telegram orqali yozing: @azizbekallayorov", 'err');
+      }).then(function(){
+        busy = false;
+        btn.disabled = false;
+      });
+    });
+  })();
 
   /* ---------- telefondagi doimiy chaqiriq ----------
      Hero'dagi tugmalar ekrandan chiqqach paydo bo'ladi va yakuniy
