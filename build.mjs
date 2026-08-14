@@ -222,11 +222,32 @@ if (bad.length) {
   process.exit(1);
 }
 
-/* ---------- 9. sitemap ---------- */
+/* ---------- 9. Hujjat sahifalarining umumiy uslubi ----------
+   `oferta.html` va `maxfiylik.html` bir xil ko'rinishda. Ilgari ranglar
+   har faylda qaytadan yozilgan edi: asosiy saytda rang o'zgarsa, hujjat
+   sahifalari eski rangda qolib ketardi. Endi manba bitta — `src/doc.css`,
+   u har yasashda ikkala faylga joylashtiriladi (natija baribir bitta
+   HTML fayl bo'lib qoladi, qo'shimcha so'rov yo'q). */
+const docCss = fs.readFileSync(path.join(ROOT, 'src', 'doc.css'), 'utf8').trimEnd();
+for (const name of ['oferta.html', 'maxfiylik.html']) {
+  const file = path.join(ROOT, name);
+  if (!fs.existsSync(file)) continue;
+  const before = fs.readFileSync(file, 'utf8');
+  const after = before.replace(/<style>[\s\S]*?<\/style>/, '<style>\n' + docCss + '\n</style>');
+  if (after === before) continue;
+  if (!after.includes(docCss.slice(0, 40))) {
+    console.error('✗ ' + name + ' ichida <style> bloki topilmadi');
+    process.exit(1);
+  }
+  fs.writeFileSync(file, after);
+}
+
+/* ---------- 10. sitemap ---------- */
 const pages = [
   { loc: SITE + '/', freq: 'monthly', pri: '1.0', alt: true },
   { loc: SITE + '/ru/', freq: 'monthly', pri: '0.9', alt: true },
-  { loc: SITE + '/oferta.html', freq: 'yearly', pri: '0.3', alt: false }
+  { loc: SITE + '/oferta.html', freq: 'yearly', pri: '0.3', alt: false },
+  { loc: SITE + '/maxfiylik.html', freq: 'yearly', pri: '0.3', alt: false }
 ];
 const alts =
   '\n      <xhtml:link rel="alternate" hreflang="uz" href="' + SITE + '/"/>' +
