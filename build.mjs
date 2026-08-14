@@ -20,6 +20,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const SRC = path.join(ROOT, 'index.html');
@@ -147,11 +148,23 @@ function withSchema(html, lang, dict) {
     block + '\n</head>');
 }
 
-/* ---------- 5. O'zbekcha sahifa: faqat sxema yangilanadi ---------- */
-const uz = withSchema(src, 'uz', SELF);
+/* ---------- 5. Kesh uchun versiya belgisi ----------
+   `demo.js` nomi o'zgarmaydi, shuning uchun uni uzoq keshlab bo'lmasdi:
+   yangi versiya chiqsa ham brauzer eskisini ko'rsatib turardi. Manzilga
+   fayl mazmunining qisqa xesh'ini qo'shsak, har o'zgarishda manzil
+   yangi bo'ladi va nginx faylni bir yilga keshlashi mumkin.
+   Amal idempotent — skriptni qayta ishga tushirsangiz xesh almashadi,
+   ikkilanmaydi. */
+const demoHash = crypto.createHash('sha1')
+  .update(fs.readFileSync(path.join(ROOT, 'demo.js')))
+  .digest('hex').slice(0, 10);
+
+/* ---------- 6. O'zbekcha sahifa: sxema va versiya belgisi ---------- */
+let uz = withSchema(src, 'uz', SELF);
+uz = uz.replace(/src="\/demo\.js(?:\?v=[a-f0-9]+)?"/, 'src="/demo.js?v=' + demoHash + '"');
 if (uz !== src) fs.writeFileSync(SRC, uz);
 
-/* ---------- 6. Ruscha sahifa ---------- */
+/* ---------- 7. Ruscha sahifa ---------- */
 let ru = uz;
 
 /* Matn */
@@ -196,7 +209,7 @@ ru = ru.replace('<!doctype html>',
 fs.mkdirSync(path.join(ROOT, 'ru'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'ru', 'index.html'), ru);
 
-/* ---------- 7. Tekshiruv: har bir element haqiqatan almashdimi ----------
+/* ---------- 8. Tekshiruv: har bir element haqiqatan almashdimi ----------
    Faylning o'zida qidirib bo'lmaydi — ruscha sahifa ichida o'zbekcha
    lug'at yotadi (tugma bosilganda kerak bo'ladi), ya'ni o'zbekcha matn
    u yerda BOR va bo'lishi ham kerak. Shuning uchun sahifani qaytadan
@@ -209,7 +222,7 @@ if (bad.length) {
   process.exit(1);
 }
 
-/* ---------- 8. sitemap ---------- */
+/* ---------- 9. sitemap ---------- */
 const pages = [
   { loc: SITE + '/', freq: 'monthly', pri: '1.0', alt: true },
   { loc: SITE + '/ru/', freq: 'monthly', pri: '0.9', alt: true },
