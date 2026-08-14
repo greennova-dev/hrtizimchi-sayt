@@ -24,7 +24,7 @@ hrtizimchi-sayt/
 
 ## Animatsiyalar
 
-Uch qatlam, uchalasi ham `prefers-reduced-motion: reduce` da butunlay o'chadi:
+To'rt qatlam, hammasi `prefers-reduced-motion: reduce` da butunlay o'chadi:
 
 1. **Ochilish xoreografiyasi** — hero bo'laklari yuklanishda navbat bilan
    ko'tariladi (`heroIn`), qolgan bloklar esa ko'rinishga kirganda
@@ -45,6 +45,18 @@ Uch qatlam, uchalasi ham `prefers-reduced-motion: reduce` da butunlay o'chadi:
    bo'sh telefon ramkasi hech qachon ko'rinmaydi. Til almashganda ikkinchi
    telefon `tizimchi-demo-lang` hodisasi orqali qayta chiziladi (`setTimeout`
    bilan kutish skript yuklanish tartibiga bog'liq bo'lib qolardi).
+4. **Kartalar va detallar** — kursor ortidan yuruvchi yorug'lik (`.spot`
+   sinfini JS qo'yadi; bitta hujjat darajasidagi tinglovchi + rAF), tarif
+   kartalarining yengil qiyshayishi, narx almashuvi va «Nega biz»
+   bo'limidagi SVG rasmlarning jonlanishi (`.diff.in .dv-*`). Sahifa
+   ortida esa juda sekin suzuvchi shimoliy shafaq (`.aurora`) — telefonda
+   harakati o'chirilgan, faqat statik dog'lar qoladi.
+
+   **Qoida:** bitta elementda ikkita `transform` e'loni yashay olmaydi.
+   Shuning uchun tarif kartasining ko'tarilishi ham, qiyshayishi ham
+   BITTA e'londa (`--lift`, `--rx`, `--ry`), va u selektor kuchi bo'yicha
+   `.rv.in{transform:none}` dan ustun turishi kerak — aks holda karta
+   ochilgandan keyin qiyshayish umuman ishlamaydi.
 
 ## Ikki til
 
