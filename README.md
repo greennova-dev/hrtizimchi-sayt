@@ -13,7 +13,7 @@ ishlaydi, JavaScript o'chirilgan brauzerda ham o'zbekcha matn to'liq o'qiladi.
 ```
 hrtizimchi-sayt/
 ├── index.html            sayt: HTML + CSS + i18n lug'ati
-├── demo.js               hero'dagi jonli demo (Mini App nusxasi)
+├── demo.js               jonli demo (Mini App nusxasi) + `window.TizimchiDemo`
 ├── og.jpg                Telegram/ijtimoiy tarmoq oldindan ko'rish rasmi
 ├── og-source.svg         o'sha rasmning vektor manbasi
 ├── apple-touch-icon.png  iPhone "bosh ekranga qo'shish" ikonkasi
@@ -21,6 +21,30 @@ hrtizimchi-sayt/
 ├── robots.txt · sitemap.xml
 └── .github/workflows/deploy.yml   main'ga push → serverda git pull
 ```
+
+## Animatsiyalar
+
+Uch qatlam, uchalasi ham `prefers-reduced-motion: reduce` da butunlay o'chadi:
+
+1. **Ochilish xoreografiyasi** — hero bo'laklari yuklanishda navbat bilan
+   ko'tariladi (`heroIn`), qolgan bloklar esa ko'rinishga kirganda
+   (`.rv` → `.in`) xiralikdan aniqlikka o'tadi. Navbat `--i` o'zgaruvchisi
+   orqali: JS faqat qatordagi o'rinni yozadi, vaqtni CSS hisoblaydi.
+2. **Surilish bo'yicha animatsiya** — yuqoridagi o'lchagich chizig'i va
+   hero telefonining uzoqlashishi `animation-timeline` bilan ishlaydi,
+   ya'ni `scroll` hodisasiga obuna yo'q. `@supports` bloki ichida, shuning
+   uchun eski brauzerda shunchaki ishlamaydi va hech narsa buzilmaydi.
+3. **«Qanday ishlaydi» — yopishib turuvchi telefon.** Keng ekranda (≥1081px)
+   telefon `position:sticky` bilan ushlanadi, qadam matni yonidan suriladi
+   va har qadamda telefonda mos ekran ochiladi (`home` → `branches` →
+   `employees` → `attendance`). Ekranni `demo.js` dagi
+   `window.TizimchiDemo.screen(key)` chizadi.
+
+   Bu ko'rinishni JS `.how--live` sinfi bilan **yoqadi**. Ya'ni JS ishlamasa
+   yoki demo yuklanmasa bo'lim oddiy to'rt ustunli grid bo'lib qolaveradi —
+   bo'sh telefon ramkasi hech qachon ko'rinmaydi. Til almashganda ikkinchi
+   telefon `tizimchi-demo-lang` hodisasi orqali qayta chiziladi (`setTimeout`
+   bilan kutish skript yuklanish tartibiga bog'liq bo'lib qolardi).
 
 ## Ikki til
 
