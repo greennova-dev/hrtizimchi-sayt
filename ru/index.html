@@ -680,32 +680,103 @@ a.fact:hover::before{transform:scaleX(1)}
 .phone-note{margin-top:10px; font-size:11.5px; color:#8ba6d8; text-align:center}
 
 /* ---------- yo'qotish kalkulyatori ----------
-   Tarif tanlagichi bilan bir xil tilda: markazdagi karta, ichida
-   savollar, pastda javob. Yangi bezak o'ylab topilmadi — sahifada
-   ikkita o'xshash vosita ikki xil ko'rinsa, u yasama tuyuladi. */
-.calc{max-width:760px; margin:0 auto; background:var(--surface); border:1px solid var(--line);
-  border-radius:var(--r-lg); box-shadow:var(--sh-2); padding:26px 28px}
-.calc-q{display:grid; grid-template-columns:1fr auto; gap:6px 14px; align-items:center;
-  margin-bottom:18px}
-.calc-q label{grid-row:1; grid-column:1; font-size:14px; font-weight:600; color:var(--ink-2)}
-/* Qiymat sarlavha bilan BIR QATORDA. O'rin aniq ko'rsatilmasa u
-   slayderdan keyin joylashib, uchinchi qatorga tushib ketardi. */
-.calc-q output{grid-row:1; grid-column:2;
-  font-size:15px; font-weight:660; letter-spacing:-.02em; font-variant-numeric:tabular-nums;
-  color:var(--brand-ink); text-align:right; white-space:nowrap}
-.calc-q input[type=range]{grid-row:2; grid-column:1 / -1; width:100%; accent-color:var(--brand);
-  height:22px; cursor:pointer}
-.calc-res{margin-top:22px; padding-top:22px; border-top:1px solid var(--line); text-align:center}
-.calc-lbl{font-size:12.5px; font-weight:650; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--muted)}
-.calc-big{font-size:clamp(30px,5vw,44px); font-weight:680; letter-spacing:-.04em; margin-top:6px;
-  color:var(--bad-ink); font-variant-numeric:tabular-nums}
-.calc-big small{font-size:18px; font-weight:500; color:var(--muted); letter-spacing:0}
-.calc-cmp{margin-top:10px; font-size:15px; color:var(--ink-2)}
-.calc-cmp b{color:var(--ink); font-weight:650}
-.calc-res .btn{margin-top:18px}
-.calc-fine{max-width:760px; margin:16px auto 0; font-size:13px; color:var(--muted); text-align:center;
-  line-height:1.55}
+   Sahifadagi yagona haqiqiy asbob, shuning uchun u karta emas, PULT
+   ko'rinishida: chapda sozlagichlar, o'ngda natija. Kengda yonma-yon —
+   mehmon slayderni surganda raqam ko'z oldida o'zgaradi, pastga qarash
+   kerak emas.
+
+   Natija paneli to'q ko'k: sahifada bu rang allaqachon bor («Xodim
+   uchun ham qulay» bo'limi va yakuniy chaqiriq), ya'ni yangi bezak
+   o'ylab topilmadi — bor til ishlatildi. */
+.calc{max-width:940px; margin:0 auto; background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--sh-3);
+  padding:8px; display:grid; gap:8px}
+@media (min-width:860px){
+  .calc{grid-template-columns:1fr 1fr; align-items:stretch}
+}
+.calc-in{padding:20px 20px 8px; display:flex; flex-direction:column; justify-content:center}
+
+.calc-q{margin-bottom:22px}
+.calc-q:last-child{margin-bottom:14px}
+.calc-q-t{display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  margin-bottom:10px}
+.calc-q label{font-size:13.5px; font-weight:600; color:var(--muted)}
+/* Qiymat — qatordagi ASOSIY narsa: mehmon aynan uni surib o'zgartiryapti,
+   shuning uchun u sarlavhadan katta va to'q */
+.calc-q output{font-size:20px; font-weight:680; letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums; color:var(--ink); white-space:nowrap}
+
+/* ---------- slayderning o'zi ----------
+   Brauzerning standart ko'rinishi butunlay almashtirildi: u har OS'da
+   boshqacha chiqadi va sahifaning qolgan qismidan ajralib turadi —
+   aynan shu narsa asbobni «tugallanmagan» qilib ko'rsatardi.
+   To'lgan qism `--fill` orqali bo'yaladi, uni JS yozadi. */
+.calc-q input[type=range]{
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:26px; background:transparent; cursor:pointer; display:block}
+.calc-q input[type=range]:focus{outline:0}
+
+.calc-q input[type=range]::-webkit-slider-runnable-track{
+  height:8px; border-radius:99px;
+  background:linear-gradient(90deg, var(--brand) 0 var(--fill,50%), var(--surface-3) var(--fill,50%) 100%)}
+.calc-q input[type=range]::-moz-range-track{
+  height:8px; border-radius:99px; background:var(--surface-3)}
+.calc-q input[type=range]::-moz-range-progress{
+  height:8px; border-radius:99px; background:var(--brand)}
+
+.calc-q input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:26px; height:26px; margin-top:-9px; border-radius:50%;
+  background:var(--surface); border:2.5px solid var(--brand);
+  box-shadow:0 2px 6px rgba(16,38,76,.18), 0 6px 16px -6px rgba(26,109,255,.55);
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease)}
+.calc-q input[type=range]::-moz-range-thumb{
+  width:26px; height:26px; border-radius:50%; box-sizing:border-box;
+  background:var(--surface); border:2.5px solid var(--brand);
+  box-shadow:0 2px 6px rgba(16,38,76,.18), 0 6px 16px -6px rgba(26,109,255,.55)}
+
+.calc-q input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.08)}
+.calc-q input[type=range]:active::-webkit-slider-thumb{transform:scale(.94)}
+.calc-q input[type=range]:focus-visible::-webkit-slider-thumb{
+  box-shadow:0 0 0 4px var(--cta-ring)}
+.calc-q input[type=range]:focus-visible::-moz-range-thumb{
+  box-shadow:0 0 0 4px var(--cta-ring)}
+
+.calc-scale{display:flex; justify-content:space-between; margin-top:6px;
+  font-size:11.5px; color:var(--muted); font-variant-numeric:tabular-nums}
+
+/* ---------- natija paneli ---------- */
+.calc-res{background:linear-gradient(160deg,var(--navy),#0b2f6b); color:#fff;
+  border-radius:calc(var(--r-lg) - 8px); padding:26px 24px 24px;
+  display:flex; flex-direction:column; justify-content:center; text-align:center;
+  background-image:radial-gradient(520px 220px at 85% 0%, rgba(120,170,255,.22), transparent 68%),
+    linear-gradient(160deg,var(--navy),#0b2f6b)}
+.calc-lbl{font-size:11.5px; font-weight:650; letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(255,255,255,.62)}
+.calc-big{font-size:clamp(32px,5.2vw,46px); font-weight:700; letter-spacing:-.045em;
+  margin-top:8px; font-variant-numeric:tabular-nums; line-height:1.05}
+.calc-big small{font-size:17px; font-weight:500; color:rgba(255,255,255,.6); letter-spacing:0}
+
+/* Ikki ustun — «necha barobar» degan raqamni o'qimasdan ham ko'rinadi */
+.calc-bars{margin-top:22px; display:flex; flex-direction:column; gap:12px; text-align:left}
+.calc-bar-t{display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+  font-size:12.5px; color:rgba(255,255,255,.72); margin-bottom:6px}
+.calc-bar-t b{font-weight:650; color:#fff; font-variant-numeric:tabular-nums}
+.calc-track{height:10px; border-radius:99px; background:rgba(255,255,255,.13); overflow:hidden}
+.calc-track i{display:block; height:100%; border-radius:99px;
+  transition:width .45s var(--ease)}
+.calc-track .is-loss{width:100%; background:linear-gradient(90deg,#ff8b8b,#e94a4a)}
+.calc-track .is-price{background:linear-gradient(90deg,#8fe3c2,#2fbf8f)}
+
+.calc-cmp{margin-top:16px; font-size:14.5px; color:rgba(255,255,255,.78)}
+.calc-cmp b{color:#fff; font-weight:650}
+.calc-res .btn{margin-top:18px; width:100%}
+/* Ko'k fonda oq tugma ko'proq ajralib turadi */
+.calc-res .btn-p{background:#fff; color:var(--navy); box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+.calc-res .btn-p:hover{box-shadow:0 16px 30px -12px rgba(0,0,0,.6)}
+
+.calc-fine{max-width:940px; margin:16px auto 0; font-size:13px; color:var(--muted);
+  text-align:center; line-height:1.55}
 
 /* ---------- taqqoslash jadvali ----------
    Tor ekranda jadval siqilmaydi — o'z konteyneri ichida suriladi.
@@ -1700,25 +1771,56 @@ main, footer{position:relative; z-index:1}
     </div>
 
     <div class="calc" id="calc">
-      <div class="calc-q">
-        <label for="c-emp" data-i18n="cl.q1">Количество сотрудников</label>
-        <input type="range" id="c-emp" min="5" max="200" step="5" value="30" aria-describedby="c-emp-v">
-        <output id="c-emp-v" for="c-emp">30</output>
-      </div>
-      <div class="calc-q">
-        <label for="c-late" data-i18n="cl.q2">Среднее опоздание в день</label>
-        <input type="range" id="c-late" min="5" max="60" step="5" value="15" aria-describedby="c-late-v">
-        <output id="c-late-v" for="c-late">15 daq</output>
-      </div>
-      <div class="calc-q">
-        <label for="c-pay" data-i18n="cl.q3">Средняя зарплата</label>
-        <input type="range" id="c-pay" min="2000000" max="20000000" step="500000" value="5000000" aria-describedby="c-pay-v">
-        <output id="c-pay-v" for="c-pay">5 000 000</output>
+      <div class="calc-in">
+        <div class="calc-q">
+          <div class="calc-q-t">
+            <label for="c-emp" data-i18n="cl.q1">Количество сотрудников</label>
+            <output id="c-emp-v" for="c-emp">30</output>
+          </div>
+          <input type="range" id="c-emp" min="5" max="200" step="5" value="30">
+          <div class="calc-scale"><span>5</span><span>200</span></div>
+        </div>
+        <div class="calc-q">
+          <div class="calc-q-t">
+            <label for="c-late" data-i18n="cl.q2">Среднее опоздание в день</label>
+            <output id="c-late-v" for="c-late">15 daq</output>
+          </div>
+          <input type="range" id="c-late" min="5" max="60" step="5" value="15">
+          <div class="calc-scale"><span>5</span><span>60</span></div>
+        </div>
+        <div class="calc-q">
+          <div class="calc-q-t">
+            <label for="c-pay" data-i18n="cl.q3">Средняя зарплата</label>
+            <output id="c-pay-v" for="c-pay">5 000 000</output>
+          </div>
+          <input type="range" id="c-pay" min="2000000" max="20000000" step="500000" value="5000000">
+          <div class="calc-scale"><span>2 mln</span><span>20 mln</span></div>
+        </div>
       </div>
 
       <div class="calc-res" aria-live="polite">
         <span class="calc-lbl" data-i18n="cl.out">Теряется в месяц</span>
         <div class="calc-big"><span id="c-out">0</span> <small data-i18n="pr.som">сум</small></div>
+
+        <!-- Taqqoslash gapda emas, KO'RINISHDA: ikki ustun yonma-yon
+             turganda «necha barobar» degan raqamni o'qish ham shart emas -->
+        <div class="calc-bars">
+          <div class="calc-bar">
+            <div class="calc-bar-t">
+              <span data-i18n="cl.loss">Потери</span>
+              <b id="c-b1">0</b>
+            </div>
+            <div class="calc-track"><i class="is-loss"></i></div>
+          </div>
+          <div class="calc-bar">
+            <div class="calc-bar-t">
+              <span id="c-plan">Tizimchi HR</span>
+              <b id="c-b2">0</b>
+            </div>
+            <div class="calc-track"><i class="is-price" id="c-bar2"></i></div>
+          </div>
+        </div>
+
         <p class="calc-cmp" id="c-cmp"></p>
         <a class="btn btn-p" href="https://t.me/tizimchi_hr_bot" data-umami-event="bot-kalkulyator" data-i18n="cl.cta">Прекратить это — 7 дней бесплатно</a>
       </div>
@@ -2409,6 +2511,7 @@ var OTHER = {
  "cl.q3": "O'rtacha oylik",
  "cl.out": "Oyiga yo'qotilayotgan pul",
  "pr.som": "so'm",
+ "cl.loss": "Yo'qotish",
  "cl.cta": "Buni to'xtatish — 7 kun bepul",
  "cl.fine": "Hisob taxminiy: oyda 22 ish kuni, kuniga 8 soat. Faqat kechikish olindi — erta ketish va umuman kelmagan kunlar hisobga qo'shilmadi.",
  "w.eyebrow": "Qanday ishlaydi",
@@ -2807,9 +2910,17 @@ var OTHER = {
       return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     }
 
+    /* Slayderning to'lgan qismi CSS'da `--fill` orqali bo'yaladi */
+    function fill(el){
+      var pct = (el.value - el.min) / (el.max - el.min) * 100;
+      el.style.setProperty('--fill', pct.toFixed(1) + '%');
+    }
+
     function draw(){
       var ru = document.documentElement.lang === 'ru';
       var e = +emp.value, l = +late.value, p = +pay.value;
+
+      [emp, late, pay].forEach(fill);
 
       document.getElementById('c-emp-v').textContent = e + (e === 200 ? '+' : '');
       document.getElementById('c-late-v').textContent = l + (ru ? ' мин' : ' daq');
@@ -2820,11 +2931,20 @@ var OTHER = {
 
       var plan = PLANS.find(function(x){ return x.emp >= e; }) || PLANS[PLANS.length-1];
       var times = loss / plan.price;
+
+      /* Ikki ustun. Tarif ustuni ataylab eng kamida 3% — nol kenglikdagi
+         chiziq «xato» bo'lib ko'rinardi, holbuki u shunchaki juda kichik. */
+      document.getElementById('c-b1').textContent = money(loss);
+      document.getElementById('c-b2').textContent = money(plan.price);
+      document.getElementById('c-plan').textContent =
+        (ru ? 'Тариф «' + plan.ru + '»' : '«' + plan.uz + '» tarifi');
+      document.getElementById('c-bar2').style.width =
+        Math.max(3, plan.price / loss * 100).toFixed(1) + '%';
+
+      var n = times >= 10 ? Math.round(times) : times.toFixed(1);
       cmp.innerHTML = ru
-        ? 'Тариф «' + plan.ru + '» стоит <b>' + money(plan.price) + ' сум</b> в месяц — это в <b>'
-          + (times >= 10 ? Math.round(times) : times.toFixed(1)) + ' раз</b> меньше потерь.'
-        : '«' + plan.uz + '» tarifi oyiga <b>' + money(plan.price) + " so'm</b> — ya'ni yo'qotishdan <b>"
-          + (times >= 10 ? Math.round(times) : times.toFixed(1)) + ' barobar</b> kam.';
+        ? 'Потери в <b>' + n + ' раз</b> больше стоимости тарифа'
+        : "Yo'qotish tarif narxidan <b>" + n + ' barobar</b> katta';
     }
 
     [emp, late, pay].forEach(function(el){
@@ -2834,10 +2954,19 @@ var OTHER = {
          esa o'zgarib ketadi. `preventDefault` yaramaydi: u sahifaning
          surilishini ham to'xtatib qo'yardi. Shuning uchun eski qiymat
          keyingi kadrda qaytariladi — surilish tabiiy qoladi. */
+      /* DIQQAT: bitta kadrga bir nechta `wheel` hodisasi kelishi mumkin.
+         Har biri o'z qiymatini eslab qolsa, oxirgisi ORALIQ qiymatni
+         tiklab qo'yadi va slayder baribir suriladi — birinchi urinishda
+         aynan shunday bo'lgan edi. Shuning uchun boshlang'ich qiymat
+         seriyada BIR MARTA yozib olinadi. */
+      var wheelFrom = null, wheelWait = null;
       el.addEventListener('wheel', function(){
-        var was = el.value;
-        requestAnimationFrame(function(){
-          if (el.value !== was) { el.value = was; draw(); }
+        if (wheelFrom === null) wheelFrom = el.value;
+        if (wheelWait) return;
+        wheelWait = requestAnimationFrame(function(){
+          wheelWait = null;
+          if (el.value !== wheelFrom) { el.value = wheelFrom; draw(); }
+          wheelFrom = null;
         });
       }, {passive:true});
     });
