@@ -751,6 +751,7 @@ a.fact:hover::before{transform:scaleX(1)}
    aynan uni to'ldirgani kerak. */
 .lead-hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
 .lead-msg{font-size:14.5px; min-height:20px; margin-top:2px}
+.lead-fine{font-size:12.8px; color:var(--muted); line-height:1.5; margin-top:-4px}
 .lead-msg.ok{color:var(--ok-ink)}
 .lead-msg.err{color:var(--bad-ink)}
 .lead-form .btn{width:100%}
@@ -2088,6 +2089,7 @@ main, footer{position:relative; z-index:1}
         <input class="lead-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn btn-p" type="submit" data-umami-event="ariza-yuborish" data-i18n="ld.send">Заказать звонок</button>
         <p class="lead-msg" id="leadMsg" role="status" aria-live="polite"></p>
+        <p class="lead-fine"><span data-i18n="ld.fine">Ваши данные используются только для этого звонка</span> — <a href="/maxfiylik.html" data-i18n="ld.privlink">политика конфиденциальности</a></p>
       </form>
     </div>
   </div>
@@ -2134,6 +2136,7 @@ main, footer{position:relative; z-index:1}
       <!-- To'lov tizimlari (Payme, Click) xizmat shartlari sahifasini
            talab qiladi va uni saytdan topa olishi kerak -->
       <a href="/oferta.html" data-i18n="nav.offer">Оферта</a>
+      <a href="/maxfiylik.html" data-i18n="nav.priv">Конфиденциальность</a>
       <a data-umami-event="bot-futer" href="https://t.me/tizimchi_hr_bot">Telegram</a>
     </nav>
   </div>
@@ -2357,12 +2360,15 @@ var OTHER = {
  "ld.phone": "Telefon",
  "ld.note": "Izoh (ixtiyoriy)",
  "ld.send": "Qo'ng'iroq so'rash",
+ "ld.fine": "Ma'lumotingiz faqat shu qo'ng'iroq uchun ishlatiladi",
+ "ld.privlink": "maxfiylik siyosati",
  "c.title": "Ertaga ertalab birinchi «Keldim» tushsin",
  "c.sub": "Botni oching, kompaniya nomini yozing — 7 kunlik demo shu zahoti ochiladi. Karta so'ralmaydi, shartnoma kutilmaydi.",
  "c.btn": "@tizimchi_hr_bot ni ochish",
  "c.note": "Savolingiz bormi? Shu botning o'zidan yozing — javob beramiz.",
  "fo.by": "GreenNova mahsuloti",
  "nav.offer": "Oferta",
+ "nav.priv": "Maxfiylik",
  "meta.title": "Tizimchi HR — Telegram ichida GPS davomat va ish haqi",
  "meta.desc": "Xodim Telegramda «Keldim» bosadi — GPS filial hududida ekani tekshiriladi, ishlangan soat o'zi hisoblanadi, ish haqi shundan chiqadi. 7 kun bepul, karta kerak emas."
 };

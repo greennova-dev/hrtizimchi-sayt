@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maxfiylik siyosati — Tizimchi HR</title>
+<meta name="description" content="Tizimchi HR qanday ma'lumot to'playdi, nima uchun ishlatadi, qayerda saqlaydi va uni qanday o'chirish mumkin.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#eef3fb">
+<link rel="canonical" href="https://hrtizimchi.uz/maxfiylik.html">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a6dff'/%3E%3Cpath d='M10 9v14M22 9v14M10 16h12' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<style>
+/* Bosh sahifa bilan orasidagi o'tish silliq bo'lsin. Ikkala hujjat ham
+   e'lon qilishi shart — bir tomon jim tursa o'tish umuman boshlanmaydi. */
+@view-transition{navigation:auto}
+:root{
+  --bg-a:#eef3fb; --bg-b:#e2eaf7;
+  --surface:#ffffff; --surface-2:#f5f8fd;
+  --ink:#0d1f3c; --ink-2:#3d5175; --muted:#6f819f;
+  --brand:#1a6dff; --brand-ink:#0b48b8; --navy:#122a5c;
+  --line:#e0e8f4; --line-2:#d3ddee;
+  --warn:#d97706; --warn-soft:rgba(217,119,6,.10);
+  --r-lg:26px; --r-md:18px; --r-sm:12px;
+  --sh-1:0 1px 2px rgba(16,38,76,.05);
+  --sh-2:0 2px 6px rgba(16,38,76,.06), 0 14px 34px -14px rgba(16,38,76,.22);
+  --maxw:820px;
+  --nav-bg:rgba(238,243,251,.86);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg-a:#0a1121; --bg-b:#070c18;
+    --surface:#111a2f; --surface-2:#152039;
+    --ink:#e9eefb; --ink-2:#aabcda; --muted:#7788a9;
+    --brand:#4d8bff; --brand-ink:#93b8ff; --navy:#2b64c8;
+    --line:#22304f; --line-2:#2c3d63;
+    --warn:#f0b45c; --warn-soft:rgba(240,180,92,.12);
+    --sh-1:0 1px 2px rgba(0,0,0,.4);
+    --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 34px -14px rgba(0,0,0,.7);
+    --nav-bg:rgba(10,17,33,.88);
+  }
+}
+:root[data-theme="dark"]{
+  --bg-a:#0a1121; --bg-b:#070c18;
+  --surface:#111a2f; --surface-2:#152039;
+  --ink:#e9eefb; --ink-2:#aabcda; --muted:#7788a9;
+  --brand:#4d8bff; --brand-ink:#93b8ff; --navy:#2b64c8;
+  --line:#22304f; --line-2:#2c3d63;
+  --warn:#f0b45c; --warn-soft:rgba(240,180,92,.12);
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 34px -14px rgba(0,0,0,.7);
+  --nav-bg:rgba(10,17,33,.88);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--bg-a),var(--bg-b));
+  background-attachment:fixed;
+  color:var(--ink);
+  font:400 16px/1.68 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-feature-settings:'tnum' 0;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+nav.top{
+  position:sticky;top:0;z-index:10;
+  background:var(--nav-bg);
+  backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+nav.top a{color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:600}
+nav.top a:hover{color:var(--brand)}
+.brand{display:flex;align-items:center;gap:9px;color:var(--ink);font-weight:800;font-size:16px}
+.brand svg{display:block;border-radius:7px}
+
+header.hero{padding:44px 0 22px}
+h1{margin:0 0 10px;font-size:clamp(26px,5vw,36px);line-height:1.18;letter-spacing:-.02em;font-weight:800}
+.lede{margin:0;color:var(--ink-2);font-size:17px}
+.stamp{margin-top:14px;color:var(--muted);font-size:13.5px}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  box-shadow:var(--sh-2);
+  padding:26px 26px 30px;
+  margin:0 0 22px;
+}
+
+.toc{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:18px 22px;margin:0 0 30px}
+.toc p{margin:0 0 8px;font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.toc ol{margin:0;padding-left:20px;columns:2;column-gap:28px}
+.toc li{margin:3px 0;break-inside:avoid}
+.toc a{color:var(--ink-2);text-decoration:none;font-size:14.5px}
+.toc a:hover{color:var(--brand);text-decoration:underline}
+
+h2{
+  margin:34px 0 12px;font-size:20px;line-height:1.3;letter-spacing:-.01em;font-weight:800;
+  scroll-margin-top:76px;
+}
+h2 .n{color:var(--brand);font-variant-numeric:tabular-nums;margin-right:8px}
+h2:first-child{margin-top:0}
+p{margin:0 0 12px;color:var(--ink-2)}
+ul,ol.body{margin:0 0 12px;padding-left:22px;color:var(--ink-2)}
+li{margin:5px 0}
+strong{color:var(--ink);font-weight:650}
+a{color:var(--brand)}
+
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 14px;border-radius:var(--r-sm)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:var(--surface-2);color:var(--muted);font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+td{color:var(--ink-2)}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink);font-weight:600}
+tr:last-child td{border-bottom:none}
+
+.note{
+  background:var(--warn-soft);
+  border-left:3px solid var(--warn);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:13px 16px;margin:0 0 14px;
+}
+.note p{margin:0;color:var(--ink-2);font-size:15px}
+
+.req{
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:20px 22px;
+}
+.req dl{margin:0;display:grid;grid-template-columns:minmax(140px,auto) 1fr;gap:9px 18px}
+.req dt{color:var(--muted);font-size:14px}
+.req dd{margin:0;color:var(--ink);font-size:15px;font-weight:600}
+@media (max-width:560px){
+  .req dl{grid-template-columns:1fr;gap:2px 0}
+  .req dd{margin:0 0 10px}
+  .toc ol{columns:1}
+}
+
+footer{border-top:1px solid var(--line);margin-top:36px;padding:24px 0 40px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+footer p{margin:0;color:var(--muted);font-size:14px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--ink-2);text-decoration:none;font-size:14px}
+footer a:hover{color:var(--brand)}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1a6dff"/><path d="M10 9v14M22 9v14M10 16h12" stroke="white" stroke-width="2.6" stroke-linecap="round"/></svg>
+      Tizimchi HR
+    </a>
+    <a href="/">← Bosh sahifa</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Maxfiylik siyosati</h1>
+    <p class="lede">Qanday ma'lumot to'planadi, nima uchun kerak, qayerda yotadi va uni qanday o'chirish mumkin</p>
+    <p class="stamp">Oxirgi tahrir: 2026-yil 14-avgust · Toshkent shahri</p>
+  </header>
+
+  <nav class="toc" aria-label="Bo'limlar">
+    <p>Bo'limlar</p>
+    <ol>
+      <li><a href="#b1">Kim ma'lumotni to'playdi</a></li>
+      <li><a href="#b2">Qanday ma'lumot to'planadi</a></li>
+      <li><a href="#b3">Nima uchun kerak</a></li>
+      <li><a href="#b4">Joylashuv (GPS) haqida alohida</a></li>
+      <li><a href="#b5">Kim ko'ra oladi</a></li>
+      <li><a href="#b6">Uchinchi tomon xizmatlari</a></li>
+      <li><a href="#b7">Qayerda saqlanadi</a></li>
+      <li><a href="#b8">Qancha saqlanadi</a></li>
+      <li><a href="#b9">Sizning huquqlaringiz</a></li>
+      <li><a href="#b10">Saytdagi cookie va statistika</a></li>
+      <li><a href="#b11">Xavfsizlik choralari</a></li>
+      <li><a href="#b12">Aloqa</a></li>
+    </ol>
+  </nav>
+
+  <div class="card">
+
+    <h2 id="b1"><span class="n">1.</span>Kim ma'lumotni to'playdi</h2>
+    <p>1.1. Ma'lumotlarni qayta ishlovchi — <strong>«GREENNOVA-GROUP» MChJ</strong> (bundan keyin — Ijrochi), «Tizimchi HR» dasturiy ta'minotining egasi. To'liq rekvizitlar <a href="/oferta.html#b12">ommaviy ofertada</a> keltirilgan.</p>
+    <p>1.2. Xizmatdan foydalanuvchi kompaniya (bundan keyin — Buyurtmachi) o'z xodimlarining ma'lumotlariga nisbatan <strong>egalik qiluvchi</strong> hisoblanadi. Ijrochi bu ma'lumotlarni faqat Buyurtmachi nomidan va shartnoma doirasida qayta ishlaydi.</p>
+    <p>1.3. Bu shuni anglatadiki: xodimning ma'lumotini to'plash qonuniyligi va uni xodimga tushuntirish Buyurtmachi zimmasida. Ijrochi buni texnik jihatdan ta'minlaydi.</p>
+
+    <h2 id="b2"><span class="n">2.</span>Qanday ma'lumot to'planadi</h2>
+    <p>2.1. <strong>Telegram orqali:</strong> Telegram identifikatori, ism va familiya (Telegram profilida ko'rsatilgani), foydalanuvchi nomi (agar bo'lsa), til sozlamasi. Telefon raqami Telegramdan <strong>olinmaydi</strong>.</p>
+    <p>2.2. <strong>Xodim kartochkasi:</strong> ism-familiya, lavozim, telefon raqami, filial, ish jadvali, ish haqi modeli va summasi — bularni Buyurtmachining o'zi kiritadi.</p>
+    <p>2.3. <strong>Davomat yozuvlari:</strong> kelish va ketish vaqti, o'sha paytdagi geografik koordinatalar va ularning aniqligi, qurilmada soxta joylashuv bayrog'i yoqilgan-yoqilmagani, urinish qabul qilingani yoki rad etilgani va rad etilish sababi.</p>
+    <p>2.4. <strong>Ish haqi va ta'til:</strong> hisoblangan summalar, avanslar, ta'til arizalari va ularning holati.</p>
+    <p>2.5. <strong>Texnik ma'lumot:</strong> so'rov vaqti, IP manzil va brauzer turi — faqat xavfsizlik va suiiste'molga qarshi chegara qo'yish uchun.</p>
+    <p>2.6. <strong>Saytdagi ariza formasi:</strong> siz kiritgan ism, telefon raqami va izoh.</p>
+    <p>2.7. Ijrochi <strong>pasport ma'lumotlari, bank kartasi raqami, biometrik ma'lumot va sog'liq haqidagi ma'lumotni so'ramaydi va saqlamaydi.</strong></p>
+
+    <h2 id="b3"><span class="n">3.</span>Nima uchun kerak</h2>
+    <p>3.1. Har bir maydon aniq bir ish uchun to'planadi:</p>
+    <ul>
+      <li><strong>Telegram identifikatori</strong> — foydalanuvchini tanish va unga bildirishnoma yuborish uchun. Parol o'rniga ishlatiladi.</li>
+      <li><strong>Koordinatalar</strong> — check-in filial hududida bo'lganini tekshirish uchun.</li>
+      <li><strong>Vaqt yozuvlari</strong> — ishlangan soatni va ish haqini hisoblash uchun.</li>
+      <li><strong>Telefon raqami</strong> — Buyurtmachining o'z xodimi bilan bog'lanishi uchun; Ijrochi undan reklama maqsadida foydalanmaydi.</li>
+      <li><strong>Ariza formasidagi ma'lumot</strong> — faqat siz so'ragan qo'ng'iroq uchun.</li>
+    </ul>
+    <p>3.2. Ma'lumotlar <strong>sotilmaydi</strong>, reklama tarmoqlariga berilmaydi va boshqa mijozlarga ko'rsatilmaydi.</p>
+
+    <h2 id="b4"><span class="n">4.</span>Joylashuv (GPS) haqida alohida</h2>
+    <p>4.1. Joylashuv <strong>faqat xodim «Keldim» yoki «Ketdim» tugmasini bosgan paytda</strong> so'raladi. Fon rejimida kuzatuv yo'q: ilova xodim qayerda yurganini ish kuni davomida bilmaydi va bila olmaydi.</p>
+    <p>4.2. Telegram joylashuvni faqat foydalanuvchi ruxsat bergandagina yuboradi. Ruxsat berilmasa check-in amalga oshmaydi — bu Buyurtmachi bilan xodim o'rtasidagi masala.</p>
+    <p>4.3. Koordinata rad etilgan urinishlarda ham saqlanadi. Sabab: «nega qabul qilinmadi?» degan savolga javob bo'lishi kerak, aks holda tizimga ishonch qolmaydi.</p>
+
+    <h2 id="b5"><span class="n">5.</span>Kim ko'ra oladi</h2>
+    <p>5.1. <strong>Xodim</strong> — faqat o'z davomati va o'z ish haqini.</p>
+    <p>5.2. <strong>Filial administratori</strong> — faqat unga biriktirilgan filial xodimlarini.</p>
+    <p>5.3. <strong>Kompaniya rahbari</strong> — o'z kompaniyasining barcha ma'lumotini.</p>
+    <p>5.4. <strong>Ijrochi xodimlari</strong> — texnik nosozlikni bartaraf etish uchun zarur bo'lgandagina va Buyurtmachi xabardor qilingan holda. Bunday murojaatlar jurnalga yoziladi.</p>
+    <p>5.5. Har bir so'rov server tomonda tekshiriladi: bir kompaniya boshqasining ma'lumotini so'rasa, javob berilmaydi. Bu brauzerdagi yashirish emas, ma'lumotlar bazasi darajasidagi ajratish.</p>
+
+    <h2 id="b6"><span class="n">6.</span>Uchinchi tomon xizmatlari</h2>
+    <p>6.1. Xizmat ishlashi uchun quyidagi tashqi xizmatlardan foydalaniladi:</p>
+    <ul>
+      <li><strong>Telegram</strong> (Telegram FZ-LLC) — bot va Mini App shu platformada ishlaydi. Xabarlar va foydalanuvchi profili Telegram siyosati asosida qayta ishlanadi.</li>
+      <li><strong>Payme va Click</strong> — to'lovni amalga oshirishda. Karta ma'lumotlari <strong>to'lov tizimida</strong> kiritiladi va Ijrochiga umuman yetib kelmaydi; Ijrochi faqat to'lov holatini oladi.</li>
+      <li><strong>Google Gemini</strong> — «AI yordamchi» funksiyasidan foydalanilgandagina. Savolingizga javob tayyorlash uchun tegishli davomat yoki xodim ma'lumoti so'rovga qo'shilib Google serverlariga yuboriladi. Bu funksiya ixtiyoriy — undan foydalanmasangiz hech qanday ma'lumot yuborilmaydi.</li>
+    </ul>
+    <p>6.2. Saytda reklama tarmoqlari, ijtimoiy tarmoq tugmalari va uchinchi tomon kuzatuvchilari <strong>yo'q</strong>.</p>
+
+    <h2 id="b7"><span class="n">7.</span>Qayerda saqlanadi</h2>
+    <p>7.1. Ma'lumotlar Ijrochi ijaraga olgan serverda, <strong>Finlyandiya (Xelsinki)</strong> hududidagi ma'lumotlar markazida saqlanadi.</p>
+    <p>7.2. Ma'lumotlar bazasi tashqi tarmoqdan yopiq: unga faqat server ichidan murojaat qilinadi. Barcha ulanishlar shifrlangan kanal (HTTPS) orqali o'tadi.</p>
+    <p>7.3. Zaxira nusxa har kuni olinadi va o'sha serverning o'zida saqlanadi.</p>
+
+    <h2 id="b8"><span class="n">8.</span>Qancha saqlanadi</h2>
+    <p>8.1. Obuna amal qilib turgan vaqt davomida — to'liq saqlanadi.</p>
+    <p>8.2. Obuna tugagach ma'lumot <strong>darhol o'chirilmaydi</strong>: yozish bloklanadi, lekin ma'lumot joyida qoladi, chunki Buyurtmachi keyin qaytishi yoki hisobotni yuklab olishi mumkin.</p>
+    <p>8.3. Buyurtmachi kompaniyani o'chirishni so'rasa yoki panel orqali o'zi o'chirsa — kompaniya, xodimlar, davomat va ish haqi yozuvlari <strong>butunlay</strong> o'chiriladi. Bu amal qaytarilmaydi.</p>
+    <p>8.4. Saytdagi ariza formasidan kelgan ma'lumot bog'lanish maqsadi bajarilgach saqlanmaydi.</p>
+
+    <h2 id="b9"><span class="n">9.</span>Sizning huquqlaringiz</h2>
+    <p>9.1. Siz quyidagilarga haqlisiz:</p>
+    <ul>
+      <li>o'zingiz haqingizda qanday ma'lumot saqlanayotganini bilish;</li>
+      <li>noto'g'ri ma'lumotni tuzatishni talab qilish;</li>
+      <li>ma'lumotni o'chirishni so'rash;</li>
+      <li>ma'lumotni o'qiladigan ko'rinishda (XLSX yoki PDF) olish.</li>
+    </ul>
+    <p>9.2. <strong>Xodim</strong> avval o'z ish beruvchisiga murojaat qiladi: xodim kartochkasini u kiritgan va o'sha egalik qiladi.</p>
+    <p>9.3. <strong>Kompaniya rahbari</strong> Ijrochiga to'g'ridan-to'g'ri murojaat qiladi — aloqa 12-bo'limda. Murojaatga <strong>7 ish kuni</strong> ichida javob beriladi.</p>
+
+    <h2 id="b10"><span class="n">10.</span>Saytdagi cookie va statistika</h2>
+    <p>10.1. Sayt tashrif statistikasini o'z serverida yuritadi. Hisoblagich <strong>cookie ishlatmaydi</strong> va tashrif buyuruvchini shaxsan tanimaydi: faqat sahifa manzili, taxminiy hudud, qurilma turi va qaysi manzildan kelingani yoziladi.</p>
+    <p>10.2. Statistika ma'lumoti uchinchi tomonga <strong>uzatilmaydi</strong> — u ham o'sha serverda qoladi.</p>
+    <p>10.3. Til va mavzu (kunduzgi/tungi) tanlovi brauzeringizning o'z xotirasida saqlanadi va serverga yuborilmaydi.</p>
+    <p>10.4. Rahbariyat paneliga kirganda sessiyani ushlab turish uchun bitta texnik cookie qo'yiladi. Usiz tizimga kirib bo'lmaydi, shuning uchun undan voz kechish imkoni yo'q.</p>
+
+    <h2 id="b11"><span class="n">11.</span>Xavfsizlik choralari</h2>
+    <p>11.1. Har bir so'rov Telegram imzosi yoki server tomonda tekshiriladigan sessiya orqali autentifikatsiya qilinadi.</p>
+    <p>11.2. Sessiya tokeni bazada <strong>ochiq ko'rinishda saqlanmaydi</strong> — faqat uning matematik izi (xesh) yotadi. Baza nusxasi sizib chiqsa ham undan kirish kaliti yasab bo'lmaydi.</p>
+    <p>11.3. Kim nima o'zgartirgani jurnalga yoziladi.</p>
+    <p>11.4. Ma'lumotlar sizib chiqqani aniqlansa, Ijrochi Buyurtmachini <strong>72 soat ichida</strong> xabardor qiladi va nima sodir bo'lgani, qaysi ma'lumot ta'sirlangani va nima chora ko'rilgani haqida ma'lumot beradi.</p>
+
+    <h2 id="b12"><span class="n">12.</span>Aloqa</h2>
+    <p>12.1. Maxfiylik bo'yicha barcha murojaatlar:</p>
+    <div class="req">
+      <dl>
+        <dt>Tashkilot</dt><dd>«GREENNOVA-GROUP» MChJ</dd>
+        <dt>Telegram</dt><dd><a href="https://t.me/azizbekallayorov">@azizbekallayorov</a></dd>
+        <dt>Bot</dt><dd><a href="https://t.me/tizimchi_hr_bot">@tizimchi_hr_bot</a></dd>
+        <dt>Sayt</dt><dd><a href="https://hrtizimchi.uz">hrtizimchi.uz</a></dd>
+      </dl>
+    </div>
+    <p>12.2. Ushbu siyosat o'zgarsa, yangi tahrir shu sahifada e'lon qilinadi va yuqoridagi sana yangilanadi. Muhim o'zgarishlar haqida Buyurtmachiga bot orqali xabar beriladi.</p>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>© <span id="yr">2026</span> Tizimchi HR · GreenNova mahsuloti</p>
+    <nav>
+      <a href="/">Bosh sahifa</a>
+      <a href="/oferta.html">Oferta</a>
+      <a href="/#tariflar">Tariflar</a>
+      <a href="https://t.me/tizimchi_hr_bot">Telegram</a>
+    </nav>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear()</script>
+</body>
+</html>
