@@ -40,3 +40,10 @@ jobs:
           if(miss.length){console.error('Tarjimasi yo\'q: '+miss.join(', '));process.exit(1);}
           console.log('OK — '+k.length+' kalit');
           "
+
+      # Narx uch joyda ko'rinadi: kartochkalar, tarif tanlagichi va baza.
+      # Ular ajralib ketsa mijoz saytda bir raqamni ko'rib, hisobda
+      # boshqasini to'laydi. Jonli baza tekshiruvi tarmoqqa bog'liq,
+      # shuning uchun u yiqitmaydi — skript o'zi o'tkazib yuboradi.
+      - name: Narxlar hamma joyda bir xilmi
+        run: node tools/narx-tekshir.mjs
