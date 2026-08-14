@@ -102,6 +102,28 @@ ko'rinadigan matndan ajralib ketmaydi).
 Unutilsa CI ushlaydi (`.github/workflows/check.yml`) — u yasalgan
 fayllarni qayta yasab, farq bor-yo'qligini tekshiradi.
 
+## Narxlar
+
+Narx **uch joyda** ko'rinadi va ular ajralib ketmasligi kerak:
+
+1. tarif **kartochkalari** — `.amt` ichidagi `.cy-m` / `.cy-y`
+2. tarif **tanlagichi** — `PLANS` massivi («2 savolda aniqlaymiz»)
+3. **baza** — mijoz aynan shuncha to'laydi (`hr-bot` repo, `@hr/shared` →
+   `PLAN_PRICES`, u yerdan seed va AI yordamchining bilimi ham o'qiydi)
+
+```bash
+node tools/narx-tekshir.mjs            # uchalasini solishtiradi
+node tools/narx-tekshir.mjs --offline  # faqat sayt ichini (tarmoqsiz)
+```
+
+Uchinchisi `https://hrtizimchi.uz/panel/api/tariflar` orqali tekshiriladi.
+Manzilga yetib bo'lmasa skript **yiqitmaydi**, ogohlantirib o'tkazib
+yuboradi — aks holda CI internet uzilganda qizarib turaverardi.
+
+⚠️ Narxni o'zgartirish tartibi: avval `hr-bot` dagi `PLAN_PRICES`, keyin
+seed (yoki paneldan tarifni tahrirlash), oxirida shu yerdagi ikkala joy.
+CI unutilganini ushlaydi.
+
 ## Ikki til
 
 O'zbekcha matn **HTML ning o'zida** turadi, ruschasi esa sahifa oxiridagi
