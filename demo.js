@@ -470,12 +470,16 @@
   // Modul gridi orqali ochiladigan ekranlar bosh sahifaga tegishli
   var UNDER_HOME = { leaves: 1, branches: 1, reports: 1, productivity: 1, me: 1, settings: 1, subscription: 1, schedules: 1 };
 
-  function render() {
-    tabsEl.innerHTML = TABS.map(function (p) {
-      var on = S.screen === p[0] || (p[0] === 'home' && UNDER_HOME[S.screen]);
+  function tabsHtml(screen) {
+    return TABS.map(function (p) {
+      var on = screen === p[0] || (p[0] === 'home' && UNDER_HOME[screen]);
       return '<button data-go="' + p[0] + '"' + (on ? ' class="on"' : '') + '>' +
         '<svg viewBox="0 0 24 24">' + p[2] + '</svg>' + t(p[1]) + '</button>';
     }).join('');
+  }
+
+  function render() {
+    tabsEl.innerHTML = tabsHtml(S.screen);
     var fn = SCREENS[S.screen] || SCREENS.home;
     body.innerHTML = '<div class="dm-in' + (S.dir === 'pop' ? ' pop' : '') + '">' + fn() + '</div>';
     // Ekran almashganda tepaga qaytamiz; o'sha ekran ichida (filtr, tasdiqlash)
@@ -520,6 +524,11 @@
       setTimeout(function () {
         lang = (document.documentElement.lang === 'ru') ? 'ru' : 'uz';
         render();
+        /* "Qanday ishlaydi" bo'limidagi telefon ham qayta chizilishi kerak.
+           U o'z navbatida `setTimeout` bilan kutolmaydi — navbat tartibi
+           skriptlar yuklanish tartibiga bog'liq bo'lib qolardi va ekran
+           eski tilda chizilib qolardi. Shuning uchun hodisa yuboriladi. */
+        document.dispatchEvent(new CustomEvent('tizimchi-demo-lang'));
       }, 0);
     });
   });
@@ -533,15 +542,31 @@
     }, { passive: true });
   }
 
-  // Status qatoridagi soat haqiqiy — namuna "muzlab qolgan" ko'rinmasin
-  var clock = document.getElementById('phTime');
+  // Status qatoridagi soat haqiqiy — namuna "muzlab qolgan" ko'rinmasin.
+  // Sahifada ikkita telefon bor (hero va "Qanday ishlaydi"), shuning uchun
+  // id emas, sinf bo'yicha izlanadi — ikkalasi ham bir xil vaqtni ko'rsatadi.
+  var clocks = document.querySelectorAll('.ph-time');
   function tick() {
-    if (!clock) return;
+    if (!clocks.length) return;
     var d = new Date();
-    clock.textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+    var s = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+    clocks.forEach(function (c) { c.textContent = s; });
   }
   tick();
   setInterval(tick, 20000);
 
   render();
+
+  /* ---------------- tashqi API ----------------
+     "Qanday ishlaydi" bo'limidagi ikkinchi telefon shu yerdan ekran oladi.
+     U ATAYLAB interaktiv emas — faqat HTML qaytaramiz, holat (S) esa
+     hero'dagi jonli demoga tegishli bo'lib qoladi. Aks holda mehmon
+     surilganda o'zi bosgan ekran ostidan almashib ketardi.
+     `lang` funksiya orqali beriladi: til almashganda index.html shu
+     API'ni qayta chaqiradi va tarjima o'zi to'g'ri chiqadi. */
+  window.TizimchiDemo = {
+    screen: function (key) { return '<div class="dm-in">' + (SCREENS[key] || SCREENS.home)() + '</div>'; },
+    tabs: function (key) { return tabsHtml(key); }
+  };
+  document.dispatchEvent(new CustomEvent('tizimchi-demo-ready'));
 })();

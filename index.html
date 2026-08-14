@@ -533,6 +533,78 @@ a.fact:hover::before{transform:scaleX(1)}
   font-weight:650; font-size:15px; margin-bottom:16px}
 .step h3{font-size:17px; margin-bottom:8px}
 .step p{color:var(--ink-2); font-size:14.5px}
+.how-steps{list-style:none; margin:0; padding:0}
+.how-count{margin-left:auto; font-size:11.5px; font-weight:640; color:var(--muted);
+  letter-spacing:.02em; font-variant-numeric:tabular-nums}
+
+/* ---------- "Qanday ishlaydi" — yopishib turuvchi telefon ----------
+   Kengaytirilgan ko'rinish FAQAT `.how--live` bo'lganda yoqiladi (uni JS
+   qo'yadi) va faqat keng ekranda. Ya'ni JS ishlamasa yoki demo yuklanmasa
+   bo'lim hozirgidek to'rt ustunli grid bo'lib qolaveradi — bo'sh telefon
+   ramkasi hech qachon ko'rinmaydi.
+   Telefon `position:sticky` bilan ekranda ushlab turiladi, qadam matni esa
+   yonidan suriladi; qadam almashganda telefondagi ekran ham almashadi. */
+.how-stage{display:none}
+
+@media (min-width:1081px){
+  .how--live{display:grid; grid-template-columns:minmax(0,400px) minmax(0,1fr);
+    gap:0 40px; align-items:start}
+  /* Bo'lim sarlavhasi markazda, qadamlar esa telefon yonida — shuning uchun
+     tepadagi bo'sh joy qadamlar ustunida kompensatsiya qilinadi */
+  /* Bu telefon ko'rgazma uchun — bosilmaydi. `pointer-events:none` bo'lmasa
+     mehmon ekranni bosib ko'radi va hech nima bo'lmaydi; ustiga ichki
+     `overflow:auto` sahifa surilishini ham ushlab qolardi. */
+  /* Telefon o'z ustunining O'NG chetiga tortiladi — matn bilan orasidagi
+     bo'shliq shunda o'lchovli bo'ladi, aks holda ikkovi ekranning ikki
+     chetida osilib qolardi */
+  .how--live .how-stage{display:grid; place-items:center end; position:sticky; top:0;
+    height:100svh; padding:68px 0 24px; box-sizing:border-box;
+    pointer-events:none; user-select:none}
+  /* Telefon balandligi 724px; yuqoridagi to'ldirish bilan birga u ekranga
+     sig'ishi kerak, aks holda pastki qismi qirqiladi */
+  .how--live .how-stage .demo-phone{--scale:.68}
+
+  /* Qadamlar: karta bezagisiz, faqat matn — telefon asosiy qahramon bo'lsin */
+  .how--live .how-steps{display:block; position:relative; padding-left:64px}
+  .how--live .how-steps .step{background:transparent; border-color:transparent;
+    box-shadow:none; padding:0; min-height:52svh;
+    display:flex; flex-direction:column; justify-content:center;
+    opacity:.4; filter:blur(1px);
+    transition:opacity .55s var(--ease), filter .55s var(--ease)}
+  .how--live .how-steps .step.on{opacity:1; filter:none}
+  /* Karta bezagi olib tashlangani uchun kartaning "ko'tarilishi" ham
+     ma'nosiz — bu endi shunchaki matn bloki */
+  .how--live .how-steps .step:hover{transform:none; box-shadow:none}
+  .how--live .how-steps .step h3{font-size:clamp(22px,2.2vw,30px); letter-spacing:-.02em;
+    margin-bottom:12px}
+  .how--live .how-steps .step p{font-size:17px; max-width:44ch; line-height:1.65}
+
+  /* Raqam — chapdagi vertikal yo'lda, matn markazi bilan bir sathda */
+  .how--live .how-steps .step .n{position:absolute; left:-64px; top:50%;
+    transform:translateY(-50%); margin:0; width:44px; height:44px; border-radius:14px;
+    background:var(--surface); color:var(--muted); border:1px solid var(--line-2);
+    box-shadow:var(--sh-1); z-index:1;
+    transition:background .45s var(--ease), color .45s var(--ease),
+               border-color .45s var(--ease), box-shadow .45s var(--ease),
+               transform .45s var(--ease)}
+  .how--live .how-steps .step.on .n{background:var(--brand); color:#fff;
+    border-color:transparent; transform:translateY(-50%) scale(1.08);
+    box-shadow:0 10px 22px -8px rgba(26,109,255,.75)}
+
+  /* Yo'l chizig'i va uning to'lgan qismi. To'lish `--p` ga bog'liq: uni
+     faol qadam almashganda JS yozadi, transition esa oraliqni o'zi chizadi. */
+  .how--live .how-steps::before,
+  .how--live .how-steps::after{content:''; position:absolute; left:22px; width:2px;
+    border-radius:2px}
+  .how--live .how-steps::before{top:6%; bottom:6%; background:var(--line-2)}
+  .how--live .how-steps::after{top:6%; height:calc(88% * var(--p,.125));
+    background:linear-gradient(180deg,var(--brand),var(--brand-ink));
+    transition:height .6s var(--ease)}
+}
+/* Past ekranli noutbukda telefon qirqilmasin */
+@media (min-width:1081px) and (max-height:640px){
+  .how--live .how-stage .demo-phone{--scale:.56}
+}
 
 /* ---------- features ---------- */
 .fgroup{margin-bottom:30px}
@@ -803,11 +875,73 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
   :root:not([data-theme="light"]) .theme-btn .moon{display:block}
 }
 
+/* ---------- birinchi ekran: yig'ilib chiqadi ----------
+   Sahifa ochilganda hero bo'laklari navbat bilan ko'tariladi. Bu JS'siz
+   ishlaydi va `.rv` dan farqli o'laroq kuzatuvchi talab qilmaydi —
+   birinchi ekran baribir ko'rinib turibdi, uni kuzatishning ma'nosi yo'q.
+   Telefonga ALOHIDA element (`.demo-phone`) orqali beriladi: `.demo-wrap`
+   ning o'zi pastda surilish animatsiyasini oladi, bitta elementga esa
+   ikkita `animation` e'loni yozib bo'lmaydi — keyingisi oldingisini
+   butunlay o'chiradi. */
+@media (prefers-reduced-motion:no-preference){
+  .hero .eyebrow, .hero h1, .hero .lede, .hero-cta, .trust, .hero .demo-phone{
+    animation:heroIn .75s var(--ease) both; animation-delay:calc(var(--d,0) * 1ms)}
+  .hero h1{--d:70}
+  .hero .lede{--d:140}
+  .hero-cta{--d:210}
+  .trust{--d:280}
+  .hero .demo-phone{--d:120}
+}
+@keyframes heroIn{
+  from{opacity:0; transform:translateY(20px); filter:blur(6px)}
+  to  {opacity:1; transform:none;            filter:blur(0)}
+}
+
+/* ---------- surilish bo'yicha animatsiyalar ----------
+   `animation-timeline` — kadrni JS emas, brauzerning o'zi hisoblaydi:
+   `scroll` hodisasiga obuna yo'q, harakat kompozitorda ketadi.
+   Qo'llab-quvvatlamaydigan brauzerda `@supports` bloki butunlay
+   o'tkazib yuboriladi va sahifa hozirgidek qoladi. */
+.progress{display:none}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    /* Yuqoridagi ingichka o'lchagich — sahifaning qaysi joyidasiz */
+    .progress{display:block; position:fixed; inset:0 0 auto 0; height:2px; z-index:70;
+      transform:scaleX(0); transform-origin:0 50%; pointer-events:none;
+      background:linear-gradient(90deg,var(--brand),var(--ok));
+      animation:progressBar linear both; animation-timeline:scroll(root block)}
+
+    /* Hero telefoni ekrandan chiqayotib biroz uzoqlashadi — sahifa
+       "qatlamli" bo'lib ko'rinadi, matn esa o'z tezligida ketadi */
+    .hero .demo-wrap{animation:phoneExit linear both;
+      animation-timeline:view(block); animation-range:exit 0% exit 85%}
+  }
+}
+@keyframes progressBar{from{transform:scaleX(0)} to{transform:scaleX(1)}}
+@keyframes phoneExit{
+  from{transform:none;                    opacity:1}
+  to  {transform:translateY(-34px) scale(.95); opacity:.45}
+}
+
 /* ---------- aylanib borganda ochilish ----------
    JS `.in` qo'shadi. JS ishlamasa `.rv` hech qachon qo'shilmaydi
-   (uni ham JS qo'yadi), ya'ni kontent har doim ko'rinadi. */
-.rv{opacity:0; transform:translateY(22px)}
-.rv.in{opacity:1; transform:none; transition:opacity .6s var(--ease), transform .6s var(--ease)}
+   (uni ham JS qo'yadi), ya'ni kontent har doim ko'rinadi.
+   Kechikish `--i` orqali: JS faqat qatordagi o'rinni yozadi, vaqtni esa
+   CSS hisoblaydi — shunda ritm bir joyda turadi. */
+.rv{opacity:0; transform:translateY(24px) scale(.985)}
+.rv.in{opacity:1; transform:none; filter:blur(0);
+  transition:opacity .7s var(--ease), transform .7s var(--ease), filter .7s var(--ease);
+  transition-delay:calc(min(var(--i,0), 4) * 70ms)}
+/* Xiralikdan aniqlikka o'tish faqat keng ekranda: telefonda bir vaqtda
+   o'nlab element blur qilinsa, arzon qurilmada kadr tushib ketadi */
+@media (min-width:821px){ .rv{filter:blur(7px)} }
+
+/* Bo'lim sarlavhasi pardadek ochiladi. Yakuniy `inset` MANFIY — aks holda
+   pastki "g" dumi ham, sarlavha ostidagi ko'k chiziq ham qirqilib qolardi. */
+.sec-head.rv .h2{clip-path:inset(0 0 105% 0)}
+.sec-head.rv.in .h2{clip-path:inset(-20% -6% -30% -6%);
+  transition:clip-path .95s var(--ease);
+  transition-delay:calc(min(var(--i,0), 4) * 70ms + 60ms)}
 
 /* Harakatga sezgir foydalanuvchi — hech qanday siljish va yorug'lik yo'q */
 /* Telefon o'lchami: ichki metrika o'zgarmaydi, faqat masshtab */
@@ -821,7 +955,10 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
 @media (max-width:340px){ .demo-phone{--scale:.70} }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important; scroll-behavior:auto; animation:none!important}
-  .rv{opacity:1; transform:none}
+  .rv{opacity:1; transform:none; filter:none}
+  .sec-head.rv .h2{clip-path:none}
+  /* Qadamlar xiralashmaydi — faol qadamni faqat raqam rangi ko'rsatadi */
+  .how--live .how-steps .step{opacity:1; filter:none}
   .cursor-glow{display:none}
   .btn:hover, .feat:hover, .plan:hover, .diff:hover, .step:hover{transform:none}
 }
@@ -875,6 +1012,7 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
   </div>
 </header>
 
+<div class="progress" aria-hidden="true"></div>
 <div class="cursor-glow" id="glow" aria-hidden="true"></div>
 
 <main id="top">
@@ -1005,27 +1143,72 @@ body, .nav, .card, .feat, .plan, .diff, .step, .mock, .qa{
       <h2 class="h2" data-i18n="w.title">Ishga tushirish — bir choy ichim vaqt</h2>
       <p class="lede" data-i18n="w.sub">Server sotib olish, dastur o'rnatish, xodimlarni o'qitish shart emas. Hamma narsa Telegram ichida.</p>
     </div>
-    <div class="grid steps">
-      <div class="card step">
-        <span class="n">1</span>
-        <h3 data-i18n="w.1t">Botni oching</h3>
-        <p data-i18n="w.1d">Telegramda botni ochasiz, kompaniya nomini yozasiz — 7 kunlik demo shu zahoti ochiladi.</p>
+    <!-- Qadamlar + yopishib turuvchi telefon.
+         Sukut bo'yicha bu oddiy to'rt ustunli grid: JS ishlamasa ham,
+         ekran tor bo'lsa ham matn o'z holicha o'qiladi. Kengaytirilgan
+         ko'rinishni JS `.how--live` sinfi bilan yoqadi (`#howBody` ga
+         demo.js dan ekran chiziladi) — shuning uchun demo yuklanmasa
+         sahifa hozirgi ko'rinishida qolaveradi. -->
+    <div class="how" id="how">
+      <div class="how-stage" aria-hidden="true">
+        <div class="how-phone demo-wrap">
+          <div class="phone-glow"></div>
+          <div class="phone-aura"><i></i><i></i></div>
+          <div class="demo-phone">
+            <div class="phone-frame">
+              <div class="phone-screen">
+                <div class="demo-body" id="howBody"></div>
+                <div class="ph-top">
+                  <div class="ph-status">
+                    <span class="ph-time">14:20</span>
+                    <span class="ph-sig">
+                      <svg viewBox="0 0 20 12"><rect x="0" y="7.5" width="2.6" height="4.5" rx="1"/><rect x="4.2" y="5.2" width="2.6" height="6.8" rx="1"/><rect x="8.4" y="2.8" width="2.6" height="9.2" rx="1"/><rect x="12.6" y=".6" width="2.6" height="11.4" rx="1"/></svg>
+                      <svg viewBox="0 0 16 12"><path d="M1 4.3a10 10 0 0 1 14 0M3.6 7a6.4 6.4 0 0 1 8.8 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="10" r="1.2"/></svg>
+                      <svg viewBox="0 0 26 12"><rect x=".7" y=".7" width="21" height="10.6" rx="3.2" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".5"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="2"/><path d="M23.4 4.2v3.6a2.2 2.2 0 0 0 0-3.6z"/></svg>
+                    </span>
+                  </div>
+                  <div class="ph-head">
+                    <span class="ph-brand">
+                      <span class="ph-mark"><svg viewBox="0 0 32 32"><path d="M10 8v16M22 8v16M10 16h12" stroke="#fff" stroke-width="3.2" stroke-linecap="round" fill="none"/></svg></span>
+                      Tizimchi HR
+                    </span>
+                    <span class="how-count" id="howCount">1 / 4</span>
+                  </div>
+                </div>
+                <nav class="ph-tabs" id="howTabs"></nav>
+                <span class="ph-home"></span>
+              </div>
+              <span class="ph-island"></span>
+              <span class="ph-btn ph-vol-up"></span>
+              <span class="ph-btn ph-vol-dn"></span>
+              <span class="ph-btn ph-pow"></span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card step">
-        <span class="n">2</span>
-        <h3 data-i18n="w.2t">Filialni belgilang</h3>
-        <p data-i18n="w.2d">«Joriy joylashuvimni ol» tugmasi bilan nuqtani qo'yasiz va radius tanlaysiz — masalan 100 metr.</p>
-      </div>
-      <div class="card step">
-        <span class="n">3</span>
-        <h3 data-i18n="w.3t">Xodimni taklif qiling</h3>
-        <p data-i18n="w.3d">Har bir xodimga shaxsiy havola ketadi. U bosadi — botga ulanadi va o'z kabinetini oladi.</p>
-      </div>
-      <div class="card step">
-        <span class="n">4</span>
-        <h3 data-i18n="w.4t">Davomat boshlanadi</h3>
-        <p data-i18n="w.4d">Xodim «Keldim» bosadi, siz jonli monitoringda ko'rasiz. Kunlik yakun kechqurun o'zi keladi.</p>
-      </div>
+
+      <ol class="grid steps how-steps" id="howSteps">
+        <li class="card step" data-screen="home">
+          <span class="n">1</span>
+          <h3 data-i18n="w.1t">Botni oching</h3>
+          <p data-i18n="w.1d">Telegramda botni ochasiz, kompaniya nomini yozasiz — 7 kunlik demo shu zahoti ochiladi.</p>
+        </li>
+        <li class="card step" data-screen="branches">
+          <span class="n">2</span>
+          <h3 data-i18n="w.2t">Filialni belgilang</h3>
+          <p data-i18n="w.2d">«Joriy joylashuvimni ol» tugmasi bilan nuqtani qo'yasiz va radius tanlaysiz — masalan 100 metr.</p>
+        </li>
+        <li class="card step" data-screen="employees">
+          <span class="n">3</span>
+          <h3 data-i18n="w.3t">Xodimni taklif qiling</h3>
+          <p data-i18n="w.3d">Har bir xodimga shaxsiy havola ketadi. U bosadi — botga ulanadi va o'z kabinetini oladi.</p>
+        </li>
+        <li class="card step" data-screen="attendance">
+          <span class="n">4</span>
+          <h3 data-i18n="w.4t">Davomat boshlanadi</h3>
+          <p data-i18n="w.4d">Xodim «Keldim» bosadi, siz jonli monitoringda ko'rasiz. Kunlik yakun kechqurun o'zi keladi.</p>
+        </li>
+      </ol>
     </div>
   </div>
 </section>
@@ -1709,6 +1892,68 @@ var RU = {
     });
   })();
 
+  /* ---------- "Qanday ishlaydi": surilgan sari ekran almashadi ----------
+     Telefon yopishib turadi, qadam matni yonidan suriladi. Qaysi qadam
+     ekranning O'RTA yo'lagida bo'lsa — o'sha faol. Shuning uchun kuzatuv
+     `rootMargin` bilan 48% dan qirqilgan: bir vaqtda faqat bitta qadam
+     yo'lakka tushadi va ekran ikkilanib turmaydi.
+     Ekranni demo.js chizadi, u esa `defer` bilan keyinroq yuklanadi —
+     shuning uchun tayyor bo'lganini hodisadan bilamiz. */
+  (function(){
+    var how = document.getElementById('how');
+    var stepsEl = document.getElementById('howSteps');
+    if (!how || !stepsEl) return;
+
+    var steps = [].slice.call(stepsEl.children);
+    var scr = document.getElementById('howBody');
+    var tabs = document.getElementById('howTabs');
+    var cnt = document.getElementById('howCount');
+    var wide = window.matchMedia('(min-width:1081px)');
+    var active = -1, live = false;
+
+    function paint(i){
+      if (i === active || i < 0) return;
+      active = i;
+      var key = steps[i].getAttribute('data-screen');
+      scr.innerHTML = window.TizimchiDemo.screen(key);
+      tabs.innerHTML = window.TizimchiDemo.tabs(key);
+      cnt.textContent = (i + 1) + ' / ' + steps.length;
+      steps.forEach(function(s, k){ s.classList.toggle('on', k === i); });
+      /* Chapdagi yo'l chizig'i faol qadam markazigacha to'ladi */
+      how.style.setProperty('--p', ((i + 0.5) / steps.length).toFixed(3));
+    }
+
+    function start(){
+      if (live || !window.TizimchiDemo || !wide.matches) return;
+      live = true;
+      how.classList.add('how--live');
+      /* Bu qadamlar endi o'z xoreografiyasiga ega — umumiy "ochilish"
+         animatsiyasi ulardan olib tashlanadi, aks holda ikki qoida
+         bir xil elementning shaffofligini talashardi. */
+      steps.forEach(function(s){ s.classList.remove('rv','in'); s.style.transitionDelay = ''; });
+      paint(0);
+
+      if (!('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function(ents){
+        ents.forEach(function(en){ if (en.isIntersecting) paint(steps.indexOf(en.target)); });
+      }, {rootMargin:'-48% 0px -48% 0px', threshold:0});
+      steps.forEach(function(s){ io.observe(s); });
+    }
+
+    if (window.TizimchiDemo) start();
+    else document.addEventListener('tizimchi-demo-ready', start, {once:true});
+    /* Oyna kengaysa (yoki telefon aylantirilsa) keyin ham yoqiladi */
+    wide.addEventListener('change', start);
+
+    /* Til almashsa ekran ham o'z tilida qayta chizilsin. Hodisani demo.js
+       O'ZINING tilini yangilagandan KEYIN yuboradi — shu sababli bu yerda
+       chizilgan ekran har doim to'g'ri tilda bo'ladi. */
+    document.addEventListener('tizimchi-demo-lang', function(){
+      if (!live) return;
+      var i = active; active = -1; paint(i);
+    });
+  })();
+
   /* ---------- aylanib borganda ochilish ----------
      `.rv` sinfini JS qo'yadi: JS ishlamasa bloklar yashirin qolmaydi. */
   if (!calm && 'IntersectionObserver' in window) {
@@ -1723,13 +1968,19 @@ var RU = {
            cheklangan, aks holda uzun ro'yxat oxiri kech qoladi. */
         var sibs = en.target.parentElement ? [].slice.call(en.target.parentElement.children) : [];
         var i = sibs.indexOf(en.target);
-        en.target.style.transitionDelay = Math.min(i < 0 ? 0 : i * 60, 240) + 'ms';
+        en.target.style.setProperty('--i', i < 0 ? 0 : i);
         en.target.classList.add('in');
         io.unobserve(en.target);
       });
     }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
 
-    targets.forEach(function(el){ io.observe(el); });
+    targets.forEach(function(el){
+      /* Sahifa o'rtasidan qayta yuklansa yoki #havola bilan kelinsa,
+         tepada qolgan bloklar kuzatuvchiga umuman tushmaydi — ular
+         yashirin qolib ketmasligi uchun darhol ochiladi. */
+      if (el.getBoundingClientRect().bottom < 0) { el.classList.add('in'); return; }
+      io.observe(el);
+    });
   }
 })();
 </script>
